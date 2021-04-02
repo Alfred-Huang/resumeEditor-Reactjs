@@ -29,8 +29,14 @@ class Resume2 extends Component {
         firstTime: true,
         inputNum: 1,
         sectionType: "default",
-        module: "null",
-    };
+        modules: [
+            {id: 1, module: "education"},
+            {id: 2, module: "project"},
+            {id: 3, module: "summary"},
+            {id: 4, module: "leadership"},
+            {id: 5, module: "custom"}
+        ]
+    }
 
 
 
@@ -56,13 +62,23 @@ class Resume2 extends Component {
         this.setState({width: newWidth, scale: newScale, firstTime: false})
     }
 
-    showInputChange = (section)=>{
-        this.setState({sectionType: section})
-
+    addModule = (module) =>{
+        const modules = this.state.modules
+        const newModules = [...modules, module]
+        this.setState({modules: newModules})
     }
 
-    handleModules = (newModule) =>{
-        this.setState({module: newModule})
+
+    deleteModule = (id)=>{
+        const [modules] = this.state.modules
+        const newModules = modules.filter((moduleObj)=>{
+            return moduleObj.id !== id
+        })
+        this.setState({modules: newModules})
+    }
+
+    showInputChange = (section)=>{
+        this.setState({sectionType: section})
     }
 
     handleSection = () =>{
@@ -94,13 +110,11 @@ class Resume2 extends Component {
                 )
             default:
                 return (
-                    <Section  showInputChange={this.showInputChange} addModules={this.state.module}/>
+                    <Section modules={this.state.modules} addModule={this.addModule} showInputChange={this.showInputChange} deleteModule={this.deleteModule}/>
                 )
         }
 
     }
-
-
 
 
     printDocument() {
@@ -165,18 +179,6 @@ class Resume2 extends Component {
                                        <Row>
                                            <Col span={22} style={{backgroundColor: "white"}}>
                                                {this.handleSection()}
-                                           </Col>
-                                       </Row>
-
-                                       <Row>
-                                           <Col span={22} style={{backgroundColor: "white"}}>
-                                               <Card size="small" title={"Add Modules"} headStyle={{height: 10, paddingLeft: 10, fontSize: 12 }}>
-                                                   <Button onClick={(e) => this.handleModules("project")} type="primary"  icon={<PlusOutlined />} size={"small"} style={{marginLeft: 10}}>Project</Button>
-                                                   <Button onClick={(e) =>this.handleModules("leadership")} type="primary"  icon={<PlusOutlined />} size={"small"} style={{marginLeft: 10}} >Leadership</Button>
-                                                   <Button onClick={(e) =>this.handleModules("experience")} type="primary"  icon={<PlusOutlined />} size={"small"} style={{marginLeft: 10}}>Experience</Button>
-                                                   <Button onClick={(e) =>this.handleModules("summary")} type="primary"  icon={<PlusOutlined />} size={"small"} style={{marginLeft: 10}}>Summary</Button>
-                                                   <Button onClick={(e) =>this.handleModules("custom")} type="primary"  icon={<PlusOutlined />} size={"small"} style={{marginLeft: 10}}>Custom</Button>
-                                               </Card>
                                            </Col>
                                        </Row>
                                    </Col>

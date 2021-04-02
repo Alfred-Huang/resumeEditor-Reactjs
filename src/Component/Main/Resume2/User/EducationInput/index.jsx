@@ -51,7 +51,7 @@ class EducationInput extends Component {
                                     </Form.Item>
                                 </Col>
                                 <Col span={12}>
-                                    <Form.Item label="学历:">
+                                    <Form.Item label="Educational background:">
                                         <Input/>
                                     </Form.Item>
                                 </Col>
