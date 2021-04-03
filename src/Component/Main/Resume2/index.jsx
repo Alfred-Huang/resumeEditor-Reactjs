@@ -16,6 +16,7 @@ import SummaryInput from "./User/SummaryInput";
 import CustomInput from "./User/CustomInput";
 import LeadershipInput from "./User/LeadershipInput";
 import html2canvas from 'html2canvas';
+import { DragDropContext } from 'react-beautiful-dnd';
 import jsPDF from "jspdf";
 import "./index.css";
 
@@ -110,7 +111,13 @@ class Resume2 extends Component {
                 )
             default:
                 return (
-                    <Section modules={this.state.modules} addModule={this.addModule} showInputChange={this.showInputChange} deleteModule={this.deleteModule}/>
+
+                        <Section
+                            addModule={this.addModule}
+                            showInputChange={this.showInputChange}
+                            deleteModule={this.deleteModule}
+                        />
+
                 )
         }
 
@@ -149,6 +156,16 @@ class Resume2 extends Component {
             PDF.save( "download.pdf")
         })
     }
+
+    onDragStart = () => {
+        /*...*/
+    };
+    onDragUpdate = () => {
+        /*...*/
+    }
+    onDragEnd = () => {
+        // the only one that is required
+    };
 
 
     render() {
