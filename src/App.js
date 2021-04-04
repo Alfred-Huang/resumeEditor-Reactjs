@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from "react";
-import Main from "./Component/Main";
+import Main from "./Containers/actions/Main";
 import "./App.css"
 
 

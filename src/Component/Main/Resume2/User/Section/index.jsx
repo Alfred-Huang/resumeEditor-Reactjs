@@ -2,8 +2,10 @@ import React, {Component, Fragment} from 'react';
 import {Row, Card, Col, Button,} from "antd";
 import {EditOutlined, PlusOutlined,} from '@ant-design/icons';
 import {DragDropContext,Draggable, Droppable} from 'react-beautiful-dnd';
+import {connect} from "react-redux";
 import Item from "./Item";
-
+import "./index.css"
+import {addModuleAction, deleteModuleAction, getModuleAction} from "../../../../../redux/actions/userSection_action";
 const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
 
@@ -15,12 +17,8 @@ const reorder = (list, startIndex, endIndex) => {
 };
 
 const getItemStyle = (isDragging, draggableStyle) => ({
-
     userSelect: "none",
-
-    // 拖拽的时候背景变化
     background: isDragging ? "#E8E7E7" : "#ffffff",
-
     ...draggableStyle
 });
 
@@ -37,6 +35,10 @@ class Section extends Component {
         ]
     }
 
+    componentDidMount() {
+        console.log(this.props.modules)
+    }
+
     show = (section) =>{
         return ()=>{
             this.props.showInputChange(section)
@@ -44,9 +46,17 @@ class Section extends Component {
     }
 
     handleAddModule = (section) =>{
-        return ()=>{
-            this.props.addModule(section)
-        }
+        const {modules} = this.state
+       const list = Array.from(modules);
+       let max = 0;
+       for(let n of list.values()){
+           if(n.id > max){
+               max = n.id
+           }
+       }
+       const module = {id: max + 1,module: section};
+        const newModules = [...modules, module];
+       this.setState({modules: newModules})
     }
 
     onDragEnd = (result) => {
@@ -73,9 +83,11 @@ class Section extends Component {
         return (
             <Fragment>
                 <DragDropContext onDragEnd={this.onDragEnd}>
+                    <Row className="section-board" style={{height: 740, overflow: "auto"}}>
+                        <Col span={24} >
                     <Row style={{margin: 10}} justify="center">
                         <Card
-                            style={{width: 400, textAlign: "center"}}
+                            style={{width: 400, textAlign: "center",  boxShadow: "10 10 5 grey"}}
                             actions={[
                                 <EditOutlined onClick={this.show("personal")}/>,
                             ]}
@@ -117,18 +129,20 @@ class Section extends Component {
                             </div>
                     )}
                     </Droppable>
+                        </Col>
+                    </Row>
                 </DragDropContext>
 
 
                 <Row>
                     <Col span={24} style={{backgroundColor: "white"}}>
                         <Card size="small" title={"Add Modules"} headStyle={{height: 10, paddingLeft: 10, fontSize: 12 }}>
-                            <Button onClick={this.handleAddModule("project")} type="primary"  icon={<PlusOutlined />} size={"small"} style={{marginLeft: 10}}>Project</Button>
-                            <Button onClick={this.handleAddModule("leadership")} type="primary"  icon={<PlusOutlined />} size={"small"} style={{marginLeft: 10}} >Leadership</Button>
-                            <Button onClick={this.handleAddModule("experience")} type="primary"  icon={<PlusOutlined />} size={"small"} style={{marginLeft: 10}}>Experience</Button>
-                            <Button onClick={ this.handleAddModule("summary")} type="primary"  icon={<PlusOutlined />} size={"small"} style={{marginLeft: 10}}>Summary</Button>
-                            <Button onClick={this.handleAddModule("education")} type="primary"  icon={<PlusOutlined />} size={"small"} style={{marginLeft: 10}}>Education</Button>
-                            <Button onClick={this.handleAddModule("custom")} type="primary"  icon={<PlusOutlined />} size={"small"} style={{marginLeft: 10}}>Custom</Button>
+                            <Button onClick={(e) =>this.handleAddModule("project")} type="primary"  icon={<PlusOutlined />} size={"small"} style={{marginLeft: 10}}>Project</Button>
+                            <Button onClick={(e) =>this.handleAddModule("leadership")} type="primary"  icon={<PlusOutlined />} size={"small"} style={{marginLeft: 10}} >Leadership</Button>
+                            <Button onClick={(e) =>this.handleAddModule("experience")} type="primary"  icon={<PlusOutlined />} size={"small"} style={{marginLeft: 10}}>Experience</Button>
+                            <Button onClick={(e) =>this.handleAddModule("summary")} type="primary"  icon={<PlusOutlined />} size={"small"} style={{marginLeft: 10}}>Summary</Button>
+                            <Button onClick={(e) =>this.handleAddModule("education")} type="primary"  icon={<PlusOutlined />} size={"small"} style={{marginLeft: 10}}>Education</Button>
+                            <Button onClick={(e) =>this.handleAddModule("custom")} type="primary"  icon={<PlusOutlined />} size={"small"} style={{marginLeft: 10}}>Custom</Button>
                         </Card>
                     </Col>
                 </Row>
@@ -137,4 +151,9 @@ class Section extends Component {
     }
 }
 
-export default Section;
+
+
+export default connect(
+    state => ({modules: state.userSection}),
+    {addMoules:addModuleAction, deleteModules: deleteModuleAction, getModules: getModuleAction}
+)(Section)

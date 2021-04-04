@@ -13,6 +13,8 @@ class Item extends Component {
     }
 
 
+
+
     render() {
 
         function confirm(id) {
@@ -42,7 +44,7 @@ class Item extends Component {
                                        </Popconfirm>,
                                        <EditOutlined onClick={this.show(module)}/>,
                                    ]}
-
+                                   hoverable="true"
                                    size="small"
 
                                >

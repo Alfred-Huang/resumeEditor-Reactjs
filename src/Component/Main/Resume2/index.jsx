@@ -16,7 +16,6 @@ import SummaryInput from "./User/SummaryInput";
 import CustomInput from "./User/CustomInput";
 import LeadershipInput from "./User/LeadershipInput";
 import html2canvas from 'html2canvas';
-import { DragDropContext } from 'react-beautiful-dnd';
 import jsPDF from "jspdf";
 import "./index.css";
 
@@ -30,13 +29,6 @@ class Resume2 extends Component {
         firstTime: true,
         inputNum: 1,
         sectionType: "default",
-        modules: [
-            {id: 1, module: "education"},
-            {id: 2, module: "project"},
-            {id: 3, module: "summary"},
-            {id: 4, module: "leadership"},
-            {id: 5, module: "custom"}
-        ]
     }
 
 
@@ -63,20 +55,6 @@ class Resume2 extends Component {
         this.setState({width: newWidth, scale: newScale, firstTime: false})
     }
 
-    addModule = (module) =>{
-        const modules = this.state.modules
-        const newModules = [...modules, module]
-        this.setState({modules: newModules})
-    }
-
-
-    deleteModule = (id)=>{
-        const [modules] = this.state.modules
-        const newModules = modules.filter((moduleObj)=>{
-            return moduleObj.id !== id
-        })
-        this.setState({modules: newModules})
-    }
 
     showInputChange = (section)=>{
         this.setState({sectionType: section})
