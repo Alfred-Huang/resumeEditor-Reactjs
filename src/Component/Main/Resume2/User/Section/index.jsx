@@ -4,8 +4,14 @@ import {EditOutlined, PlusOutlined,} from '@ant-design/icons';
 import {DragDropContext,Draggable, Droppable} from 'react-beautiful-dnd';
 import {connect} from "react-redux";
 import Item from "./Item";
+import ButtonList from "./ButtonList";
 import "./index.css"
-import {addModuleAction, deleteModuleAction, getModuleAction} from "../../../../../redux/actions/userSection_action";
+import {
+    addModuleAction,
+    deleteModuleAction,
+    getModuleAction,
+    updateModuleAction
+} from "../../../../../redux/actions/userSection_action";
 const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
 
@@ -26,17 +32,19 @@ const getItemStyle = (isDragging, draggableStyle) => ({
 class Section extends Component {
 
     state = {
-        modules: [
-            {id: '1', module: "education"},
-            {id: '2', module: "project"},
-            {id: '3', module: "summary"},
-            {id: '4', module: "leadership"},
-            {id: '5', module: "custom"}
+        buttonList: [
+            {id: 1, name: "project"},
+            {id: 2, name: "leadership"},
+            {id: 3, name: "experience"},
+            {id: 4, name: "summary"},
+            {id: 5, name: "education"},
+            {id: 6, name: "custom"}
         ]
     }
 
     componentDidMount() {
-        console.log(this.props.modules)
+
+        console.log(this.props.modulesObj.modules)
     }
 
     show = (section) =>{
@@ -45,18 +53,25 @@ class Section extends Component {
         }
     }
 
+    s = ()=>{
+        console.log(this.props.modulesObj.modules)
+    }
+
     handleAddModule = (section) =>{
-        const {modules} = this.state
-       const list = Array.from(modules);
+        const modulesList = this.props.modulesObj.modules
+       const list = Array.from(modulesList);
        let max = 0;
        for(let n of list.values()){
            if(n.id > max){
                max = n.id
            }
        }
-       const module = {id: max + 1,module: section};
-        const newModules = [...modules, module];
-       this.setState({modules: newModules})
+       let newId = max  + 1
+        console.log("10" * 1 + 1)
+        console.log("11" * 1 + 1)
+       const module = {id: newId + "",module: section};
+        this.props.addModules(module)
+        this.s()
     }
 
     onDragEnd = (result) => {
@@ -65,14 +80,12 @@ class Section extends Component {
         }
 
         const newModules = reorder(
-            this.state.modules,
+            this.props.modulesObj.modules,
             result.source.index,
             result.destination.index
         );
 
-        this.setState({
-            modules: newModules
-        });
+      this.props.updateModules(newModules)
     }
 
 
@@ -103,7 +116,7 @@ class Section extends Component {
                                 ref={provided.innerRef}
                                 {...provided.droppableProps}
                             >
-                                    {this.state.modules.map((moduleObj, index)=>(
+                                    {this.props.modulesObj.modules.map((moduleObj, index)=>(
                                             <Draggable draggableId={moduleObj.id} key={moduleObj.id} index={index}>
                                                 {(provided, snapshot) => (
                                                     <div   ref={provided.innerRef}
@@ -137,12 +150,11 @@ class Section extends Component {
                 <Row>
                     <Col span={24} style={{backgroundColor: "white"}}>
                         <Card size="small" title={"Add Modules"} headStyle={{height: 10, paddingLeft: 10, fontSize: 12 }}>
-                            <Button onClick={(e) =>this.handleAddModule("project")} type="primary"  icon={<PlusOutlined />} size={"small"} style={{marginLeft: 10}}>Project</Button>
-                            <Button onClick={(e) =>this.handleAddModule("leadership")} type="primary"  icon={<PlusOutlined />} size={"small"} style={{marginLeft: 10}} >Leadership</Button>
-                            <Button onClick={(e) =>this.handleAddModule("experience")} type="primary"  icon={<PlusOutlined />} size={"small"} style={{marginLeft: 10}}>Experience</Button>
-                            <Button onClick={(e) =>this.handleAddModule("summary")} type="primary"  icon={<PlusOutlined />} size={"small"} style={{marginLeft: 10}}>Summary</Button>
-                            <Button onClick={(e) =>this.handleAddModule("education")} type="primary"  icon={<PlusOutlined />} size={"small"} style={{marginLeft: 10}}>Education</Button>
-                            <Button onClick={(e) =>this.handleAddModule("custom")} type="primary"  icon={<PlusOutlined />} size={"small"} style={{marginLeft: 10}}>Custom</Button>
+                            <Row span={24} gutter={[16,16]}>
+                                {this.state.buttonList.map((buttonName)=>{
+                                   return <ButtonList key={buttonName.id} handleAddModule={this.handleAddModule} buttonTitle={buttonName.name}/>
+                                })}
+                            </Row>
                         </Card>
                     </Col>
                 </Row>
@@ -154,6 +166,11 @@ class Section extends Component {
 
 
 export default connect(
-    state => ({modules: state.userSection}),
-    {addMoules:addModuleAction, deleteModules: deleteModuleAction, getModules: getModuleAction}
+    state => ({modulesObj: state.userSection}),
+    {
+        addModules:addModuleAction,
+        deleteModules: deleteModuleAction,
+        getModules: getModuleAction,
+        updateModules: updateModuleAction,
+    }
 )(Section)
