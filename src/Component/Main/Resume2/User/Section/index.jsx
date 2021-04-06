@@ -43,8 +43,7 @@ class Section extends Component {
     }
 
     componentDidMount() {
-
-        console.log(this.props.modulesObj.modules)
+        this.s(this.props.modulesObj.modules)
     }
 
     show = (section) =>{
@@ -53,8 +52,12 @@ class Section extends Component {
         }
     }
 
-    s = ()=>{
-        console.log(this.props.modulesObj.modules)
+    s = (list)=>{
+        let deletedState = list.filter(function (item){
+            return item.id !== 1
+        })
+        let newState = {buttonList: deletedState}
+        console.log(newState)
     }
 
     handleAddModule = (section) =>{
@@ -66,12 +69,14 @@ class Section extends Component {
                max = n.id
            }
        }
-       let newId = max  + 1
-        console.log("10" * 1 + 1)
-        console.log("11" * 1 + 1)
+       let newId = max * 1  + 1
        const module = {id: newId + "",module: section};
         this.props.addModules(module)
-        this.s()
+
+    }
+
+    handleDeleteModule = (sectionId) =>{
+        this.props.deleteModules(sectionId)
     }
 
     onDragEnd = (result) => {
@@ -91,7 +96,7 @@ class Section extends Component {
 
 
     render() {
-        const {deleteModule, showInputChange} = this.props;
+        const {showInputChange} = this.props;
 
         return (
             <Fragment>
@@ -130,7 +135,7 @@ class Section extends Component {
                                                         <Item
                                                             key={moduleObj.id}
                                                             {...moduleObj}
-                                                            deleteModule={deleteModule}
+                                                            handleDeleteModule={this.handleDeleteModule}
                                                             showInputChange={showInputChange}
                                                         />
 

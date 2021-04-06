@@ -16,16 +16,18 @@ class Item extends Component {
 
 
     render() {
-
+        const {module, id, handleDeleteModule} = this.props;
         function confirm(id) {
+            return ()=>{
+                handleDeleteModule(id)
+                message.success("Successfully Delete")
+            }
 
         }
         function cancel(e) {
-
-            message.error('Click on No');
+            message.error('Cancel Delete');
         }
 
-        const {module, id} = this.props;
         return (
            <Fragment>
 
