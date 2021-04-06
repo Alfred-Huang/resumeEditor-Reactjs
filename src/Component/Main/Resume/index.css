@@ -72,7 +72,6 @@
 .resume-personal-info{
     font-weight: 650;
     margin-top: 10px;
-    /*440*/
     width: 350px;
     font-size: 12px;
     height: fit-content;
@@ -92,9 +91,13 @@
 }
 
 .resume-divider{
-    margin-top: 0;
-    margin-bottom: 10px;
+    width: 734px;
+    margin: 0 30px 10px;
     border: 1px solid #575555;
+}
+
+.resume-content-title{
+    width: 750px;
 }
 
 .resume-user-content{

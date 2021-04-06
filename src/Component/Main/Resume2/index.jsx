@@ -135,15 +135,7 @@ class Resume2 extends Component {
         })
     }
 
-    onDragStart = () => {
-        /*...*/
-    };
-    onDragUpdate = () => {
-        /*...*/
-    }
-    onDragEnd = () => {
-        // the only one that is required
-    };
+
 
 
     render() {
@@ -192,6 +184,7 @@ class Resume2 extends Component {
                                         >
                                             <div className="resume-spacing">
                                                 <UserProfile/>
+
                                                 <Education/>
                                                 <UserInfo/>
                                             </div>

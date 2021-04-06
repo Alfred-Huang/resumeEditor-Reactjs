@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import {Col, Row} from "antd";
+
 
 class Education extends Component {
     render() {
@@ -7,25 +7,25 @@ class Education extends Component {
             <Fragment>
                 <div >
                     <div className="resume-section">
-                        <div className="resume-section-title" span={24}>
+                        <div className="resume-section-title" style={{marginLeft: 30}}>
                             EDUCATION
                         </div>
                         <div>
                             <div className="resume-divider"/>
                         </div>
-                        <div  style={{marginBottom: 5}}>
-                            <div>
-                                <div >
-                                    asdasd
+                        <div  style={{marginBottom: 5,marginLeft: 30}}>
+                            <div className="resume-content-title">
+                                <div style={{display: "inline-block", width: 534}}>
+                                    School
                                 </div>
-                                <div  style={{textAlign:"center"}}>
-                                    asdasd
+                                <div  style={{textAlign:"right",display: "inline-block", width: 200}}>
+                                    Spring 2021 - Fall 2024
                                 </div>
                             </div>
-                            <p style={{marginBottom: 2}}>hhh</p>
+                            <p style={{marginBottom: 2}}>major</p>
                             <div>
                                 <div >
-                                    asdasdasdasdasdas
+                                    content 荣誉啊 什么什么的
                                 </div>
                             </div>
                         </div>
