@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import {Popconfirm, Row, Card, Input, message} from "antd";
 import {DeleteOutlined, EditOutlined, } from '@ant-design/icons';
-import { Draggable } from 'react-beautiful-dnd';
+
 
 
 
@@ -11,9 +11,6 @@ class Item extends Component {
             this.props.showInputChange(section)
         }
     }
-
-
-
 
     render() {
         const {module, id, handleDeleteModule} = this.props;
@@ -30,30 +27,27 @@ class Item extends Component {
 
         return (
            <Fragment>
-
-                           <Row  justify="center"  style={{padding: 10}}>
-                               <Card
-                                   style={{width: 400, textAlign: "center"}}
-                                   actions={[
-                                       <Popconfirm
-                                           title="Are you sure to delete this module?"
-                                           onConfirm={confirm(id)}
-                                           onCancel={cancel}
-                                           okText="Yes"
-                                           cancelText="No"
-                                       >
-                                           <DeleteOutlined/>
-                                       </Popconfirm>,
-                                       <EditOutlined onClick={this.show(module)}/>,
-                                   ]}
-                                   hoverable="true"
-                                   size="small"
-
-                               >
-                                   <Input defaultValue={module} placeholder="Title" bordered={false}   suffix={<EditOutlined/>}  style={{width: 120}}/>
-                               </Card>
-                           </Row>
-
+               <Row  justify="center"  style={{padding: 10}}>
+                   <Card
+                       style={{width: 400, textAlign: "center"}}
+                       actions={[
+                           <Popconfirm
+                               title="Are you sure to delete this module?"
+                               onConfirm={confirm(id)}
+                               onCancel={cancel}
+                               okText="Yes"
+                               cancelText="No"
+                           >
+                               <DeleteOutlined/>
+                           </Popconfirm>,
+                           <EditOutlined onClick={this.show(module)}/>,
+                       ]}
+                       hoverable="true"
+                       size="small"
+                   >
+                       <Input defaultValue={module} placeholder="Title" bordered={false}   suffix={<EditOutlined/>}  style={{width: 120}}/>
+                   </Card>
+               </Row>
             </Fragment>
 
         );

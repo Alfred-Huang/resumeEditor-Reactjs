@@ -15,6 +15,7 @@ import EducationInput from "./User/EducationInput";
 import SummaryInput from "./User/SummaryInput";
 import CustomInput from "./User/CustomInput";
 import LeadershipInput from "./User/LeadershipInput";
+import {connect} from "react-redux";
 import html2canvas from 'html2canvas';
 import jsPDF from "jspdf";
 import "./index.css";
@@ -30,9 +31,7 @@ class Resume2 extends Component {
         inputNum: 1,
         sectionType: "default",
     }
-
-
-
+    //handle windows change
     componentDidMount() {
         window.addEventListener('resize', this.handleResize)
     }
@@ -54,14 +53,26 @@ class Resume2 extends Component {
         }
         this.setState({width: newWidth, scale: newScale, firstTime: false})
     }
-
-
+    //when user click card chang to input
     showInputChange = (section)=>{
         this.setState({sectionType: section})
     }
 
-    handleSection = () =>{
+    //present the resume section
+    handleResumeSection = (sectionName)=>{
+       switch (sectionName) {
+           case "education":
+               return (
+                   <Education/>
+               )
+           default:
+               return (
+                   <UserInfo/>
+               )
+       }
+    }
 
+    handleSection = () =>{
         switch (this.state.sectionType) {
             case "project":
                 return (
@@ -139,12 +150,12 @@ class Resume2 extends Component {
 
 
     render() {
-        // let newScale = this.state.scale;
         return (
             <Fragment>
                 <div style={{backgroundColor: "#E7E6E6", zIndex: 0}}>
                 <Row >
                     <Col span={24}>
+                        {/*left part*/}
                         <Row span={24} style={{marginTop: 30}}>
                             <Col span={3}>
                                 <Button type="primary" onClick={this.printDocument}>print</Button>
@@ -171,6 +182,7 @@ class Resume2 extends Component {
                                    </Col>
                                </Row>
                             </Col>
+                            {/*resume*/}
                             <div className="resume-board" style={{
                                 height: window.innerHeight - 73,
                                 width: this.state.firstTime === false ? this.state.width : (window.innerWidth / 2)}}
@@ -184,9 +196,9 @@ class Resume2 extends Component {
                                         >
                                             <div className="resume-spacing">
                                                 <UserProfile/>
-
-                                                <Education/>
-                                                <UserInfo/>
+                                                {this.props.modulesObj.modules.map((moduleObj)=>{
+                                                    return this.handleResumeSection(moduleObj.module)
+                                                })}
                                             </div>
                                         </div>
                                     </div>
@@ -201,4 +213,4 @@ class Resume2 extends Component {
     }
 }
 
-export default Resume2;
+export default connect(state => ({modulesObj: state.userSection}), null)(Resume2)
