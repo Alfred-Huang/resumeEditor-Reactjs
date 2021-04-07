@@ -9,12 +9,13 @@ import Education from "./Education"
 import UserInfo from "./UserInfo"
 import UserProfile from "./UserAction";
 import Section from "./User/Section"
-import PersonalInput from "./User/PersonalInput";
-import ProjectInput from "./User/ProjectInput";
-import EducationInput from "./User/EducationInput";
-import SummaryInput from "./User/SummaryInput";
-import CustomInput from "./User/CustomInput";
-import LeadershipInput from "./User/LeadershipInput";
+import PersonalInput from "./User/Input/PersonalInput";
+import ProjectInput from "./User/Input/ProjectInput";
+import EducationInput from "./User/Input/EducationInput";
+import SummaryInput from "./User/Input/SummaryInput";
+import CustomInput from "./User/Input/CustomInput";
+import LeadershipInput from "./User/Input/LeadershipInput";
+import ExperienceAction from "./User/ExpericenAction";
 import {connect} from "react-redux";
 import html2canvas from 'html2canvas';
 import jsPDF from "jspdf";
@@ -59,20 +60,33 @@ class Resume2 extends Component {
     }
 
     //present the resume section
-    handleResumeSection = (sectionName)=>{
+    handleResumeSection = (sectionName, id)=>{
        switch (sectionName) {
            case "education":
                return (
-                   <Education/>
+                   <Education key={id}/>
                )
            default:
                return (
-                   <UserInfo/>
+                   <UserInfo key={id}/>
                )
        }
     }
 
     handleSection = () =>{
+        // const type = this.state.sectionType
+        // if(type === "default"){
+        //     return (
+        //         <Section
+        //             addModule={this.addModule}
+        //             showInputChange={this.showInputChange}
+        //             deleteModule={this.deleteModule}
+        //         />
+        //
+        //     )
+        // }else{
+        //     return
+        // }
         switch (this.state.sectionType) {
             case "project":
                 return (
@@ -100,7 +114,6 @@ class Resume2 extends Component {
                 )
             default:
                 return (
-
                         <Section
                             addModule={this.addModule}
                             showInputChange={this.showInputChange}
@@ -197,7 +210,7 @@ class Resume2 extends Component {
                                             <div className="resume-spacing">
                                                 <UserProfile/>
                                                 {this.props.modulesObj.modules.map((moduleObj)=>{
-                                                    return this.handleResumeSection(moduleObj.module)
+                                                    return this.handleResumeSection(moduleObj.module, moduleObj.id)
                                                 })}
                                             </div>
                                         </div>
@@ -213,4 +226,4 @@ class Resume2 extends Component {
     }
 }
 
-export default connect(state => ({modulesObj: state.userSection}), null)(Resume2)
+export default connect(state => ({modulesObj: state.moduleReducer}), null)(Resume2)

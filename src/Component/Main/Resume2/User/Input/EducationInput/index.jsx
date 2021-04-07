@@ -1,13 +1,13 @@
 import React, {Component, Fragment} from 'react';
-import  {Button, Col, Form, Input, Row, DatePicker} from "antd";
-import {LeftOutlined,} from '@ant-design/icons';
-import Editor from "../Editor";
+import {Button, Col, Form, Input, Row} from "antd";
+import {LeftOutlined, MinusCircleOutlined, PlusOutlined} from '@ant-design/icons';
+import Editor from "../../Editor";
 import BraftEditor from 'braft-editor'
 
 
 
 
-class CustomInput extends Component {
+class EducationInput extends Component {
     state={
         content: BraftEditor.createEditorState(null),
         outputHTML: '<p></p>',
@@ -37,38 +37,38 @@ class CustomInput extends Component {
                             size='middle'
                             layout="vertical"
                             style={{ marginLeft: 40, marginRight: 40}}
-                            wrapperCol={{span: 24}}
+                            wrapperCol={{span: 20}}
                         >
                             <Row >
-                                <Col span={24}>
-                                    <Form.Item label="Experience title">
+                                <Col span={12}>
+                                    <Form.Item label="School:">
                                         <Input />
                                     </Form.Item>
                                 </Col>
-                                <Col span={24}>
-                                    <Form.Item label="Role:">
+                                <Col span={12}>
+                                    <Form.Item label="Major:" >
                                         <Input/>
                                     </Form.Item>
                                 </Col>
-                                <Col span={10}>
-                                    <Form.Item label="Department: ">
+                                <Col span={12}>
+                                    <Form.Item label="Educational background:">
                                         <Input/>
                                     </Form.Item>
                                 </Col>
-                                <Col span={10} offset={4}>
+                                <Col span={12}>
                                     <Form.Item label="City:">
                                         <Input/>
                                         <div dangerouslySetInnerHTML={{__html: outputHTML}}/>
                                     </Form.Item>
                                 </Col>
-                                <Col span={10}>
-                                    <Form.Item label="Start">
-                                        <DatePicker  picker="month" placeHolder={"start date"} />
+                                <Col span={12}>
+                                    <Form.Item label="Date:">
+                                        <Input placeholder="Ex: Spring 2020"/>
                                     </Form.Item>
                                 </Col>
-                                <Col span={10} offset={4}>
-                                    <Form.Item label="End">
-                                        <DatePicker  picker="month" placeHolder={"end date"}/>
+                                <Col span={12}>
+                                    <Form.Item label=" ">
+                                        <Input placeholder="Ex: Fall 2024"/>
                                     </Form.Item>
                                 </Col>
                             </Row>
@@ -82,4 +82,4 @@ class CustomInput extends Component {
     }
 }
 
-export default CustomInput;
+export default EducationInput;

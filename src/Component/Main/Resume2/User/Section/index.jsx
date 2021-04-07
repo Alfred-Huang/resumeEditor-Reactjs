@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react';
-import {Row, Card, Col, Button,} from "antd";
-import {EditOutlined, PlusOutlined,} from '@ant-design/icons';
+import {Row, Card, Col} from "antd";
+import {EditOutlined} from '@ant-design/icons';
 import {DragDropContext,Draggable, Droppable} from 'react-beautiful-dnd';
 import {connect} from "react-redux";
 import Item from "./Item";
@@ -12,6 +12,9 @@ import {
     getModuleAction,
     updateModuleAction
 } from "../../../../../redux/actions/userSection_action";
+
+
+
 const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
 
@@ -171,7 +174,7 @@ class Section extends Component {
 
 
 export default connect(
-    state => ({modulesObj: state.userSection}),
+    state => ({modulesObj: state.moduleReducer}),
     {
         addModules:addModuleAction,
         deleteModules: deleteModuleAction,

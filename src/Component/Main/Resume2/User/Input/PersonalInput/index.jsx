@@ -1,7 +1,7 @@
 import React, {Component, Fragment,useState, useMemo} from 'react';
 import {Input, Space, Row, Col, Form, Button} from 'antd';
 import {LeftOutlined, MinusCircleOutlined, PlusOutlined} from '@ant-design/icons';
-import Editor from "../Editor";
+import Editor from "../../Editor";
 import 'react-quill/dist/quill.snow.css';
 
 

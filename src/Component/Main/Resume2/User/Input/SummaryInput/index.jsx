@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import  {Button, Col, Form, Input, Row, DatePicker} from "antd";
 import {LeftOutlined,} from '@ant-design/icons';
-import Editor from "../Editor";
+import Editor from "../../Editor";
 import BraftEditor from 'braft-editor'
 
 
