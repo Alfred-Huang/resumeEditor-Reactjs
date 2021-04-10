@@ -31,6 +31,7 @@ class Resume2 extends Component {
         firstTime: true,
         inputNum: 1,
         sectionType: "default",
+        currentSectionId: "",
     }
     //handle windows change
     componentDidMount() {
@@ -55,8 +56,8 @@ class Resume2 extends Component {
         this.setState({width: newWidth, scale: newScale, firstTime: false})
     }
     //when user click card chang to input
-    showInputChange = (section)=>{
-        this.setState({sectionType: section})
+    showInputChange = (section, id)=>{
+        this.setState({sectionType: section, currentSectionId: id})
     }
 
     //present the resume section
@@ -74,52 +75,35 @@ class Resume2 extends Component {
     }
 
     handleSection = () =>{
-        // const type = this.state.sectionType
-        // if(type === "default"){
-        //     return (
-        //         <Section
-        //             addModule={this.addModule}
-        //             showInputChange={this.showInputChange}
-        //             deleteModule={this.deleteModule}
-        //         />
-        //
-        //     )
-        // }else{
-        //     return
-        // }
+
         switch (this.state.sectionType) {
             case "project":
                 return (
-                    <ProjectInput showInputChange={this.showInputChange} />
+                    <ProjectInput currentId={this.state.currentSectionId} showInputChange={this.showInputChange} />
                 )
             case "education":
                 return (
-                    <EducationInput showInputChange={this.showInputChange} />
+                    <EducationInput currentId={this.state.currentSectionId} showInputChange={this.showInputChange} />
                 )
             case "personal":
                 return (
-                    <PersonalInput showInputChange={this.showInputChange}/>
+                    <PersonalInput currentId={this.state.currentSectionId} showInputChange={this.showInputChange}/>
                 )
             case "summary":
                 return (
-                    <SummaryInput showInputChange={this.showInputChange}/>
+                    <SummaryInput currentId={this.state.currentSectionId} showInputChange={this.showInputChange}/>
                 )
             case "leadership":
                 return (
-                    <LeadershipInput showInputChange={this.showInputChange}/>
+                    <LeadershipInput currentId={this.state.currentSectionId}  showInputChange={this.showInputChange}/>
                 )
             case "custom":
                 return (
-                    <CustomInput showInputChange={this.showInputChange}/>
+                    <CustomInput currentId={this.state.currentSectionId} showInputChange={this.showInputChange}/>
                 )
             default:
                 return (
-                        <Section
-                            addModule={this.addModule}
-                            showInputChange={this.showInputChange}
-                            deleteModule={this.deleteModule}
-                        />
-
+                        <Section showInputChange={this.showInputChange}/>
                 )
         }
 

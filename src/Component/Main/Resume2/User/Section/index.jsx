@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import {Row, Card, Col} from "antd";
-import {EditOutlined} from '@ant-design/icons';
+import {EditOutlined, PlusSquareOutlined} from '@ant-design/icons';
 import {DragDropContext,Draggable, Droppable} from 'react-beautiful-dnd';
 import {connect} from "react-redux";
 import Item from "./Item";

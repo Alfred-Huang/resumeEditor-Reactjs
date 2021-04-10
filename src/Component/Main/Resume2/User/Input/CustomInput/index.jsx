@@ -73,7 +73,15 @@ class CustomInput extends Component {
                                 </Col>
                             </Row>
                             <Editor handleContent={this.handleContent}/>
-                            <Button type="primary" style={{marginBottom: 10, marginTop: 10}}>Save</Button>
+                            <Row span={24}>
+                                <Col span={12}>
+                                    <Button type="primary" style={{marginBottom: 10, marginTop: 10}}>Save</Button>
+                                </Col>
+
+                                <Col span={12} style={{textAlign: "right"}}>
+                                    <Button type="danger" style={{marginBottom: 10, marginTop: 10}}>Delete</Button>
+                                </Col>
+                            </Row>
                         </Form>
                     </Col>
                 </Row>

@@ -6,9 +6,12 @@ import {DeleteOutlined, EditOutlined, } from '@ant-design/icons';
 
 
 class Item extends Component {
-    show = (section) =>{
+
+
+
+    show = (section, id) =>{
         return ()=>{
-            this.props.showInputChange(section)
+            this.props.showInputChange(section, id)
         }
     }
 
@@ -40,7 +43,7 @@ class Item extends Component {
                            >
                                <DeleteOutlined/>
                            </Popconfirm>,
-                           <EditOutlined onClick={this.show(module)}/>,
+                           <EditOutlined onClick={this.show(module, id)}/>,
                        ]}
                        hoverable="true"
                        size="small"

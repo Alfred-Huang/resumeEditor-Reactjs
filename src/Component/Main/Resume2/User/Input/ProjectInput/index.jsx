@@ -1,10 +1,9 @@
 import React, {Component, Fragment} from 'react';
-import  {Button, Col, Form, Input, Row, DatePicker} from "antd";
+import  {Button, Col, Form, Input, Row, DatePicker, Radio } from "antd";
 import {LeftOutlined,} from '@ant-design/icons';
 import Editor from "../../Editor";
 import BraftEditor from 'braft-editor'
-
-
+import ExperienceAction from "../../ExpericenAction";
 
 
 class ProjectInput extends Component {
@@ -29,8 +28,16 @@ class ProjectInput extends Component {
     render() {
         const { editorState, outputHTML } = this.state
         return (
-            <Fragment >
-                <Button onClick={this.goBack("default")} icon={<LeftOutlined />}  style={{boxShadow: 2}}/>
+            <Fragment>
+                <Row style={{display: "line block"}} span={24}>
+                    <Col span={2}>
+                        <Button onClick={this.goBack("default")} icon={<LeftOutlined />}  style={{boxShadow: 2}}/>
+                    </Col>
+                    <Col span={20} style={{textAlign: "center"}}>
+                        <ExperienceAction currentSectionID={this.props.currentId} currentSection={"project"}/>
+                    </Col>
+                    <Col span={2}/>
+                </Row>
                 <Row>
                     <Col span={24}>
                         <Form
@@ -69,7 +76,15 @@ class ProjectInput extends Component {
                                 </Col>
                             </Row>
                             <Editor handleContent={this.handleContent}/>
-                            <Button type="primary" style={{marginBottom: 10, marginTop: 10}}>Save</Button>
+                            <Row span={24}>
+                                <Col span={12}>
+                                    <Button type="primary" style={{marginBottom: 10, marginTop: 10}}>Save</Button>
+                                </Col>
+
+                                <Col span={12} style={{textAlign: "right"}}>
+                                    <Button type="danger" style={{marginBottom: 10, marginTop: 10}}>Delete</Button>
+                                </Col>
+                            </Row>
                         </Form>
                     </Col>
                 </Row>
