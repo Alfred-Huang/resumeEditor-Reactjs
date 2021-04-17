@@ -39,11 +39,73 @@ class Section extends Component {
             {id: 4, name: "summary"},
             {id: 5, name: "education"},
             {id: 6, name: "custom"}
-        ]
+        ],
+        // experiences: {
+        //     "lgCeTDkAvYlDobUgwfBQN": {id:  "lgCeTDkAvYlDobUgwfBQN", module: "education", title: "education", sectionId: "1"},
+        //     "JVPGlab2QGb7TLXXl8pgw": {id: "JVPGlab2QGb7TLXXl8pgw", module: "project", title: "project", sectionId:"2"},
+        // },
+        //
+        // sections: {
+        //     "1": {sectionId: "1", sectionList: ["1", "2", "3"]},
+        //     "2": {sectionId: "2", sectionList: ["4", "5", "6"]},
+        // },
+        //
+        // information: {
+        //     "1": {infoId: "1", school: "qianghua", major: "B.A. CS", degree: "master", location: "Flushing",
+        //         time:[
+        //             {start: "spring 2024"},
+        //             {end: "fall 2025"}
+        //         ],
+        //         content:""
+        //     },
+        //
+        //     "2": {infoId: "2", school: "beida", major: "B.A. CS", degree: "master", location: "Flushing",
+        //         time:[
+        //             {start: "spring 2024"},
+        //             {end: "fall 2025"}
+        //         ],
+        //         content:""
+        //     },
+        //
+        //     "3": {infoId: "3", school: "qianghua", major: "B.A. CS", degree: "master", location: "Flushing",
+        //         time:[
+        //             {start: "spring 2024"},
+        //             {end: "fall 2025"}
+        //         ],
+        //         content:""
+        //     },
+        //
+        //     "4": {infoId: "4", project: "buzhidao", role: "manager", city: "flushing",
+        //         time:[
+        //             {start: "spring 2024"},
+        //             {end: "fall 2025"}
+        //         ],
+        //         content:""
+        //     },
+        //
+        //     "5": {infoId: "5", project: "buzhidao", role: "manager", city: "flushing",
+        //         time:[
+        //             {start: "spring 2024"},
+        //             {end: "fall 2025"}
+        //         ],
+        //         content:""
+        //     },
+        //
+        //     "6": {infoId: "6", project: "buzhidao", role: "manager", city: "flushing",
+        //         time:[
+        //             {start: "spring 2024"},
+        //             {end: "fall 2025"}
+        //         ],
+        //         content:""
+        //     },
+        //
+        // }
     }
 
     componentDidMount() {
-
+        // console.log(this.state.experiences["lgCeTDkAvYlDobUgwfBQN"].sectionId)
+        // console.log(this.state.sections["1"].sectionList[0])
+        // console.log(this.state.information["2"])
     }
 
     show = (section) =>{
@@ -52,19 +114,10 @@ class Section extends Component {
         }
     }
 
-    // s = (list)=>{
-    //     let deletedState = list.filter(function (item){
-    //         return item.id !== 1
-    //     })
-    //     let newState = {buttonList: deletedState}
-    //     console.log(newState)
-    // }
-
     handleAddModule = (section) =>{
        let newId = nanoid();
        const module = {id: newId + "",module: section};
        this.props.addModules(module)
-
     }
 
     handleDeleteModule = (sectionId) =>{

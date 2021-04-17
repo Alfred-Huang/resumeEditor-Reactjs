@@ -58,6 +58,7 @@ class Resume2 extends Component {
     //when user click card chang to input
     showInputChange = (section, id)=>{
         this.setState({sectionType: section, currentSectionId: id})
+        console.log(id)
     }
 
     //present the resume section

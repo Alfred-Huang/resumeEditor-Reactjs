@@ -10,3 +10,6 @@ export const UPDATE_EXPERIENCE = 'updateExperience'
 export const ADD_EXPERIENCE_SECTION = 'addExperienceSection'
 export const DELETE_EXPERIENCE_SECTION = 'deleteExperienceSection'
 export const UPDATE_EXPERIENCE_SECTION = 'updateExperienceSection'
+
+
+export const UPDATE_EXPERIENCE_SECTION_INFO = 'updateExperienceSectionInfo'

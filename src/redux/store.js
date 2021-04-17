@@ -1,7 +1,7 @@
 import {createStore, combineReducers} from 'redux'
-import {moduleReducer, experienceReducer} from "./reduers/userSection_reducer";
+import {moduleReducer, experienceInfoReducer} from "./reduers/userSection_reducer";
 
 
-const allReducer = combineReducers({moduleReducer: moduleReducer, experienceReducer: experienceReducer})
+const allReducer = combineReducers({moduleReducer: moduleReducer, experienceInfoReducer: experienceInfoReducer})
 
 export default createStore(allReducer,window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())

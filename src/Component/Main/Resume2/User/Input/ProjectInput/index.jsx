@@ -5,31 +5,39 @@ import Editor from "../../Editor";
 import BraftEditor from 'braft-editor'
 import ExperienceAction from "../../ExpericenAction";
 import {connect} from "react-redux";
-import {addExperience, deleteExperience} from "../../../../../../redux/actions/userSection_action";
+import {
+    addExperience,
+    deleteExperience,
+    updateExperienceSectionInfo
+} from "../../../../../../redux/actions/userSection_action";
+import moment from 'moment';
 import * as R from "ramda";
 
 
-
+const monthFormat = 'MM/YYYY';
 class ProjectInput extends Component {
     state={
         content: BraftEditor.createEditorState(null),
         outputHTML: '<p></p>',
         curSectionId:"",
-        sectionInfo: {information: {project: "", role: "", city: "",
-                time:[
-                    {start: ""},
-                    {end: ""}
-                ]
-            }, content: ""},
+        infoId: "",
+        project: "",
+        role: "",
+        city:"",
+        timeStart: "",
+        timeEnd: "",
+
+        information: {infoId: "", project: "asdasdas", role: "", city: "",
+                        time: {start: "", end: ""},
+                         content:""
+                     },
         a: "2111111"
     }
 
-    getInformation = (targetExperience) => {
-        const curId = this.state.curSectionId;
-        console.log(curId)
-        const targetSection = targetExperience.sections.find(item => item.sectionId === curId)
-        const newInformation = {information:targetSection.information, content: targetSection.content }
-        this.setState({sectionInfo: newInformation})
+    // get the information from the target
+    getInformation = (targetInfo) => {
+        this.setState({information: targetInfo})
+        console.log(targetInfo)
     }
 
 
@@ -46,18 +54,23 @@ class ProjectInput extends Component {
         })
     }
 
-    handleInformation = (sectionId, targetSection) =>{
-        this.setState({curSectionId: sectionId}, () => this.getInformation(targetSection))
-
+    //get the information from the targetSection to initialize the first section
+    handleInformation = (sectionId, targetInfo) =>{
+        this.setState(
+            {infoId: targetInfo.infoId,
+                    project: targetInfo.project,
+                    role: targetInfo.role,
+                    city: targetInfo.city,
+                    timeStart: targetInfo.time.start,
+                    timeEnd: targetInfo.time.end
+                    }
+            )
     }
 
-    onInputChange = (event) =>{
-        // let val = event.target.val
-        // const a = this.state.sectionInfo.information
-        // a.project = val;
-        //
-        // this.setState({sectionInfo: a},()=>{console.log(this.state.sectionInfo)})
-        this.setState({a: event.target.value})
+    onInputChange = (type, e) =>{
+        this.setState({[type]: e.target.value})
+        const infoObj = {infoId: this.state.infoId, type: type, value: e.target.value}
+        this.props.updateExperienceSectionInfo(infoObj)
     }
 
     render() {
@@ -84,29 +97,29 @@ class ProjectInput extends Component {
                             <Row >
                                 <Col span={24}>
                                     <Form.Item label="Project Name:">
-                                        <Input onChange={this.onInputChange} value={this.state.a} />
+                                        <Input onChange={(e)=>this.onInputChange("project", e)} value={this.state.project} />
                                     </Form.Item>
                                 </Col>
 
                                 <Col span={10}>
                                     <Form.Item label="Role:">
-                                        <Input/>
+                                        <Input onChange={(e)=>this.onInputChange("role", e)} value={this.state.role}/>
                                     </Form.Item>
                                 </Col>
                                 <Col span={10} offset={4}>
                                     <Form.Item label="City:">
-                                        <Input/>
+                                        <Input onChange={(e)=>this.onInputChange("city", e)} value={this.state.city}/>
                                         <div dangerouslySetInnerHTML={{__html: outputHTML}}/>
                                     </Form.Item>
                                 </Col>
                                 <Col span={10}>
-                                    <Form.Item label="Start">
-                                        <DatePicker  picker="month" />
+                                    <Form.Item label="Start Date">
+                                        <DatePicker onChange={(e)=>this.onInputChange("timeStart", e)} picker="month" format={monthFormat} value={moment(this.state.timeStart, monthFormat)}/>
                                     </Form.Item>
                                 </Col>
                                 <Col span={10} offset={4}>
-                                    <Form.Item label="End">
-                                        <DatePicker  picker="month" />
+                                    <Form.Item label="End Date">
+                                        <DatePicker onChange={(e)=>this.onInputChange("timeEnd", e)} picker="month" format={monthFormat} value={moment(this.state.timeStart, monthFormat)}/>
                                     </Form.Item>
                                 </Col>
                             </Row>
@@ -129,9 +142,10 @@ class ProjectInput extends Component {
 }
 
 export default  connect(
-    state => ({experienceState: state.experienceReducer}),
+    state => ({experienceState: state.experienceInfoReducer}),
     {
         addExperience: addExperience,
-        deleteExperience: deleteExperience
+        deleteExperience: deleteExperience,
+        updateExperienceSectionInfo: updateExperienceSectionInfo,
     }
 )(ProjectInput);

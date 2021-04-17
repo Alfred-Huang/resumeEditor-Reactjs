@@ -1,5 +1,15 @@
-import {ADD_MODULE, DELETE_MODULE, GET_MODULE, UPDATE_MODULE, ADD_EXPERIENCE, ADD_EXPERIENCE_SECTION,
-    DELETE_EXPERIENCE, DELETE_EXPERIENCE_SECTION, UPDATE_EXPERIENCE, UPDATE_EXPERIENCE_SECTION
+import {
+    ADD_MODULE,
+    DELETE_MODULE,
+    GET_MODULE,
+    UPDATE_MODULE,
+    ADD_EXPERIENCE,
+    ADD_EXPERIENCE_SECTION,
+    DELETE_EXPERIENCE,
+    DELETE_EXPERIENCE_SECTION,
+    UPDATE_EXPERIENCE,
+    UPDATE_EXPERIENCE_SECTION,
+    UPDATE_EXPERIENCE_SECTION_INFO
 } from "../constant"
 
 
@@ -20,4 +30,6 @@ export const addExperienceSection = section =>({type: ADD_EXPERIENCE_SECTION, da
 export const deleteExperienceSection = section =>({type: DELETE_EXPERIENCE_SECTION, data: section})
 export const updateExperienceSection = section =>({type: UPDATE_EXPERIENCE_SECTION, data: section})
 
+
+export const updateExperienceSectionInfo = infoObj =>({type: UPDATE_EXPERIENCE_SECTION_INFO, data: infoObj})
 
