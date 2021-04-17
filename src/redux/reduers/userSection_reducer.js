@@ -4,14 +4,80 @@ import {ADD_MODULE, DELETE_MODULE, GET_MODULE, UPDATE_MODULE, UPDATE_EXPERIENCE,
 
 const initModuleState = {
     modules: [
-        {id: '1', module: "education"},
-        {id: '2', module: "project"},
-        {id: '3', module: "summary"},
-        {id: '4', module: "leadership"},
-        {id: '5', module: "custom"}
+        {id: "lgCeTDkAvYlDobUgwfBQN", module: "education"},
+        {id: "JVPGlab2QGb7TLXXl8pgw", module: "project"},
+        {id: "46rORawpcRAOU0lQKB-MG", module: "summary"},
+        {id: "sTwDfRx3nyYJ-RaYy6xsx", module: "leadership"},
+        {id: "ltNvXFfNAHbpPOD4INRb9", module: "custom"}
     ]};
 
-const initExperience = {experiences :[
+
+
+
+const s = {
+         experiences: {
+            "lgCeTDkAvYlDobUgwfBQN": {id:  "lgCeTDkAvYlDobUgwfBQN", module: "education", title: "education", sectionId: "1"},
+            "JVPGlab2QGb7TLXXl8pgw": {id: "JVPGlab2QGb7TLXXl8pgw", module: "project", title: "project", sectionId:"2"},
+        },
+
+        sections: {
+             "1": {sectionId: "1", sectionList: ["1", "2", "3"]},
+             "2": {sectionId: "2", sectionList: ["4", "5", "6"]},
+            },
+
+        information: {
+                    "1": {infoId: "1", school: "qianghua", major: "B.A. CS", degree: "master", location: "Flushing",
+                        time:[
+                            {start: "spring 2024"},
+                            {end: "fall 2025"}
+                        ],
+                        content:""
+                    },
+
+                    "2": {infoId: "2", school: "beida", major: "B.A. CS", degree: "master", location: "Flushing",
+                         time:[
+                            {start: "spring 2024"},
+                            {end: "fall 2025"}
+                        ],
+                        content:""
+                    },
+
+                    "3": {infoId: "3", school: "qianghua", major: "B.A. CS", degree: "master", location: "Flushing",
+                        time:[
+                            {start: "spring 2024"},
+                            {end: "fall 2025"}
+                        ],
+                        content:""
+                    },
+
+                    "4": {infoId: "4", project: "buzhidao", role: "manager", city: "flushing",
+                        time:[
+                            {start: "spring 2024"},
+                            {end: "fall 2025"}
+                        ],
+                        content:""
+                    },
+
+                    "5": {infoId: "5", project: "buzhidao", role: "manager", city: "flushing",
+                        time:[
+                            {start: "spring 2024"},
+                            {end: "fall 2025"}
+                        ],
+                        content:""
+                    },
+
+                    "6": {infoId: "6", project: "buzhidao", role: "manager", city: "flushing",
+                        time:[
+                            {start: "spring 2024"},
+                            {end: "fall 2025"}
+                        ],
+                        content:""
+                    },
+
+                }
+}
+
+const initExperience = {experiences : [
         {id: '1', module: "education", title: "education",
             sections: [
                 {sectionId: "1", information: {school: "qianghua", major: "B.A. CS", degree: "master", location: "Flushing",
@@ -43,9 +109,9 @@ const initExperience = {experiences :[
                 ]
         },
 
-        {id: '2', module: "education", title: "education",
+        {id: '2', module: "project", title: "project",
             sections: [
-                {sectionId: "3", information: {school: "qianghua", major: "B.A. CS", degree: "master", location: "Flushing",
+                {sectionId: "1", information: {project: "buzhidao", role: "manager", city: "flushing",
                         time:[
                             {start: "spring 2024"},
                             {end: "fall 2025"}
@@ -54,7 +120,7 @@ const initExperience = {experiences :[
                     content:""
                 },
 
-                {sectionId: "4", information: {school: "qianghua", major: "B.A. CS", degree: "master", location: "Flushing",
+                {sectionId: "2", information: {project: "wohaishibuzhdai", role: "manager", city: "flushing",
                         time:[
                             {start: "spring 2024"},
                             {end: "fall 2025"}
@@ -63,7 +129,7 @@ const initExperience = {experiences :[
                     content:""
                 },
 
-                {sectionId: "5", information: {school: "qianghua", major: "B.A. CS", degree: "master", location: "Flushing",
+                {sectionId: "3", information: {project: "wozhengbuzhidao", role: "manager", city: "flushing",
                         time:[
                             {start: "spring 2024"},
                             {end: "fall 2025"}
@@ -73,7 +139,7 @@ const initExperience = {experiences :[
                 }
             ]
         }
-    ]}
+]}
 
 
 export function moduleReducer(preState=initModuleState, action){

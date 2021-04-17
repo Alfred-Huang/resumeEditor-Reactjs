@@ -4,13 +4,34 @@ import {LeftOutlined,} from '@ant-design/icons';
 import Editor from "../../Editor";
 import BraftEditor from 'braft-editor'
 import ExperienceAction from "../../ExpericenAction";
+import {connect} from "react-redux";
+import {addExperience, deleteExperience} from "../../../../../../redux/actions/userSection_action";
+import * as R from "ramda";
+
 
 
 class ProjectInput extends Component {
     state={
         content: BraftEditor.createEditorState(null),
         outputHTML: '<p></p>',
+        curSectionId:"",
+        sectionInfo: {information: {project: "", role: "", city: "",
+                time:[
+                    {start: ""},
+                    {end: ""}
+                ]
+            }, content: ""},
+        a: "2111111"
     }
+
+    getInformation = (targetExperience) => {
+        const curId = this.state.curSectionId;
+        console.log(curId)
+        const targetSection = targetExperience.sections.find(item => item.sectionId === curId)
+        const newInformation = {information:targetSection.information, content: targetSection.content }
+        this.setState({sectionInfo: newInformation})
+    }
+
 
     goBack = (section) =>{
         return ()=>{
@@ -25,6 +46,20 @@ class ProjectInput extends Component {
         })
     }
 
+    handleInformation = (sectionId, targetSection) =>{
+        this.setState({curSectionId: sectionId}, () => this.getInformation(targetSection))
+
+    }
+
+    onInputChange = (event) =>{
+        // let val = event.target.val
+        // const a = this.state.sectionInfo.information
+        // a.project = val;
+        //
+        // this.setState({sectionInfo: a},()=>{console.log(this.state.sectionInfo)})
+        this.setState({a: event.target.value})
+    }
+
     render() {
         const { editorState, outputHTML } = this.state
         return (
@@ -34,7 +69,7 @@ class ProjectInput extends Component {
                         <Button onClick={this.goBack("default")} icon={<LeftOutlined />}  style={{boxShadow: 2}}/>
                     </Col>
                     <Col span={20} style={{textAlign: "center"}}>
-                        <ExperienceAction currentSectionID={this.props.currentId} currentSection={"project"}/>
+                        <ExperienceAction handleInformation={this.handleInformation} currentID={this.props.currentId} currentSection={"project"}/>
                     </Col>
                     <Col span={2}/>
                 </Row>
@@ -49,7 +84,7 @@ class ProjectInput extends Component {
                             <Row >
                                 <Col span={24}>
                                     <Form.Item label="Project Name:">
-                                        <Input />
+                                        <Input onChange={this.onInputChange} value={this.state.a} />
                                     </Form.Item>
                                 </Col>
 
@@ -93,4 +128,10 @@ class ProjectInput extends Component {
     }
 }
 
-export default ProjectInput;
+export default  connect(
+    state => ({experienceState: state.experienceReducer}),
+    {
+        addExperience: addExperience,
+        deleteExperience: deleteExperience
+    }
+)(ProjectInput);

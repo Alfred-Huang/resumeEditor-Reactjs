@@ -13,28 +13,29 @@ class ExperienceAction extends Component {
     state = {defaultValue: "0"}
 
     componentDidMount() {
-        console.log(this.props.currentSectionID)
-        const targetSection = this.props.experienceState.experiences.find(item => item.id === this.props.currentSectionID)
+        const targetExperience = this.props.experienceState.experiences.find(item => item.id === this.props.currentID)
         const getFirstSectionId = R.path(['sections', '0','sectionId'])
-        const firstID = getFirstSectionId(targetSection)
+        const firstID = getFirstSectionId(targetExperience)
         this.setState({defaultValue: firstID})
+        this.props.handleInformation(firstID, targetExperience);
     }
 
     changeRadio = (id)=>{
         this.setState({defaultValue: id})
+        const targetExperience = this.props.experienceState.experiences.find(item => item.id === this.props.currentID)
+        this.props.handleInformation(id, targetExperience)
     }
 
-    handleSection = (section, id) => {
-        return <Radio onChange={(e)=>this.changeRadio(id)} value={id} key={id} />
+    addRadio = () =>{
+
     }
 
     findTheTargetSection (){
-        // const targetSection = this.props.experienceState.experiences.find(item => item.id === this.props.currentSectionID)
-        // console.log(targetSection)
-        // targetSection.sections.map((section)=>{
-        //     return this.handleSection(section, section.id)
-        // })
-            return "asdasdasdasd"
+        const targetExperience = this.props.experienceState.experiences.find(item => item.id === this.props.currentID)
+       return  targetExperience.sections.map((section,)=>{
+                return<Radio onChange={(e)=>this.changeRadio(section.sectionId)} value={section.sectionId} key={section.sectionId} />
+             })
+
     }
 
     render() {
@@ -42,9 +43,8 @@ class ExperienceAction extends Component {
             <Fragment>
                 <Radio.Group value={this.state.defaultValue}>
                     {this.findTheTargetSection()}
-                    <Radio/>
                 </Radio.Group>
-                <Button icon={<PlusOutlined />}/>
+                <Button icon={<PlusOutlined />} onClick={(e)=>this.addRadio()}/>
             </Fragment>
         );
     }

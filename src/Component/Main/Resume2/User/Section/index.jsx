@@ -5,21 +5,18 @@ import {DragDropContext,Draggable, Droppable} from 'react-beautiful-dnd';
 import {connect} from "react-redux";
 import Item from "./Item";
 import ButtonList from "./ButtonList";
-import "./index.css"
 import {
     addModuleAction,
     deleteModuleAction,
     getModuleAction,
     updateModuleAction
 } from "../../../../../redux/actions/userSection_action";
-
-
+import { nanoid } from 'nanoid'
+import "./index.css"
 
 const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
-
     const [removed] = result.splice(startIndex, 1);
-
     result.splice(endIndex, 0, removed);
     console.log(result)
     return result;
@@ -46,7 +43,7 @@ class Section extends Component {
     }
 
     componentDidMount() {
-        this.s(this.props.modulesObj.modules)
+
     }
 
     show = (section) =>{
@@ -55,26 +52,18 @@ class Section extends Component {
         }
     }
 
-    s = (list)=>{
-        let deletedState = list.filter(function (item){
-            return item.id !== 1
-        })
-        let newState = {buttonList: deletedState}
-        console.log(newState)
-    }
+    // s = (list)=>{
+    //     let deletedState = list.filter(function (item){
+    //         return item.id !== 1
+    //     })
+    //     let newState = {buttonList: deletedState}
+    //     console.log(newState)
+    // }
 
     handleAddModule = (section) =>{
-        const modulesList = this.props.modulesObj.modules
-       const list = Array.from(modulesList);
-       let max = 0;
-       for(let n of list.values()){
-           if(n.id > max){
-               max = n.id
-           }
-       }
-       let newId = max * 1  + 1
+       let newId = nanoid();
        const module = {id: newId + "",module: section};
-        this.props.addModules(module)
+       this.props.addModules(module)
 
     }
 
