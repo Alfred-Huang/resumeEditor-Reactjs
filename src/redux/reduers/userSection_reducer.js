@@ -2,13 +2,16 @@ import {ADD_MODULE, DELETE_MODULE, GET_MODULE, UPDATE_MODULE, UPDATE_EXPERIENCE,
     ADD_EXPERIENCE, UPDATE_EXPERIENCE_SECTION, DELETE_EXPERIENCE_SECTION, ADD_EXPERIENCE_SECTION,UPDATE_EXPERIENCE_SECTION_INFO
 } from "../constant";
 
+// {id: "lgCeTDkAvYlDobUgwfBQN", module: "education"},
+// {id: "JVPGlab2QGb7TLXXl8pgw", module: "project"},
+// {id: "46rORawpcRAOU0lQKB-MG", module: "summary"},
+// {id: "sTwDfRx3nyYJ-RaYy6xsx", module: "leadership"},
+// {id: "ltNvXFfNAHbpPOD4INRb9", module: "custom"}
+
 const initModuleState = {
     modules: [
         {id: "lgCeTDkAvYlDobUgwfBQN", module: "education"},
         {id: "JVPGlab2QGb7TLXXl8pgw", module: "project"},
-        {id: "46rORawpcRAOU0lQKB-MG", module: "summary"},
-        {id: "sTwDfRx3nyYJ-RaYy6xsx", module: "leadership"},
-        {id: "ltNvXFfNAHbpPOD4INRb9", module: "custom"}
     ]};
 
 const initExperience = {
@@ -24,32 +27,32 @@ const initExperience = {
 
     information: {
         "1": {infoId: "1", school: "qianghua", major: "B.A. CS", degree: "master", location: "Flushing",
-            time: {start: "06-2024", end: "06-2025"},
+            startDate:"06-2024", endDate: "06-2025",
             content:""
         },
 
         "2": {infoId: "2", school: "beida", major: "B.A. CS", degree: "master", location: "Flushing",
-            time: {start: "06-2024", end: "06-2025"},
+            startDate:"06-2024", endDate: "06-2025",
             content:""
         },
 
         "3": {infoId: "3", school: "qianghua", major: "B.A. CS", degree: "master", location: "Flushing",
-            time: {start: "06-2024", end: "06-2026"},
+            startDate:"06-2024", endDate: "06-2025",
             content:""
         },
 
-        "4": {infoId: "4", project: "buzhidao", role: "manager", city: "flushing",
-            time: {start: "06-2024", end: "06-2025"},
+        "4": {infoId: "4", project: "buzhidao", role: "manager", location: "flushing",
+            startDate:"06-2024", endDate: "06-2025",
             content:""
         },
 
-        "5": {infoId: "5", project: "diaonima", role: "manager", city: "flushing",
-            time: {start: "06-2024", end: "06-2026"},
+        "5": {infoId: "5", project: "diaonima", role: "manager", location: "flushing",
+            startDate:"06-2024", endDate: "06-2025",
             content:""
         },
 
-        "6": {infoId: "6", project: "caonima", role: "manager", city: "flushing",
-            time: {start: "06-2024", end: "06-2027"},
+        "6": {infoId: "6", project: "caonima", role: "manager", location: "flushing",
+            startDate:"06-2024", endDate: "06-2025",
             content:""
         },
 
@@ -85,9 +88,10 @@ export function experienceInfoReducer(preState=initExperience, action){
     const {type, data} = action
     switch (type){
         case UPDATE_EXPERIENCE_SECTION_INFO:
-            const oldInfo = preState.information[data.id]
-            const datatype = data.type
-            return Object.assign({}, oldInfo, {[datatype]: data.value})
+            let newUpdateState = JSON.parse(JSON.stringify(preState))
+            const oldInfo = newUpdateState.information[data.infoId]
+            oldInfo[data.type] = data.value;
+            return newUpdateState
     }
     return preState
 }

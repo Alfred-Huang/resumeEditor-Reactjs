@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 
 
-class UserProfile extends Component {
+class BasicInfo extends Component {
     render() {
         return (
             <Fragment>
@@ -20,4 +20,4 @@ class UserProfile extends Component {
     }
 }
 
-export default UserProfile;
+export default BasicInfo;

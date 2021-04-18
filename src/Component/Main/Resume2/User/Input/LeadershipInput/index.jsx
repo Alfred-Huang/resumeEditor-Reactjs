@@ -37,37 +37,32 @@ class LeadershipInput extends Component {
                             size='middle'
                             layout="vertical"
                             style={{ marginLeft: 40, marginRight: 40}}
-                            wrapperCol={{span: 20}}
+                            wrapperCol={{span: 24}}
                         >
                             <Row >
-                                <Col span={12}>
+                                <Col span={24}>
                                     <Form.Item label="Organization/Club:">
                                         <Input />
                                     </Form.Item>
                                 </Col>
-                                <Col span={12}>
+                                <Col span={10}>
                                     <Form.Item label="Role" >
                                         <Input/>
                                     </Form.Item>
                                 </Col>
-                                <Col span={12}>
-                                    <Form.Item label="educational background:">
-                                        <Input/>
-                                    </Form.Item>
-                                </Col>
-                                <Col span={12}>
-                                    <Form.Item label="City:">
+                                <Col span={10} offset={4}>
+                                    <Form.Item label="Location:">
                                         <Input/>
                                         <div dangerouslySetInnerHTML={{__html: outputHTML}}/>
                                     </Form.Item>
                                 </Col>
-                                <Col span={12}>
-                                    <Form.Item label="Date:">
+                                <Col span={10}>
+                                    <Form.Item label="Start Date:">
                                         <Input placeholder="Ex: Spring 2020"/>
                                     </Form.Item>
                                 </Col>
-                                <Col span={12}>
-                                    <Form.Item label=" ">
+                                <Col span={10} offset={4}>
+                                    <Form.Item label="End Date">
                                         <Input placeholder="Ex: Fall 2024"/>
                                     </Form.Item>
                                 </Col>

@@ -23,21 +23,26 @@ class ProjectInput extends Component {
         infoId: "",
         project: "",
         role: "",
-        city:"",
-        timeStart: "",
-        timeEnd: "",
+        location:"",
+        stateDate: "",
+        endDate: "",
 
-        information: {infoId: "", project: "asdasdas", role: "", city: "",
+        information: {infoId: "", project: "asdasdas", role: "", location: "",
                         time: {start: "", end: ""},
                          content:""
                      },
-        a: "2111111"
+        a: {diao: "1"}
     }
 
     // get the information from the target
     getInformation = (targetInfo) => {
         this.setState({information: targetInfo})
         console.log(targetInfo)
+    }
+
+    componentDidMount() {
+        const s = "diao"
+        console.log(this.state.a[s])
     }
 
 
@@ -60,9 +65,9 @@ class ProjectInput extends Component {
             {infoId: targetInfo.infoId,
                     project: targetInfo.project,
                     role: targetInfo.role,
-                    city: targetInfo.city,
-                    timeStart: targetInfo.time.start,
-                    timeEnd: targetInfo.time.end
+                    location: targetInfo.location,
+                    startDate: targetInfo.startDate,
+                    endDate: targetInfo.endDate,
                     }
             )
     }
@@ -107,19 +112,19 @@ class ProjectInput extends Component {
                                     </Form.Item>
                                 </Col>
                                 <Col span={10} offset={4}>
-                                    <Form.Item label="City:">
-                                        <Input onChange={(e)=>this.onInputChange("city", e)} value={this.state.city}/>
+                                    <Form.Item label="Location:">
+                                        <Input onChange={(e)=>this.onInputChange("location", e)} value={this.state.location}/>
                                         <div dangerouslySetInnerHTML={{__html: outputHTML}}/>
                                     </Form.Item>
                                 </Col>
                                 <Col span={10}>
                                     <Form.Item label="Start Date">
-                                        <DatePicker onChange={(e)=>this.onInputChange("timeStart", e)} picker="month" format={monthFormat} value={moment(this.state.timeStart, monthFormat)}/>
+                                        <DatePicker onChange={(e)=>this.onInputChange("timeStart", e)} picker="month" format={monthFormat} value={moment(this.state.startDate, monthFormat)}/>
                                     </Form.Item>
                                 </Col>
                                 <Col span={10} offset={4}>
                                     <Form.Item label="End Date">
-                                        <DatePicker onChange={(e)=>this.onInputChange("timeEnd", e)} picker="month" format={monthFormat} value={moment(this.state.timeStart, monthFormat)}/>
+                                        <DatePicker onChange={(e)=>this.onInputChange("timeEnd", e)} picker="month" format={monthFormat} value={moment(this.state.endDate, monthFormat)}/>
                                     </Form.Item>
                                 </Col>
                             </Row>

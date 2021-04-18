@@ -12,7 +12,6 @@ class ButtonList extends Component {
                                 type="primary"
                                 size={"small"}
                                 style={{marginLeft: 10, width: 105}}
-
                         >
                             {buttonTitle}
                         </Button>

@@ -45,29 +45,24 @@ class CustomInput extends Component {
                                         <Input />
                                     </Form.Item>
                                 </Col>
-                                <Col span={24}>
+                                <Col span={10}>
                                     <Form.Item label="Role:">
                                         <Input/>
                                     </Form.Item>
                                 </Col>
-                                <Col span={10}>
-                                    <Form.Item label="Department: ">
-                                        <Input/>
-                                    </Form.Item>
-                                </Col>
-                                <Col span={10} offset={4}>
-                                    <Form.Item label="City:">
+                                <Col span={10} offset={4} >
+                                    <Form.Item label="Location:">
                                         <Input/>
                                         <div dangerouslySetInnerHTML={{__html: outputHTML}}/>
                                     </Form.Item>
                                 </Col>
                                 <Col span={10}>
-                                    <Form.Item label="Start">
+                                    <Form.Item label="Start Date">
                                         <DatePicker  picker="month" placeHolder={"start date"} />
                                     </Form.Item>
                                 </Col>
                                 <Col span={10} offset={4}>
-                                    <Form.Item label="End">
+                                    <Form.Item label="End Date">
                                         <DatePicker  picker="month" placeHolder={"end date"}/>
                                     </Form.Item>
                                 </Col>

@@ -6,8 +6,8 @@ import {
     EditOutlined, PlusOutlined,
 } from '@ant-design/icons';
 import Education from "./Education"
-import UserInfo from "./UserInfo"
-import UserProfile from "./UserAction";
+import GeneralInfo from "./GeneralInfo"
+import BasicInfo from "./BasicInfo";
 import Section from "./User/Section"
 import PersonalInput from "./User/Input/PersonalInput";
 import ProjectInput from "./User/Input/ProjectInput";
@@ -66,11 +66,11 @@ class Resume2 extends Component {
        switch (sectionName) {
            case "education":
                return (
-                   <Education key={id}/>
+                   <Education key={id} moduleId={id}/>
                )
            default:
                return (
-                   <UserInfo key={id}/>
+                   <GeneralInfo key={id} moduleId={id}/>
                )
        }
     }
@@ -193,7 +193,7 @@ class Resume2 extends Component {
                                                  transform: [`scale(${this.state.firstTime === false ? this.state.scale : resumeScale / (794 / window.innerWidth)})`]}}
                                         >
                                             <div className="resume-spacing">
-                                                <UserProfile/>
+                                                <BasicInfo/>
                                                 {this.props.modulesObj.modules.map((moduleObj)=>{
                                                     return this.handleResumeSection(moduleObj.module, moduleObj.id)
                                                 })}
