@@ -39,9 +39,14 @@ class Section extends Component {
             {id: 4, name: "education"},
             {id: 5, name: "custom"}
         ],
+        a: {"1": "asd", "2": "asdasd"}
     }
 
     componentDidMount() {
+        const {a} = this.state
+        console.log(a)
+        delete a["1"];
+        console.log(a)
     }
 
     show = (section) =>{

@@ -7,7 +7,7 @@ import ExperienceAction from "../../ExpericenAction";
 import {connect} from "react-redux";
 import {
     addExperience,
-    deleteExperience,
+    deleteExperience, deleteExperienceSectionInfo,
     updateExperienceSectionInfo
 } from "../../../../../../redux/actions/userSection_action";
 import moment from 'moment';
@@ -31,7 +31,6 @@ class ProjectInput extends Component {
                         time: {start: "", end: ""},
                          content:""
                      },
-        a: {diao: "1"}
     }
 
     // get the information from the target
@@ -40,10 +39,6 @@ class ProjectInput extends Component {
         console.log(targetInfo)
     }
 
-    componentDidMount() {
-        const s = "diao"
-        console.log(this.state.a[s])
-    }
 
 
     goBack = (section) =>{
@@ -62,7 +57,7 @@ class ProjectInput extends Component {
     //get the information from the targetSection to initialize the first section
     handleInformation = (sectionId, targetInfo) =>{
         this.setState(
-            {infoId: targetInfo.infoId,
+            { infoId: targetInfo.infoId,
                     project: targetInfo.project,
                     role: targetInfo.role,
                     location: targetInfo.location,
@@ -72,6 +67,12 @@ class ProjectInput extends Component {
             )
     }
 
+    deleteInputSection = ()=>{
+        const targetInfoObj = {experienceId: this.props.currentId, infoId: this.state.infoId}
+        this.props.deleteExperienceSectionInfo(targetInfoObj)
+    }
+
+    // changing the information while user's typing
     onInputChange = (type, e) =>{
         this.setState({[type]: e.target.value})
         const infoObj = {infoId: this.state.infoId, type: type, value: e.target.value}
@@ -135,7 +136,7 @@ class ProjectInput extends Component {
                                 </Col>
 
                                 <Col span={12} style={{textAlign: "right"}}>
-                                    <Button type="danger" style={{marginBottom: 10, marginTop: 10}}>Delete</Button>
+                                    <Button type="danger" onClick={(e)=>this.deleteInputSection()} style={{marginBottom: 10, marginTop: 10}}>Delete</Button>
                                 </Col>
                             </Row>
                         </Form>
@@ -149,8 +150,7 @@ class ProjectInput extends Component {
 export default  connect(
     state => ({experienceState: state.experienceInfoReducer}),
     {
-        addExperience: addExperience,
-        deleteExperience: deleteExperience,
         updateExperienceSectionInfo: updateExperienceSectionInfo,
+        deleteExperienceSectionInfo: deleteExperienceSectionInfo,
     }
 )(ProjectInput);

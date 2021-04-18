@@ -1,5 +1,5 @@
 import {ADD_MODULE, DELETE_MODULE, GET_MODULE, UPDATE_MODULE, UPDATE_EXPERIENCE, DELETE_EXPERIENCE,
-    ADD_EXPERIENCE, UPDATE_EXPERIENCE_SECTION, DELETE_EXPERIENCE_SECTION, ADD_EXPERIENCE_SECTION,UPDATE_EXPERIENCE_SECTION_INFO
+    ADD_EXPERIENCE, UPDATE_EXPERIENCE_SECTION, DELETE_EXPERIENCE_SECTION, ADD_EXPERIENCE_SECTION,UPDATE_EXPERIENCE_SECTION_INFO, Delete_EXPERIENCE_SECTION_INFO
 } from "../constant";
 
 // {id: "lgCeTDkAvYlDobUgwfBQN", module: "education"},
@@ -92,6 +92,19 @@ export function experienceInfoReducer(preState=initExperience, action){
             const oldInfo = newUpdateState.information[data.infoId]
             oldInfo[data.type] = data.value;
             return newUpdateState
+        case Delete_EXPERIENCE_SECTION_INFO:
+            let newDeleteState = JSON.parse(JSON.stringify(preState))
+            //get the targetSectionId
+            const targetSectionIdForDelete = newDeleteState.experiences[data.experienceId].sectionId
+
+            const newSectionListAfterFilter = newDeleteState.sections[targetSectionIdForDelete].sectionList.filter(function (id){
+                return id !== data.infoId
+            })
+            newDeleteState.sections[targetSectionIdForDelete].sectionList = newSectionListAfterFilter
+
+            delete newDeleteState.information[data.infoId]
+
+            return newDeleteState
     }
     return preState
 }

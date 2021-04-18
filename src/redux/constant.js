@@ -13,3 +13,4 @@ export const UPDATE_EXPERIENCE_SECTION = 'updateExperienceSection'
 
 
 export const UPDATE_EXPERIENCE_SECTION_INFO = 'updateExperienceSectionInfo'
+export const Delete_EXPERIENCE_SECTION_INFO = 'deleteExperienceSectionInfo'
