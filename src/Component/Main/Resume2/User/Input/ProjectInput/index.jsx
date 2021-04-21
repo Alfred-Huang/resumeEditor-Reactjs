@@ -31,8 +31,9 @@ class ProjectInput extends Component {
                         time: {start: "", end: ""},
                          content:""
                      },
-        curInfoId: ""
+        curInfoId: "",
     }
+
 
 
 
@@ -50,7 +51,7 @@ class ProjectInput extends Component {
     }
 
     //get the information from the targetSection to initialize the first section
-    handleInformation = (firstInfoId, targetInfo) =>{
+    handleInformation = (curInfoId, targetInfo) =>{
         const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
         const sectionList = this.props.experienceState.sections[targetSectionId].sectionList;
         this.setState(
@@ -61,13 +62,23 @@ class ProjectInput extends Component {
                     startDate: targetInfo.startDate,
                     endDate: targetInfo.endDate,
                     sectionListLength: sectionList.length,
+                    curInfoId: curInfoId
                     }
             )
     }
 
     deleteInputSection = ()=>{
         const targetInfoObj = {experienceId: this.props.currentId, infoId: this.state.infoId}
-        this.props.deleteExperienceSectionInfo(targetInfoObj)
+        this.props.deleteExperienceSectionInfo(targetInfoObj).then(()=> {
+                const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
+                const firstElementAfterDeleted = this.props.experienceState.sections[targetSectionId].sectionList[0];
+                const targetSectionInfo = this.props.experienceState.information[firstElementAfterDeleted]
+                this.handleInformation(firstElementAfterDeleted, targetSectionInfo)
+            })
+        // const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
+        // const sectionList = this.props.experienceState.sections[targetSectionId].sectionList;
+        // console.log(sectionList)
+
     }
 
     // changing the information while user's typing

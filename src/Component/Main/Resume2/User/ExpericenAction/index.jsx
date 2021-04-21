@@ -44,7 +44,7 @@ class ExperienceAction extends Component {
     render() {
         return (
             <Fragment>
-                <Radio.Group value={this.state.defaultValue}>
+                <Radio.Group value={this.props.curInfoId}>
                     {this.findTheTargetSection()}
                 </Radio.Group>
                 <Button icon={<PlusOutlined />} onClick={(e)=>this.addRadio()}/>

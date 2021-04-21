@@ -33,5 +33,16 @@ export const updateExperienceSection = section =>({type: UPDATE_EXPERIENCE_SECTI
 
 
 export const updateExperienceSectionInfo = infoObj =>({type: UPDATE_EXPERIENCE_SECTION_INFO, data: infoObj})
-export const deleteExperienceSectionInfo = infoObj =>({type: DELETE_EXPERIENCE_SECTION_INFO, data: infoObj})
+// export const deleteExperienceSectionInfo = infoObj =>({type: DELETE_EXPERIENCE_SECTION_INFO, data: infoObj})
+
+
+export const deleteExperienceSectionInfo = (data) =>{
+    return (dispatch) =>{
+        dispatch({
+            type: DELETE_EXPERIENCE_SECTION_INFO,
+            data: data
+        })
+        return Promise.resolve()
+    }
+}
 
