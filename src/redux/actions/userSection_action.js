@@ -10,7 +10,7 @@ import {
     UPDATE_EXPERIENCE,
     UPDATE_EXPERIENCE_SECTION,
     UPDATE_EXPERIENCE_SECTION_INFO,
-    Delete_EXPERIENCE_SECTION_INFO
+    DELETE_EXPERIENCE_SECTION_INFO
 } from "../constant"
 
 
@@ -33,5 +33,5 @@ export const updateExperienceSection = section =>({type: UPDATE_EXPERIENCE_SECTI
 
 
 export const updateExperienceSectionInfo = infoObj =>({type: UPDATE_EXPERIENCE_SECTION_INFO, data: infoObj})
-export const deleteExperienceSectionInfo = infoObj =>({type: Delete_EXPERIENCE_SECTION_INFO, data: infoObj})
+export const deleteExperienceSectionInfo = infoObj =>({type: DELETE_EXPERIENCE_SECTION_INFO, data: infoObj})
 

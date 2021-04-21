@@ -13,20 +13,19 @@ class ExperienceAction extends Component {
     state = {defaultValue: "0"}
 
     componentDidMount() {
-        const targetSectionId = this.props.experienceState.experiences[this.props.currentID].sectionId
+        const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
 
-        const firstSectionId = this.props.experienceState.sections[targetSectionId].sectionList[0];
-        const firstSectionInfo = this.props.experienceState.information[firstSectionId]
-        this.setState({defaultValue: firstSectionId})
+        const firstInfoId = this.props.experienceState.sections[targetSectionId].sectionList[0];
+        const firstSectionInfo = this.props.experienceState.information[firstInfoId]
+        this.setState({defaultValue: firstInfoId})
         //send the id and targetSection to input section to initialize the first section
-        this.props.handleInformation(firstSectionId, firstSectionInfo);
+        this.props.handleInformation(firstInfoId, firstSectionInfo);
     }
 
-    changeRadio = (sectionId)=>{
-        this.setState({defaultValue: sectionId})
-        const targetSectionInfo = this.props.experienceState.information[sectionId]
-        this.props.handleInformation(sectionId, targetSectionInfo)
-        console.log(sectionId)
+    changeRadio = (infoId)=>{
+        this.setState({defaultValue: infoId})
+        const targetSectionInfo = this.props.experienceState.information[infoId]
+        this.props.handleInformation(infoId, targetSectionInfo)
     }
 
     addRadio = () =>{
@@ -34,10 +33,10 @@ class ExperienceAction extends Component {
     }
 
     findTheTargetSection (){
-        const targetSectionId = this.props.experienceState.experiences[this.props.currentID].sectionId
-        const targetSectionList = this.props.experienceState.sections[targetSectionId].sectionList;
-       return  targetSectionList.map((sectionId)=>{
-                return<Radio onChange={(e)=>this.changeRadio(sectionId)} value={sectionId} key={sectionId} />
+        const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
+        const targetInfoIdList = this.props.experienceState.sections[targetSectionId].sectionList;
+       return  targetInfoIdList.map((infoId)=>{
+                return<Radio onChange={(e)=>this.changeRadio(infoId)} value={infoId} key={infoId} />
              })
 
     }

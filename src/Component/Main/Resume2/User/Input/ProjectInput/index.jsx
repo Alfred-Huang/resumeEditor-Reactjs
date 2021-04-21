@@ -26,17 +26,12 @@ class ProjectInput extends Component {
         location:"",
         stateDate: "",
         endDate: "",
-
+        sectionListLength: 0,
         information: {infoId: "", project: "asdasdas", role: "", location: "",
                         time: {start: "", end: ""},
                          content:""
                      },
-    }
-
-    // get the information from the target
-    getInformation = (targetInfo) => {
-        this.setState({information: targetInfo})
-        console.log(targetInfo)
+        curInfoId: ""
     }
 
 
@@ -55,7 +50,9 @@ class ProjectInput extends Component {
     }
 
     //get the information from the targetSection to initialize the first section
-    handleInformation = (sectionId, targetInfo) =>{
+    handleInformation = (firstInfoId, targetInfo) =>{
+        const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
+        const sectionList = this.props.experienceState.sections[targetSectionId].sectionList;
         this.setState(
             { infoId: targetInfo.infoId,
                     project: targetInfo.project,
@@ -63,6 +60,7 @@ class ProjectInput extends Component {
                     location: targetInfo.location,
                     startDate: targetInfo.startDate,
                     endDate: targetInfo.endDate,
+                    sectionListLength: sectionList.length,
                     }
             )
     }
@@ -88,7 +86,7 @@ class ProjectInput extends Component {
                         <Button onClick={this.goBack("default")} icon={<LeftOutlined />}  style={{boxShadow: 2}}/>
                     </Col>
                     <Col span={20} style={{textAlign: "center"}}>
-                        <ExperienceAction handleInformation={this.handleInformation} currentID={this.props.currentId} currentSection={"project"}/>
+                        <ExperienceAction handleInformation={this.handleInformation} curInfoId={this.state.curInfoId} currentId={this.props.currentId} currentSection={"project"}/>
                     </Col>
                     <Col span={2}/>
                 </Row>
@@ -136,7 +134,7 @@ class ProjectInput extends Component {
                                 </Col>
 
                                 <Col span={12} style={{textAlign: "right"}}>
-                                    <Button type="danger" onClick={(e)=>this.deleteInputSection()} style={{marginBottom: 10, marginTop: 10}}>Delete</Button>
+                                    <Button type="danger"  disabled={this.state.sectionListLength === 1} onClick={(e)=>this.deleteInputSection()} style={{marginBottom: 10, marginTop: 10}}>Delete</Button>
                                 </Col>
                             </Row>
                         </Form>
