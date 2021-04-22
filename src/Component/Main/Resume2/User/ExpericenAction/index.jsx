@@ -29,7 +29,7 @@ class ExperienceAction extends Component {
     }
 
     addRadio = () =>{
-
+        this.props.addInputSection();
     }
 
     findTheTargetSection (){

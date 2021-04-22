@@ -43,9 +43,9 @@ class Section extends Component {
     }
 
     componentDidMount() {
-        const {a} = this.state
+        const a = {1: "asdas", 2: "asdasd"}
         console.log(a)
-        delete a["1"];
+        a["3"] = "asdasdas";
         console.log(a)
     }
 
