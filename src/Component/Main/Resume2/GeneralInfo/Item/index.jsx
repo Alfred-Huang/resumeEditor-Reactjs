@@ -1,9 +1,10 @@
 import React, {Component, Fragment} from 'react';
-
+import 'braft-editor/dist/output.css'
 class Item extends Component {
 
     render() {
         const {information} = this.props
+        const HTMLContent = information.HTMLContent
         return (
             <Fragment>
                         <div  style={{marginBottom: 5 ,marginLeft: 30}}>
@@ -17,8 +18,8 @@ class Item extends Component {
                             </div>
                             <p style={{marginBottom: 3}}>{information.role}</p>
                             <div>
-                                <div >
-                                    内容
+                                <div className="braft-output-content"  dangerouslySetInnerHTML={{__html: HTMLContent}}>
+
                                 </div>
                             </div>
                         </div>

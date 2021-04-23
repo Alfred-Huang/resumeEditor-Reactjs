@@ -4,19 +4,18 @@ import 'braft-editor/dist/index.css'
 import "./index.css"
 
 class Editor extends Component {
-    state = {
-        // 创建一个空的editorState作为初始值
-        editorState: BraftEditor.createEditorState(null)
-    }
-
-    async componentDidMount () {
-        this.setState({
-            editorState: BraftEditor.createEditorState("")
-        })
-    }
+    // state = {
+    //     // 创建一个空的editorState作为初始值
+    //     editorState: BraftEditor.createEditorState(null)
+    // }
+    //
+    // componentDidMount () {
+    //     this.setState({
+    //         editorState: BraftEditor.createEditorState("")
+    //     })
+    // }
 
     handleEditorChange = (editorState) => {
-        this.setState({ editorState })
         this.props.handleContent(editorState)
     }
 
@@ -28,7 +27,7 @@ class Editor extends Component {
             }
 
         }
-        const { editorState } = this.state
+
         const controls = ['bold', 'italic', 'underline', 'font-size',
             "headings", "list-ul", "list-ol"
         ]
@@ -36,7 +35,7 @@ class Editor extends Component {
         return (
             <div className="my-component">
                 <BraftEditor
-                    value={editorState}
+                    value={this.props.content}
                     onChange={this.handleEditorChange}
                     language={languageFn}
                     controls={controls}

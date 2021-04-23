@@ -17,8 +17,6 @@ import {nanoid} from 'nanoid'
 const monthFormat = 'MM/YYYY';
 class ProjectInput extends Component {
     state={
-        content: BraftEditor.createEditorState(null),
-        outputHTML: '<p></p>',
         curSectionId:"",
         infoId: "",
         project: "",
@@ -27,12 +25,29 @@ class ProjectInput extends Component {
         stateDate: "",
         endDate: "",
         sectionListLength: 0,
-        information: {infoId: "", project: "", role: "", location: "",
-                        time: {start: "", end: ""},
-                         content:""
-                     },
         curInfoId: "",
+        content:  BraftEditor.createEditorState(null),
     }
+    componentDidMount() {
+        const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
+        const sectionList = this.props.experienceState.sections[targetSectionId].sectionList;
+        const firstInfoId = this.props.experienceState.sections[targetSectionId].sectionList[0];
+        const firstSectionInfo = this.props.experienceState.information[firstInfoId]
+        //send the id and targetSection to input section to initialize the first section
+        this.setState(
+            { infoId: firstSectionInfo.infoId,
+                project: firstSectionInfo.project,
+                role: firstSectionInfo.role,
+                location: firstSectionInfo.location,
+                startDate: firstSectionInfo.startDate,
+                endDate: firstSectionInfo.endDate,
+                sectionListLength: sectionList.length,
+                curInfoId: firstInfoId,
+                content:  BraftEditor.createEditorState(firstSectionInfo.HTMLContent)
+            }
+        )
+    }
+
 
 
 
@@ -45,9 +60,14 @@ class ProjectInput extends Component {
 
     handleContent = (userContent) =>{
         this.setState({
-                content: userContent,
-                outputHTML: userContent.toHTML()
+                content: userContent
         })
+        const HTMLContent = userContent.toHTML();
+        const RAWContent = userContent.toRAW();
+        const h = {infoId: this.state.infoId, type: "HTMLContent", value: HTMLContent}
+        const r = {infoId: this.state.infoId, type: "RAWContent", value: RAWContent}
+        this.props.updateExperienceSectionInfo(h)
+        this.props.updateExperienceSectionInfo(r)
     }
 
     //get the information from the targetSection to initialize the first section
@@ -62,7 +82,8 @@ class ProjectInput extends Component {
                     startDate: targetInfo.startDate,
                     endDate: targetInfo.endDate,
                     sectionListLength: sectionList.length,
-                    curInfoId: curInfoId
+                    curInfoId: curInfoId,
+                    content:  BraftEditor.createEditorState(targetInfo.HTMLContent)
                     }
             )
     }
@@ -81,8 +102,7 @@ class ProjectInput extends Component {
         const infoId = nanoid();
         const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
         const data = {sectionId: targetSectionId, id: infoId + "", info: {infoId: infoId + "", project: "", role: "", location: "",
-            startDate:"", endDate: "",
-            content:""
+            startDate:"", endDate: "", HTMLContent: "", RAWContent: {}
         }}
         this.props.addExperienceSectionInfo(data)
     }
@@ -159,7 +179,7 @@ class ProjectInput extends Component {
                                             onChange={(e)=>this.onInputChange("location", e)}
                                             value={this.state.location}
                                         />
-                                        <div dangerouslySetInnerHTML={{__html: outputHTML}}/>
+
                                     </Form.Item>
                                 </Col>
                                 <Col span={10}>
@@ -183,7 +203,7 @@ class ProjectInput extends Component {
                                     </Form.Item>
                                 </Col>
                             </Row>
-                            <Editor handleContent={this.handleContent}/>
+                            <Editor content={this.state.content} handleContent={this.handleContent}/>
                             <Row span={24}>
                                 <Col span={12}>
                                     <Button type="primary" style={{marginBottom: 10, marginTop: 10}}>Save</Button>

@@ -40,32 +40,32 @@ const initExperience = {
     information: {
         "1": {infoId: "1", school: "qianghua", major: "B.A. CS", degree: "master", location: "Flushing",
             startDate:"06-2024", endDate: "06-2025",
-            content:""
+            HTMLContent: "", RAWContent: {}
         },
 
         "2": {infoId: "2", school: "beida", major: "B.A. CS", degree: "master", location: "Flushing",
             startDate:"06-2024", endDate: "06-2025",
-            content:""
+            HTMLContent: "", RAWContent: {}
         },
 
         "3": {infoId: "3", school: "qianghua", major: "B.A. CS", degree: "master", location: "Flushing",
             startDate:"06-2024", endDate: "06-2025",
-            content:""
+            HTMLContent: "", RAWContent: {}
         },
 
         "4": {infoId: "4", project: "buzhidao", role: "manager", location: "flushing",
             startDate:"06-2024", endDate: "06-2025",
-            content:""
+            HTMLContent: "", RAWContent: {}
         },
 
         "5": {infoId: "5", project: "diaonima", role: "manager", location: "flushing",
             startDate:"06-2024", endDate: "06-2025",
-            content:""
+            HTMLContent: "", RAWContent: {}
         },
 
         "6": {infoId: "6", project: "caonima", role: "manager", location: "flushing",
             startDate:"06-2024", endDate: "06-2025",
-            content:""
+            HTMLContent: "", RAWContent: {}
         },
 
     }
