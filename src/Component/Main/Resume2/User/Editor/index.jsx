@@ -29,7 +29,7 @@ class Editor extends Component {
         }
 
         const controls = ['bold', 'italic', 'underline', 'font-size',
-            "headings", "list-ul", "list-ol"
+            "line-height", "list-ul", "list-ol"
         ]
 
         return (
@@ -39,7 +39,8 @@ class Editor extends Component {
                     onChange={this.handleEditorChange}
                     language={languageFn}
                     controls={controls}
-                    fontSizes={[12,14,16,18]}
+                    lineHeights={[0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6]}
+                    fontSizes={[12,13,14,15,16,17]}
                     contentClassName="editor-style"
                     controlBarClassName="editor-bar-style"
                 />

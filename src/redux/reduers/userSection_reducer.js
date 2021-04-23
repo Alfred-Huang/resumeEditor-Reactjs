@@ -11,14 +11,11 @@ import {
     ADD_EXPERIENCE_SECTION,
     UPDATE_EXPERIENCE_SECTION_INFO,
     DELETE_EXPERIENCE_SECTION_INFO,
-    ADD_EXPERIENCE_SECTION_INFO
+    ADD_EXPERIENCE_SECTION_INFO,
+    ADD_EXP_SECTION_INFO
 } from "../constant";
 
-// {id: "lgCeTDkAvYlDobUgwfBQN", module: "education"},
-// {id: "JVPGlab2QGb7TLXXl8pgw", module: "project"},
-// {id: "46rORawpcRAOU0lQKB-MG", module: "summary"},
-// {id: "sTwDfRx3nyYJ-RaYy6xsx", module: "leadership"},
-// {id: "ltNvXFfNAHbpPOD4INRb9", module: "custom"}
+
 
 const initModuleState = {
     modules: [
@@ -104,6 +101,7 @@ export function experienceInfoReducer(preState=initExperience, action){
             const oldInfo = newUpdateState.information[data.infoId]
             oldInfo[data.type] = data.value;
             return newUpdateState
+
         case DELETE_EXPERIENCE_SECTION_INFO:
             let newDeleteState = JSON.parse(JSON.stringify(preState))
             //get the targetSectionId
@@ -113,17 +111,27 @@ export function experienceInfoReducer(preState=initExperience, action){
                 return id !== data.infoId
             })
             newDeleteState.sections[targetSectionIdForDelete].sectionList = newSectionListAfterFilter
-
             delete newDeleteState.information[data.infoId]
-
             return newDeleteState
+
         case ADD_EXPERIENCE_SECTION_INFO:
             let newAddState = JSON.parse(JSON.stringify(preState))
             const newKey = data.id
             newAddState.information[newKey] = data.info
             newAddState.sections[data.sectionId].sectionList.push(newKey)
-            console.log(newAddState)
             return newAddState
+
+        case ADD_EXP_SECTION_INFO:
+            let newExpSecInfo = JSON.parse(JSON.stringify(preState))
+            const newExpId = data.experienceId
+            const newSecId = data.sectionId
+            const newInfo = data.informationId
+            newExpSecInfo.experiences[newExpId] = data.newExperience
+            newExpSecInfo.sections[newSecId] = data.newSection
+            newExpSecInfo.information[newInfo] = data.newInformation
+            return newExpSecInfo
+        default:
+            return preState
     }
-    return preState
+
 }

@@ -1,13 +1,13 @@
 import React, {Component, Fragment} from 'react';
-import  {Button, Col, Form, Input, Row, DatePicker, Radio } from "antd";
+import  {Button, Col, Form, Input, Row, DatePicker } from "antd";
 import {LeftOutlined,} from '@ant-design/icons';
 import Editor from "../../Editor";
 import BraftEditor from 'braft-editor'
 import ExperienceAction from "../../ExpericenAction";
 import {connect} from "react-redux";
 import {
-    addExperience, addExperienceSectionInfo,
-    deleteExperience, deleteExperienceSectionInfo,
+    addExperienceSectionInfo,
+    deleteExperienceSectionInfo,
     updateExperienceSectionInfo
 } from "../../../../../../redux/actions/userSection_action";
 import moment from 'moment';
@@ -28,6 +28,7 @@ class ProjectInput extends Component {
         curInfoId: "",
         content:  BraftEditor.createEditorState(null),
     }
+
     componentDidMount() {
         const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
         const sectionList = this.props.experienceState.sections[targetSectionId].sectionList;
@@ -129,7 +130,6 @@ class ProjectInput extends Component {
     }
 // (e)=>this.onInputChange("startDate", e)
     render() {
-        const { editorState, outputHTML } = this.state
         return (
             <Fragment>
                 <Row style={{display: "line block"}} span={24}>

@@ -1,11 +1,12 @@
 import React, {Component, Fragment} from 'react';
 import {Row, Card, Col} from "antd";
-import {EditOutlined, PlusSquareOutlined} from '@ant-design/icons';
+import {EditOutlined,} from '@ant-design/icons';
 import {DragDropContext,Draggable, Droppable} from 'react-beautiful-dnd';
 import {connect} from "react-redux";
 import Item from "./Item";
 import ButtonList from "./ButtonList";
 import {
+    addExpSectionInfo,
     addModuleAction,
     deleteModuleAction,
     getModuleAction,
@@ -13,6 +14,7 @@ import {
 } from "../../../../../redux/actions/userSection_action";
 import { nanoid } from 'nanoid'
 import "./index.css"
+import {experienceInfoReducer} from "../../../../../redux/reduers/userSection_reducer";
 
 const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
@@ -42,12 +44,12 @@ class Section extends Component {
         a: {"1": "asd", "2": "asdasd"}
     }
 
-    componentDidMount() {
-        const a = {1: "asdas", 2: "asdasd"}
-        console.log(a)
-        a["3"] = "asdasdas";
-        console.log(a)
-    }
+    // componentDidMount() {
+    //     const a = {1: "asdas", 2: "asdasd"}
+    //     console.log(a)
+    //     a["3"] = "asdasdas";
+    //     console.log(a)
+    // }
 
     show = (section) =>{
         return ()=>{
@@ -56,9 +58,23 @@ class Section extends Component {
     }
 
     handleAddModule = (section) =>{
-       let newId = nanoid();
-       const module = {id: newId + "",module: section};
-       this.props.addModules(module)
+       let newModuleId = nanoid();
+        if(section !== 'education') {
+            let sectionId = nanoid()
+            let informationId = nanoid()
+            const data = {
+                sectionId: sectionId, informationId: informationId, experienceId: newModuleId,
+                newExperience: {id: newModuleId, module: section, title: section, sectionId: sectionId},
+                newSection: {id: sectionId, sectionList: [informationId]},
+                newInformation: {infoId: informationId, project: "", role: "", location: "",
+                    startDate:"", endDate: "",
+                    HTMLContent: "", RAWContent: {}
+                }
+            }
+            this.props.addExpSectionInfo(data)
+        }
+        const module = {id: newModuleId + "",module: section};
+        this.props.addModules(module)
     }
 
     handleDeleteModule = (sectionId) =>{
@@ -157,11 +173,12 @@ class Section extends Component {
 
 
 export default connect(
-    state => ({modulesObj: state.moduleReducer}),
+    state => ({modulesObj: state.moduleReducer, experienceState: state.experienceInfoReducer}),
     {
         addModules:addModuleAction,
         deleteModules: deleteModuleAction,
         getModules: getModuleAction,
         updateModules: updateModuleAction,
+        addExpSectionInfo: addExpSectionInfo,
     }
 )(Section)

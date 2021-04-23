@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import 'braft-editor/dist/output.css'
+
 class Item extends Component {
 
     render() {
@@ -16,10 +16,10 @@ class Item extends Component {
                                     Spring 2021 - Fall 2024
                                 </div>
                             </div>
-                            <p style={{marginBottom: 3}}>{information.role}</p>
-                            <div>
-                                <div className="braft-output-content"  dangerouslySetInnerHTML={{__html: HTMLContent}}>
-
+                            <p style={{marginBottom: 3, width: 534, display: "inline-block"}}>{information.role}</p>
+                            <p style={{textAlign:"right", width: 200,marginBottom: 3, display: "inline-block"}}>{information.location}</p>
+                            <div style={{lineHeight: 0.9, marginRight: 52, marginLeft: 5}}>
+                                <div  dangerouslySetInnerHTML={{__html: HTMLContent}}>
                                 </div>
                             </div>
                         </div>
