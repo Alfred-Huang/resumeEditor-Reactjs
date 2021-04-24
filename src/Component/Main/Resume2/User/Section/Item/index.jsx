@@ -31,13 +31,15 @@ class Item extends Component {
         const {module, id, handleDeleteModule} = this.props;
         const title = this.props.experienceState.experiences[id].title
         const curModule = this.props.experienceState.experiences[id].module
+
+        //handle the delete feature
         function confirm(id) {
             return ()=>{
                 if(curModule !== "basicInfo"){
                     handleDeleteModule(id)
                     message.success("Successfully Delete")
                 }else{
-                    message.error("This module can not delete");
+                    message.error("This module can not be deleted");
                 }
 
             }

@@ -10,11 +10,11 @@ import {
     deleteExperienceSectionInfo,
     updateExperienceSectionInfo
 } from "../../../../../../redux/actions/userSection_action";
-import moment from 'moment';
+
 import {nanoid} from 'nanoid'
 
 
-const monthFormat = 'MM/YYYY';
+
 class ProjectInput extends Component {
     state={
         curSectionId:"",
@@ -71,7 +71,7 @@ class ProjectInput extends Component {
         this.props.updateExperienceSectionInfo(r)
     }
 
-    //get the information from the targetSection to initialize the first section
+    //to get target info from the radio change
     handleInformation = (curInfoId, targetInfo) =>{
         const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
         const sectionList = this.props.experienceState.sections[targetSectionId].sectionList;
@@ -116,17 +116,7 @@ class ProjectInput extends Component {
     }
 
 
-    startDateChange = (value, dateString) =>{
-        this.setState({startDate: dateString})
-        const infoObj = {infoId: this.state.infoId, type: "startDate", value: dateString}
-        this.props.updateExperienceSectionInfo(infoObj)
-    }
 
-    endDateChange = (value, dateString) =>{
-        this.setState({endDate: dateString})
-        const infoObj = {infoId: this.state.infoId, type: "endDate", value: dateString}
-        this.props.updateExperienceSectionInfo(infoObj)
-    }
 
     render() {
         return (
@@ -183,21 +173,17 @@ class ProjectInput extends Component {
                                 </Col>
                                 <Col span={10}>
                                     <Form.Item label="Start Date">
-                                        <DatePicker
-                                            onChange={this.startDateChange}
-                                            picker="month"
-                                            format={monthFormat}
-                                            value={ this.state.startDate === "" ? undefined : moment(this.state.startDate, monthFormat)}
+                                        <Input
+                                            onChange={(e)=>this.onInputChange("startDate", e)}
+                                            value={this.state.startDate}
                                         />
                                     </Form.Item>
                                 </Col>
                                 <Col span={10} offset={4}>
                                     <Form.Item label="End Date">
-                                        <DatePicker
-                                            onChange={this.endDateChange}
-                                            picker="month"
-                                            format={monthFormat}
-                                            value={this.state.endDate === "" ? undefined : moment(this.state.endDate, monthFormat)}
+                                        <Input
+                                            onChange={(e)=>this.onInputChange("endDate", e)}
+                                            value={this.state.endDate}
                                         />
                                     </Form.Item>
                                 </Col>

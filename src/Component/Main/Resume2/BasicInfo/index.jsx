@@ -26,9 +26,13 @@ class BasicInfo extends Component {
         let email = information.email
         let telephone = information.telephone
         let location = information.location
-        let other = information.other
         let res = email + " | " + telephone + " | " + location
         return res
+    }
+
+    getOther =() =>{
+        let other = information.other
+        return other
     }
 
 
@@ -42,7 +46,8 @@ class BasicInfo extends Component {
                             {this.getName()}
                         </div>
                         <div className="resume-personal-info">
-                            {this.getInfo()}
+                            <p>{this.getInfo()}</p>
+                            <p>{this.getOther()}</p>
                         </div>
                     </div>
                 </div>

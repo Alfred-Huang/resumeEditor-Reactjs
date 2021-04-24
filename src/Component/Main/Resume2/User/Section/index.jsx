@@ -1,6 +1,5 @@
 import React, {Component, Fragment} from 'react';
 import {Row, Card, Col} from "antd";
-import {EditOutlined,} from '@ant-design/icons';
 import {DragDropContext,Draggable, Droppable} from 'react-beautiful-dnd';
 import {connect} from "react-redux";
 import Item from "./Item";
@@ -14,7 +13,7 @@ import {
 } from "../../../../../redux/actions/userSection_action";
 import { nanoid } from 'nanoid'
 import "./index.css"
-import {experienceInfoReducer} from "../../../../../redux/reduers/userSection_reducer";
+
 
 const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
@@ -42,8 +41,6 @@ class Section extends Component {
         ],
     }
 
-
-
     show = (section) =>{
         return ()=>{
             this.props.showInputChange(section)
@@ -51,21 +48,49 @@ class Section extends Component {
     }
 
     handleAddModule = (section) =>{
-       let newModuleId = nanoid();
-        if(section !== 'education') {
-            let sectionId = nanoid()
-            let informationId = nanoid()
-            const data = {
-                sectionId: sectionId, informationId: informationId, experienceId: newModuleId,
-                newExperience: {id: newModuleId, module: section, title: section, sectionId: sectionId},
-                newSection: {id: sectionId, sectionList: [informationId]},
-                newInformation: {infoId: informationId, project: "", role: "", location: "",
-                    startDate:"", endDate: "",
-                    HTMLContent: "", RAWContent: {}
-                }
-            }
-            this.props.addExpSectionInfo(data)
-        }
+        let newModuleId = nanoid()
+        let sectionId = nanoid()
+        let informationId = nanoid()
+       switch (section){
+           case "education":
+               const educationDate = {
+                   sectionId: sectionId, informationId: informationId, experienceId: newModuleId,
+                   newExperience: {id: newModuleId, module: section, title: section, sectionId: sectionId},
+                   newSection: {id: sectionId, sectionList: [informationId]},
+                   newInformation: {infoId: informationId, school: "", major: "", degree: "", location: "",
+                       startDate:"", endDate: "",
+                       HTMLContent: "", RAWContent: {}
+                   }
+               }
+               this.props.addExpSectionInfo(educationDate)
+               break;
+
+           case "summary":
+               const summaryData = {
+                   sectionId: sectionId, informationId: informationId, experienceId: newModuleId,
+                   newExperience: {id: newModuleId, module: section, title: section, sectionId: sectionId},
+                   newSection: {id: sectionId, sectionList: [informationId]},
+                   newInformation: {infoId: informationId,
+                       HTMLContent: "", RAWContent: {}
+                   }
+               }
+               this.props.addExpSectionInfo(summaryData)
+               break
+
+           default:
+               const data = {
+                   sectionId: sectionId, informationId: informationId, experienceId: newModuleId,
+                   newExperience: {id: newModuleId, module: section, title: section, sectionId: sectionId},
+                   newSection: {id: sectionId, sectionList: [informationId]},
+                   newInformation: {infoId: informationId, project: "", role: "", location: "",
+                       startDate:"", endDate: "",
+                       HTMLContent: "", RAWContent: {}
+                   }
+               }
+               this.props.addExpSectionInfo(data)
+               break
+       }
+
         const module = {id: newModuleId + "",module: section};
         this.props.addModules(module)
     }

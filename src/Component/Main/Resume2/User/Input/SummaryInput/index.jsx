@@ -1,16 +1,36 @@
 import React, {Component, Fragment} from 'react';
-import  {Button, Col, Form, Input, Row, DatePicker} from "antd";
+import  {Button, Col, Form, Row, } from "antd";
 import {LeftOutlined,} from '@ant-design/icons';
 import Editor from "../../Editor";
 import BraftEditor from 'braft-editor'
+import {connect} from "react-redux";
+import {
+    updateExperienceSectionInfo
+} from "../../../../../../redux/actions/userSection_action";
 
 
 
 
 class SummaryInput extends Component {
+
     state={
-        content: BraftEditor.createEditorState(null),
-        outputHTML: '<p></p>',
+        curSectionId:"",
+        infoId: "",
+        curInfoId: "",
+        content:  BraftEditor.createEditorState(null),
+    }
+    componentDidMount() {
+        const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
+        const firstInfoId = this.props.experienceState.sections[targetSectionId].sectionList[0];
+        const firstSectionInfo = this.props.experienceState.information[firstInfoId]
+        //send the id and targetSection to input section to initialize the first section
+        this.setState(
+            {
+                infoId: firstSectionInfo.infoId,
+                curInfoId: firstInfoId,
+                content:  BraftEditor.createEditorState(firstSectionInfo.HTMLContent)
+            }
+        )
     }
 
     goBack = (section) =>{
@@ -21,13 +41,20 @@ class SummaryInput extends Component {
 
     handleContent = (userContent) =>{
         this.setState({
-            content: userContent,
-            outputHTML: userContent.toHTML()
+            content: userContent
         })
+        const HTMLContent = userContent.toHTML();
+        const RAWContent = userContent.toRAW();
+        const h = {infoId: this.state.infoId, type: "HTMLContent", value: HTMLContent}
+        const r = {infoId: this.state.infoId, type: "RAWContent", value: RAWContent}
+        this.props.updateExperienceSectionInfo(h)
+        this.props.updateExperienceSectionInfo(r)
     }
 
+
+
     render() {
-        const { editorState, outputHTML } = this.state
+
         return (
             <Fragment >
                 <Button onClick={this.goBack("default")} icon={<LeftOutlined />}  style={{boxShadow: 2}}/>
@@ -39,7 +66,7 @@ class SummaryInput extends Component {
                             style={{ marginLeft: 40, marginRight: 40}}
                             wrapperCol={{span: 24}}
                         >
-                            <Editor handleContent={this.handleContent}/>
+                            <Editor content={this.state.content} handleContent={this.handleContent}/>
                             <Button type="primary" style={{marginBottom: 10, marginTop: 10}}>Save</Button>
                         </Form>
                     </Col>
@@ -49,4 +76,9 @@ class SummaryInput extends Component {
     }
 }
 
-export default SummaryInput;
+export default connect(
+    state => ({experienceState: state.experienceInfoReducer}),
+    {
+        updateExperienceSectionInfo: updateExperienceSectionInfo
+    }
+)(SummaryInput);

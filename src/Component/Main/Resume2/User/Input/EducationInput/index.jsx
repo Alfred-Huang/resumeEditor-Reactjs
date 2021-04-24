@@ -3,14 +3,52 @@ import {Button, Col, Form, Input, Row} from "antd";
 import {LeftOutlined, MinusCircleOutlined, PlusOutlined} from '@ant-design/icons';
 import Editor from "../../Editor";
 import BraftEditor from 'braft-editor'
+import {nanoid} from "nanoid";
+import ExperienceAction from "../../ExpericenAction";
+import {connect} from "react-redux";
+import {
+    addExperienceSectionInfo,
+    deleteExperienceSectionInfo,
+    updateExperienceSectionInfo
+} from "../../../../../../redux/actions/userSection_action";
 
 
 
 
 class EducationInput extends Component {
     state={
-        content: BraftEditor.createEditorState(null),
-        outputHTML: '<p></p>',
+        curSectionId:"",
+        infoId: "",
+        school: "",
+        major: "",
+        degree:"",
+        location:"",
+        stateDate: "",
+        endDate: "",
+        sectionListLength: 0,
+        curInfoId: "",
+        content:  BraftEditor.createEditorState(null),
+    }
+
+    componentDidMount() {
+        const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
+        const sectionList = this.props.experienceState.sections[targetSectionId].sectionList;
+        const firstInfoId = this.props.experienceState.sections[targetSectionId].sectionList[0];
+        const firstSectionInfo = this.props.experienceState.information[firstInfoId]
+        //send the id and targetSection to input section to initialize the first section
+        this.setState(
+            { infoId: firstSectionInfo.infoId,
+                school: firstSectionInfo.school,
+                major: firstSectionInfo.major,
+                degree: firstSectionInfo.degree,
+                location: firstSectionInfo.location,
+                startDate: firstSectionInfo.startDate,
+                endDate: firstSectionInfo.endDate,
+                sectionListLength: sectionList.length,
+                curInfoId: firstInfoId,
+                content:  BraftEditor.createEditorState(firstSectionInfo.HTMLContent)
+            }
+        )
     }
 
     goBack = (section) =>{
@@ -21,16 +59,79 @@ class EducationInput extends Component {
 
     handleContent = (userContent) =>{
         this.setState({
-            content: userContent,
-            outputHTML: userContent.toHTML()
+            content: userContent
+        })
+        const HTMLContent = userContent.toHTML();
+        const RAWContent = userContent.toRAW();
+        const h = {infoId: this.state.infoId, type: "HTMLContent", value: HTMLContent}
+        const r = {infoId: this.state.infoId, type: "RAWContent", value: RAWContent}
+        this.props.updateExperienceSectionInfo(h)
+        this.props.updateExperienceSectionInfo(r)
+    }
+
+    handleInformation = (curInfoId, targetInfo) =>{
+        const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
+        const sectionList = this.props.experienceState.sections[targetSectionId].sectionList;
+        this.setState(
+            { infoId: targetInfo.infoId,
+                school: targetInfo.school,
+                major: targetInfo.major,
+                degree: targetInfo.degree,
+                location: targetInfo.location,
+                startDate: targetInfo.startDate,
+                endDate: targetInfo.endDate,
+                sectionListLength: sectionList.length,
+                curInfoId: curInfoId,
+                content:  BraftEditor.createEditorState(targetInfo.HTMLContent)
+            }
+        )
+    }
+
+
+    deleteInputSection = ()=>{
+        const targetInfoObj = {experienceId: this.props.currentId, infoId: this.state.infoId}
+        this.props.deleteExperienceSectionInfo(targetInfoObj).then(()=> {
+            const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
+            const firstElementAfterDeleted = this.props.experienceState.sections[targetSectionId].sectionList[0];
+            const targetSectionInfo = this.props.experienceState.information[firstElementAfterDeleted]
+            this.handleInformation(firstElementAfterDeleted, targetSectionInfo)
         })
     }
 
+    addInputSection = () =>{
+        const infoId = nanoid();
+        const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
+        const data = {sectionId: targetSectionId, id: infoId + "", info: {infoId: infoId + "", school: "", major: "", degree: "",
+                location: "", startDate:"", endDate: "", HTMLContent: "", RAWContent: {}
+            }}
+        this.props.addExperienceSectionInfo(data)
+    }
+
+    // changing the information while user's typing
+    onInputChange = (type, e) =>{
+        this.setState({[type]: e.target.value})
+        const infoObj = {infoId: this.state.infoId, type: type, value: e.target.value}
+        this.props.updateExperienceSectionInfo(infoObj)
+    }
+
     render() {
-        const { editorState, outputHTML } = this.state
         return (
             <Fragment >
-                <Button onClick={this.goBack("default")} icon={<LeftOutlined />}  style={{boxShadow: 2}}/>
+                <Row style={{display: "line block"}} span={24}>
+                    <Col span={2}>
+                        <Button onClick={this.goBack("default")} icon={<LeftOutlined />}  style={{boxShadow: 2}}/>
+                    </Col>
+                    <Col span={20} style={{textAlign: "center"}}>
+                        <ExperienceAction
+                            handleInformation={this.handleInformation}
+                            addInputSection={this.addInputSection}
+                            curInfoId={this.state.curInfoId}
+                            currentId={this.props.currentId}
+                            currentSection={"education"}
+                        />
+                    </Col>
+                    <Col span={2}/>
+                </Row>
                 <Row>
                     <Col span={24}>
                         <Form
@@ -42,44 +143,58 @@ class EducationInput extends Component {
                             <Row >
                                 <Col span={12}>
                                     <Form.Item label="School:">
-                                        <Input />
+                                        <Input
+                                            onChange={(e)=>this.onInputChange("school", e)}
+                                            value={this.state.school}/>
                                     </Form.Item>
                                 </Col>
                                 <Col span={12}>
                                     <Form.Item label="Major:" >
-                                        <Input/>
+                                        <Input
+                                            onChange={(e)=>this.onInputChange("major", e)}
+                                            value={this.state.major}/>
                                     </Form.Item>
                                 </Col>
                                 <Col span={12}>
                                     <Form.Item label="Educational background:">
-                                        <Input/>
+                                        <Input
+                                            onChange={(e)=>this.onInputChange("degree", e)}
+                                            value={this.state.degree}
+                                        />
                                     </Form.Item>
                                 </Col>
                                 <Col span={12}>
-                                    <Form.Item label="City:">
-                                        <Input/>
-                                        <div dangerouslySetInnerHTML={{__html: outputHTML}}/>
+                                    <Form.Item label="Location:">
+                                        <Input
+                                            onChange={(e)=>this.onInputChange("location", e)}
+                                            value={this.state.location}/>
                                     </Form.Item>
                                 </Col>
                                 <Col span={12}>
                                     <Form.Item label="Date:">
-                                        <Input placeholder="Ex: Spring 2020"/>
+                                        <Input placeholder="Ex: Spring 2020"
+                                               onChange={(e)=>this.onInputChange("startDate", e)}
+                                               value={this.state.startDate}/>
                                     </Form.Item>
                                 </Col>
                                 <Col span={12}>
                                     <Form.Item label=" ">
-                                        <Input placeholder="Ex: Fall 2024"/>
+                                        <Input placeholder="Ex: Fall 2024"
+                                               onChange={(e)=>this.onInputChange("endDate", e)}
+                                               value={this.state.endDate}/>
                                     </Form.Item>
                                 </Col>
                             </Row>
-                            <Editor handleContent={this.handleContent}/>
+                            <Editor content={this.state.content} handleContent={this.handleContent}/>
                             <Row span={24}>
                                 <Col span={12}>
                                 <Button type="primary" style={{marginBottom: 10, marginTop: 10}}>Save</Button>
                                 </Col>
 
                                 <Col span={12} style={{textAlign: "right"}}>
-                                    <Button type="danger" style={{marginBottom: 10, marginTop: 10}}>Delete</Button>
+                                    <Button type="danger"
+                                            onClick={(e)=>this.deleteInputSection()}
+                                            style={{marginBottom: 10, marginTop: 10}}>Delete</Button>
                                 </Col>
                             </Row>
                         </Form>
@@ -90,4 +205,11 @@ class EducationInput extends Component {
     }
 }
 
-export default EducationInput;
+export default connect(
+    state => ({experienceState: state.experienceInfoReducer}),
+    {
+        updateExperienceSectionInfo: updateExperienceSectionInfo,
+        deleteExperienceSectionInfo: deleteExperienceSectionInfo,
+        addExperienceSectionInfo: addExperienceSectionInfo,
+    }
+)(EducationInput);

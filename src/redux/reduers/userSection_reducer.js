@@ -67,7 +67,7 @@ const initExperience = {
             startDate:"06-2024", endDate: "06-2025",
             HTMLContent: "", RAWContent: {}
         },
-        "7": {infoId: "7", name: "", telephone: "", email: "", location: "", other: ""}
+        "7": {infoId: "7", name: "Zhicheng Huang", telephone: "218763812", email: "asdasdjgh@gmail.com", location: "New York", other: ""}
 
     }
 }

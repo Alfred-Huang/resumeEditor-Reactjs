@@ -54,7 +54,7 @@ class Resume2 extends Component {
         }
         this.setState({width: newWidth, scale: newScale, firstTime: false})
     }
-    //when user click card chang to input
+    //when user click card change it to input
     showInputChange = (section, id)=>{
         this.setState({sectionType: section, currentSectionId: id})
     }
