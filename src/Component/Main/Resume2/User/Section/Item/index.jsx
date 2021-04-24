@@ -1,12 +1,15 @@
 import React, {Component, Fragment} from 'react';
 import {Popconfirm, Row, Card, Input, message} from "antd";
 import {DeleteOutlined, EditOutlined, } from '@ant-design/icons';
+import {connect} from "react-redux";
+import {
+    updateModuleTitle
+} from "../../../../../../redux/actions/userSection_action";
 
 
 
 
 class Item extends Component {
-
 
 
     show = (section, id) =>{
@@ -15,8 +18,15 @@ class Item extends Component {
         }
     }
 
+    handleTitleChange = (e) =>{
+        const title = e.target.value
+        const data = {experienceId: this.props.id, title: title}
+        this.props.updateModuleTitle(data)
+    }
+
     render() {
         const {module, id, handleDeleteModule} = this.props;
+        const title = this.props.experienceState.experiences[id].title
         function confirm(id) {
             return ()=>{
                 handleDeleteModule(id)
@@ -48,7 +58,7 @@ class Item extends Component {
                        hoverable="true"
                        size="small"
                    >
-                       <Input defaultValue={module} placeholder="Title" bordered={false}   suffix={<EditOutlined/>}  style={{width: 120}}/>
+                       <Input defaultValue={title}  onChange={(e)=>this.handleTitleChange(e)} placeholder="Title" bordered={false}   suffix={<EditOutlined/>}  style={{width: 120}}/>
                    </Card>
                </Row>
             </Fragment>
@@ -57,4 +67,9 @@ class Item extends Component {
     }
 }
 
-export default Item;
+export default connect(
+    state => ({experienceState: state.experienceInfoReducer}),
+    {
+        updateModuleTitle: updateModuleTitle
+    }
+)(Item);

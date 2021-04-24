@@ -4,6 +4,7 @@ export const GET_MODULE = 'getModule'
 export const UPDATE_MODULE = 'updateModule'
 
 export const ADD_EXP_SECTION_INFO = 'addExpSectionInfo'
+export const UPDATE_MODULE_TITLE = 'updateModuleTitle'
 
 export const ADD_EXPERIENCE = 'addExperience'
 export const DELETE_EXPERIENCE = 'deleteExperience'

@@ -41,15 +41,9 @@ class Section extends Component {
             {id: 4, name: "education"},
             {id: 5, name: "custom"}
         ],
-        a: {"1": "asd", "2": "asdasd"}
     }
 
-    // componentDidMount() {
-    //     const a = {1: "asdas", 2: "asdasd"}
-    //     console.log(a)
-    //     a["3"] = "asdasdas";
-    //     console.log(a)
-    // }
+
 
     show = (section) =>{
         return ()=>{

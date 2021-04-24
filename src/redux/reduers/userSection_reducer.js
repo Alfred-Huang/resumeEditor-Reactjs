@@ -12,7 +12,7 @@ import {
     UPDATE_EXPERIENCE_SECTION_INFO,
     DELETE_EXPERIENCE_SECTION_INFO,
     ADD_EXPERIENCE_SECTION_INFO,
-    ADD_EXP_SECTION_INFO
+    ADD_EXP_SECTION_INFO, UPDATE_MODULE_TITLE
 } from "../constant";
 
 
@@ -130,6 +130,11 @@ export function experienceInfoReducer(preState=initExperience, action){
             newExpSecInfo.sections[newSecId] = data.newSection
             newExpSecInfo.information[newInfo] = data.newInformation
             return newExpSecInfo
+
+        case UPDATE_MODULE_TITLE:
+            let newTitleState = JSON.parse(JSON.stringify(preState))
+            newTitleState.experiences[data.experienceId].title = data.title
+            return newTitleState
         default:
             return preState
     }

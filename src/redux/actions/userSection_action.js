@@ -12,7 +12,8 @@ import {
     UPDATE_EXPERIENCE_SECTION_INFO,
     DELETE_EXPERIENCE_SECTION_INFO,
     ADD_EXPERIENCE_SECTION_INFO,
-    ADD_EXP_SECTION_INFO
+    ADD_EXP_SECTION_INFO,
+    UPDATE_MODULE_TITLE
 } from "../constant"
 
 
@@ -38,6 +39,7 @@ export const updateExperienceSectionInfo = infoObj =>({type: UPDATE_EXPERIENCE_S
 export const addExperienceSectionInfo = infoObj =>({type: ADD_EXPERIENCE_SECTION_INFO, data: infoObj})
 
 export const addExpSectionInfo = obj => ({type: ADD_EXP_SECTION_INFO, data: obj})
+export const updateModuleTitle = title =>({type: UPDATE_MODULE_TITLE, data: title})
 
 export const deleteExperienceSectionInfo = (data) =>{
     return (dispatch) =>{
