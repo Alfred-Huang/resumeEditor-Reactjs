@@ -20,7 +20,6 @@ const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
-    console.log(result)
     return result;
 };
 
@@ -80,6 +79,10 @@ class Section extends Component {
             return;
         }
 
+        if(this.props.experienceState.experiences[result.draggableId].module === "basicInfo"){
+            return
+        }
+
         const newModules = reorder(
             this.props.modulesObj.modules,
             result.source.index,
@@ -99,18 +102,7 @@ class Section extends Component {
                 <DragDropContext onDragEnd={this.onDragEnd}>
                     <Row className="section-board" style={{height: 740, overflow: "auto"}}>
                         <Col span={24} >
-                    <Row style={{margin: 10}} justify="center">
-                        <Card
-                            style={{width: 400, textAlign: "center",  boxShadow: "10 10 5 grey"}}
-                            actions={[
-                                <EditOutlined onClick={this.show("personal")}/>,
-                            ]}
-                            hoverable="true"
-                            size="small"
-                        >
-                            Basic Information
-                        </Card>
-                    </Row>
+
                     <Droppable droppableId="droppable">
                         {(provided) => (
                             <div
@@ -128,6 +120,7 @@ class Section extends Component {
                                                                provided.draggableProps.style
                                                            )}
                                                     >
+
                                                         <Item
                                                             key={moduleObj.id}
                                                             {...moduleObj}
@@ -138,7 +131,9 @@ class Section extends Component {
                                                     </div>
                                                 )}
                                             </Draggable>
-                                        ))}
+                                        ))
+                                    }
+
                                 {provided.placeholder}
                             </div>
                     )}

@@ -117,7 +117,6 @@ class ProjectInput extends Component {
 
 
     startDateChange = (value, dateString) =>{
-        console.log(dateString)
         this.setState({startDate: dateString})
         const infoObj = {infoId: this.state.infoId, type: "startDate", value: dateString}
         this.props.updateExperienceSectionInfo(infoObj)
@@ -128,7 +127,7 @@ class ProjectInput extends Component {
         const infoObj = {infoId: this.state.infoId, type: "endDate", value: dateString}
         this.props.updateExperienceSectionInfo(infoObj)
     }
-// (e)=>this.onInputChange("startDate", e)
+
     render() {
         return (
             <Fragment>

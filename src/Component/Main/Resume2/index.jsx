@@ -15,7 +15,6 @@ import EducationInput from "./User/Input/EducationInput";
 import SummaryInput from "./User/Input/SummaryInput";
 import CustomInput from "./User/Input/CustomInput";
 import LeadershipInput from "./User/Input/LeadershipInput";
-import ExperienceAction from "./User/ExpericenAction";
 import {connect} from "react-redux";
 import html2canvas from 'html2canvas';
 import jsPDF from "jspdf";
@@ -58,7 +57,6 @@ class Resume2 extends Component {
     //when user click card chang to input
     showInputChange = (section, id)=>{
         this.setState({sectionType: section, currentSectionId: id})
-        console.log(id)
     }
 
     //present the resume section
@@ -68,6 +66,9 @@ class Resume2 extends Component {
                return (
                    <Education key={id} moduleId={id}/>
                )
+           case "basicInfo":
+               return null
+
            default:
                return (
                    <GeneralInfo key={id} moduleId={id}/>
@@ -86,10 +87,6 @@ class Resume2 extends Component {
                 return (
                     <EducationInput currentId={this.state.currentSectionId} showInputChange={this.showInputChange} />
                 )
-            case "personal":
-                return (
-                    <PersonalInput currentId={this.state.currentSectionId} showInputChange={this.showInputChange}/>
-                )
             case "summary":
                 return (
                     <SummaryInput currentId={this.state.currentSectionId} showInputChange={this.showInputChange}/>
@@ -101,6 +98,10 @@ class Resume2 extends Component {
             case "custom":
                 return (
                     <CustomInput currentId={this.state.currentSectionId} showInputChange={this.showInputChange}/>
+                )
+            case "basicInfo":
+                return (
+                    <PersonalInput currentId={this.state.currentSectionId} showInputChange={this.showInputChange}/>
                 )
             default:
                 return (
@@ -193,7 +194,7 @@ class Resume2 extends Component {
                                                  transform: [`scale(${this.state.firstTime === false ? this.state.scale : resumeScale / (794 / window.innerWidth)})`]}}
                                         >
                                             <div className="resume-spacing">
-                                                <BasicInfo/>
+                                                <BasicInfo modules={this.props.modulesObj.modules}/>
                                                 {this.props.modulesObj.modules.map((moduleObj)=>{
                                                     return this.handleResumeSection(moduleObj.module, moduleObj.id)
                                                 })}

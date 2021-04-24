@@ -16,12 +16,13 @@ class GeneralInfo extends Component {
     }
 
     render() {
+        const title = this.props.experienceState.experiences[this.props.moduleId].title
         return (
             <Fragment>
                 <div>
                     <div className="resume-section">
                         <div className="resume-section-title" style={{marginLeft: 30}}>
-                            Leadership
+                            {title}
                         </div>
                         <div >
                             <div className="resume-divider"/>

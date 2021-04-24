@@ -19,6 +19,7 @@ import {
 
 const initModuleState = {
     modules: [
+        {id: "Jhka8as0IUHKJHASD89hj", module: "basicInfo"},
         {id: "lgCeTDkAvYlDobUgwfBQN", module: "education"},
         {id: "JVPGlab2QGb7TLXXl8pgw", module: "project"},
     ]};
@@ -27,11 +28,13 @@ const initExperience = {
     experiences: {
         "lgCeTDkAvYlDobUgwfBQN": {id:  "lgCeTDkAvYlDobUgwfBQN", module: "education", title: "education", sectionId: "1"},
         "JVPGlab2QGb7TLXXl8pgw": {id: "JVPGlab2QGb7TLXXl8pgw", module: "project", title: "project", sectionId:"2"},
+        "Jhka8as0IUHKJHASD89hj": {id: "Jhka8as0IUHKJHASD89hj", module: "basicInfo", title: "basic Info", sectionId: "3"}
     },
 
     sections: {
         "1": {sectionId: "1", sectionList: ["1", "2", "3"]},
         "2": {sectionId: "2", sectionList: ["4", "5", "6"]},
+        "3": {sectionId: "3", sectionList: ["7"]},
     },
 
     information: {
@@ -64,6 +67,7 @@ const initExperience = {
             startDate:"06-2024", endDate: "06-2025",
             HTMLContent: "", RAWContent: {}
         },
+        "7": {infoId: "7", name: "", telephone: "", email: "", location: "", other: ""}
 
     }
 }
