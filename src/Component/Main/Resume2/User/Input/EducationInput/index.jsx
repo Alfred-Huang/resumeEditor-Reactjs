@@ -19,9 +19,8 @@ class EducationInput extends Component {
     state={
         curSectionId:"",
         infoId: "",
-        school: "",
-        major: "",
-        degree:"",
+        project: "",
+        role: "",
         location:"",
         stateDate: "",
         endDate: "",
@@ -38,9 +37,8 @@ class EducationInput extends Component {
         //send the id and targetSection to input section to initialize the first section
         this.setState(
             { infoId: firstSectionInfo.infoId,
-                school: firstSectionInfo.school,
-                major: firstSectionInfo.major,
-                degree: firstSectionInfo.degree,
+                project: firstSectionInfo.project,
+                role: firstSectionInfo.role,
                 location: firstSectionInfo.location,
                 startDate: firstSectionInfo.startDate,
                 endDate: firstSectionInfo.endDate,
@@ -74,9 +72,8 @@ class EducationInput extends Component {
         const sectionList = this.props.experienceState.sections[targetSectionId].sectionList;
         this.setState(
             { infoId: targetInfo.infoId,
-                school: targetInfo.school,
-                major: targetInfo.major,
-                degree: targetInfo.degree,
+                project: targetInfo.project,
+                role: targetInfo.role,
                 location: targetInfo.location,
                 startDate: targetInfo.startDate,
                 endDate: targetInfo.endDate,
@@ -101,7 +98,7 @@ class EducationInput extends Component {
     addInputSection = () =>{
         const infoId = nanoid();
         const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
-        const data = {sectionId: targetSectionId, id: infoId + "", info: {infoId: infoId + "", school: "", major: "", degree: "",
+        const data = {sectionId: targetSectionId, id: infoId + "", info: {infoId: infoId + "", project: "", role: "",
                 location: "", startDate:"", endDate: "", HTMLContent: "", RAWContent: {}
             }}
         this.props.addExperienceSectionInfo(data)
@@ -138,47 +135,47 @@ class EducationInput extends Component {
                             size='middle'
                             layout="vertical"
                             style={{ marginLeft: 40, marginRight: 40}}
-                            wrapperCol={{span: 20}}
+                            wrapperCol={{span: 24}}
                         >
                             <Row >
-                                <Col span={12}>
+                                <Col span={24}>
                                     <Form.Item label="School:">
                                         <Input
-                                            onChange={(e)=>this.onInputChange("school", e)}
-                                            value={this.state.school}/>
+                                            onChange={(e)=>this.onInputChange("project", e)}
+                                            value={this.state.project}/>
                                     </Form.Item>
                                 </Col>
-                                <Col span={12}>
+                                <Col span={10}>
                                     <Form.Item label="Major:" >
                                         <Input
-                                            onChange={(e)=>this.onInputChange("major", e)}
-                                            value={this.state.major}/>
+                                            onChange={(e)=>this.onInputChange("role", e)}
+                                            value={this.state.role}/>
                                     </Form.Item>
                                 </Col>
-                                <Col span={12}>
-                                    <Form.Item label="Educational background:">
-                                        <Input
-                                            onChange={(e)=>this.onInputChange("degree", e)}
-                                            value={this.state.degree}
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={12}>
+                                {/*<Col span={12}>*/}
+                                {/*    <Form.Item label="Educational background:">*/}
+                                {/*        <Input*/}
+                                {/*            onChange={(e)=>this.onInputChange("degree", e)}*/}
+                                {/*            value={this.state.degree}*/}
+                                {/*        />*/}
+                                {/*    </Form.Item>*/}
+                                {/*</Col>*/}
+                                <Col span={10} offset={4}>
                                     <Form.Item label="Location:">
                                         <Input
                                             onChange={(e)=>this.onInputChange("location", e)}
                                             value={this.state.location}/>
                                     </Form.Item>
                                 </Col>
-                                <Col span={12}>
-                                    <Form.Item label="Date:">
+                                <Col span={10}>
+                                    <Form.Item label="Start Date:">
                                         <Input placeholder="Ex: Spring 2020"
                                                onChange={(e)=>this.onInputChange("startDate", e)}
                                                value={this.state.startDate}/>
                                     </Form.Item>
                                 </Col>
-                                <Col span={12}>
-                                    <Form.Item label=" ">
+                                <Col span={10} offset={4}>
+                                    <Form.Item label="End Date">
                                         <Input placeholder="Ex: Fall 2024"
                                                onChange={(e)=>this.onInputChange("endDate", e)}
                                                value={this.state.endDate}/>
@@ -193,8 +190,12 @@ class EducationInput extends Component {
 
                                 <Col span={12} style={{textAlign: "right"}}>
                                     <Button type="danger"
+                                            disabled={this.state.sectionListLength === 1}
                                             onClick={(e)=>this.deleteInputSection()}
-                                            style={{marginBottom: 10, marginTop: 10}}>Delete</Button>
+                                            style={{marginBottom: 10, marginTop: 10}}
+                                    >
+                                        Delete
+                                    </Button>
                                 </Col>
                             </Row>
                         </Form>

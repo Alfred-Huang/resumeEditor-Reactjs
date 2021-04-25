@@ -1,18 +1,17 @@
 import React, {Component, Fragment} from 'react';
 import {connect} from "react-redux";
-import Item from "./Item"
+import Item from "./Item";
 
 
-class GeneralInfo extends Component {
+
+class SummaryInfo extends Component {
 
     getItem = () =>{
         const id = this.props.moduleId
         const sectionId = this.props.experienceState.experiences[id].sectionId
-        const sectionList = this.props.experienceState.sections[sectionId].sectionList
-        return sectionList.map( itemId =>{
-                    const targetInfo = this.props.experienceState.information[itemId]
-                     return   <Item information={targetInfo} key={targetInfo.infoId}/>
-                })
+        const infoId = this.props.experienceState.sections[sectionId].sectionList[0]
+        const htmlContent = this.props.experienceState.information[infoId].HTMLContent
+        return <Item HTMLContent={htmlContent}/>
     }
 
     render() {
@@ -21,13 +20,15 @@ class GeneralInfo extends Component {
             <Fragment>
                 <div>
                     <div className="resume-section">
-                        <div className="resume-section-title" style={{marginLeft: 40}}>
+                        <div className="resume-section-title" style={{marginLeft: 30}}>
                             {title}
                         </div>
                         <div >
                             <div className="resume-divider"/>
                         </div>
-                        {this.getItem()}
+                        <div>
+                            {this.getItem()}
+                        </div>
                     </div>
                 </div>
             </Fragment>
@@ -37,4 +38,4 @@ class GeneralInfo extends Component {
 
 export default  connect(
     state => ({experienceState: state.experienceInfoReducer})
-)(GeneralInfo);
+)(SummaryInfo);

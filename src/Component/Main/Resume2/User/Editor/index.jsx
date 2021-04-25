@@ -39,7 +39,7 @@ class Editor extends Component {
                     onChange={this.handleEditorChange}
                     language={languageFn}
                     controls={controls}
-                    lineHeights={[0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6]}
+                    lineHeights={[0.7,0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6]}
                     fontSizes={[12,13,14,15,16,17]}
                     contentClassName="editor-style"
                     controlBarClassName="editor-bar-style"

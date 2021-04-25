@@ -1,13 +1,14 @@
 import React, {Component, Fragment} from 'react';
-import {Button, Col, Row, Card} from "antd";
+import {Button, Col, Row} from "antd";
 import {
     CloudDownloadOutlined,
     ControlOutlined,
-    EditOutlined, PlusOutlined,
+    EditOutlined,
 } from '@ant-design/icons';
 import Education from "./Education"
 import GeneralInfo from "./GeneralInfo"
 import BasicInfo from "./BasicInfo";
+import SummaryInfo from "./SummaryInfo";
 import Section from "./User/Section"
 import PersonalInput from "./User/Input/PersonalInput";
 import ProjectInput from "./User/Input/ProjectInput";
@@ -62,12 +63,18 @@ class Resume2 extends Component {
     //present the resume section
     handleResumeSection = (sectionName, id)=>{
        switch (sectionName) {
-           case "education":
-               return (
-                   <Education key={id} moduleId={id}/>
-               )
+           // case "education":
+           //     return (
+           //         <Education key={id} moduleId={id}/>
+           //     )
            case "basicInfo":
-               return null
+               return   (
+                   <BasicInfo  key={id} moduleId={id}/>
+               )
+           case "summary":
+               return (
+                  <SummaryInfo key={id} moduleId={id}/>
+               )
 
            default:
                return (
@@ -194,7 +201,6 @@ class Resume2 extends Component {
                                                  transform: [`scale(${this.state.firstTime === false ? this.state.scale : resumeScale / (794 / window.innerWidth)})`]}}
                                         >
                                             <div className="resume-spacing">
-                                                <BasicInfo modules={this.props.modulesObj.modules}/>
                                                 {this.props.modulesObj.modules.map((moduleObj)=>{
                                                     return this.handleResumeSection(moduleObj.module, moduleObj.id)
                                                 })}

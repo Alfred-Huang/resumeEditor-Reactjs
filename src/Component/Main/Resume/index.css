@@ -55,12 +55,12 @@
 
 .resume-name{
     /*486*/
-    width: 186px;
+    width: 400px;
     height: 21px;
     margin-left: auto;
     margin-right: auto;
     font-weight: 700;
-    font-size: 24px;
+    font-size: 23px;
     font-optical-sizing: auto;
     line-height: 21px;
 }
@@ -72,8 +72,8 @@
 .resume-personal-info{
     font-weight: 650;
     margin-top: 10px;
-    width: 350px;
-    font-size: 12px;
+    width: 500px;
+    font-size: 13px;
     height: fit-content;
     margin-left: auto;
     margin-right: auto;
@@ -82,7 +82,8 @@
 }
 
 .resume-section{
-    margin-top: 5px;
+    font-family: Helvetica, sans-serif;
+    margin-top: 8px;
     height: fit-content;
 }
 
@@ -92,8 +93,8 @@
 }
 
 .resume-divider{
-    width: 734px;
-    margin: 0 30px 10px;
+    width: 714px;
+    margin: 0 40px 10px;
     border: 1px solid #575555;
 }
 

@@ -38,17 +38,17 @@ const initExperience = {
     },
 
     information: {
-        "1": {infoId: "1", school: "qianghua", major: "B.A. CS", degree: "master", location: "Flushing",
+        "1": {infoId: "1", project: "qianghua", role: "B.A. CS", location: "Flushing",
             startDate:"06-2024", endDate: "06-2025",
             HTMLContent: "", RAWContent: {}
         },
 
-        "2": {infoId: "2", school: "beida", major: "B.A. CS", degree: "master", location: "Flushing",
+        "2": {infoId: "2", project: "beida", role: "B.A. CS", location: "Flushing",
             startDate:"06-2024", endDate: "06-2025",
             HTMLContent: "", RAWContent: {}
         },
 
-        "3": {infoId: "3", school: "qianghua", major: "B.A. CS", degree: "master", location: "Flushing",
+        "3": {infoId: "3", project: "qianghua", role: "B.A. CS", location: "Flushing",
             startDate:"06-2024", endDate: "06-2025",
             HTMLContent: "", RAWContent: {}
         },

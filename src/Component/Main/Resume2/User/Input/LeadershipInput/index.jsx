@@ -186,8 +186,12 @@ class LeadershipInput extends Component {
 
                                 <Col span={12} style={{textAlign: "right"}}>
                                     <Button type="danger"
+                                            disabled={this.state.sectionListLength === 1}
                                             onClick={(e)=>this.deleteInputSection()}
-                                            style={{marginBottom: 10, marginTop: 10}}>Delete</Button>
+                                            style={{marginBottom: 10, marginTop: 10}}
+                                    >
+                                        Delete
+                                    </Button>
                                 </Col>
                             </Row>
                         </Form>
@@ -198,4 +202,12 @@ class LeadershipInput extends Component {
     }
 }
 
-export default LeadershipInput;
+export default connect(
+    state => ({experienceState: state.experienceInfoReducer}),
+    {
+        updateExperienceSectionInfo: updateExperienceSectionInfo,
+        deleteExperienceSectionInfo: deleteExperienceSectionInfo,
+        addExperienceSectionInfo: addExperienceSectionInfo,
+    }
+)(LeadershipInput);
+

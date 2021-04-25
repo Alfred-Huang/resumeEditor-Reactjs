@@ -1,34 +1,33 @@
 import React, {Component, Fragment} from 'react';
+import {connect} from "react-redux";
+import Item from "./Item"
 
 
 class Education extends Component {
+
+
+    getItem = () =>{
+        const id = this.props.moduleId
+        const sectionId = this.props.experienceState.experiences[id].sectionId
+        const sectionList = this.props.experienceState.sections[sectionId].sectionList
+        return sectionList.map( itemId =>{
+            const targetInfo = this.props.experienceState.information[itemId]
+            return   <Item information={targetInfo} key={targetInfo.infoId}/>
+        })
+    }
+
     render() {
         return (
             <Fragment>
                 <div >
                     <div className="resume-section">
-                        <div className="resume-section-title" style={{marginLeft: 30}}>
+                        <div className="resume-section-title" style={{marginLeft: 40}}>
                             EDUCATION
                         </div>
                         <div>
                             <div className="resume-divider"/>
                         </div>
-                        <div  style={{marginBottom: 5,marginLeft: 30}}>
-                            <div className="resume-content-title">
-                                <div style={{display: "inline-block", width: 534}}>
-                                    School
-                                </div>
-                                <div  style={{textAlign:"right",display: "inline-block", width: 200}}>
-                                    Spring 2021 - Fall 2024
-                                </div>
-                            </div>
-                            <p style={{marginBottom: 2}}>major</p>
-                            <div>
-                                <div >
-                                    content 荣誉啊 什么什么的
-                                </div>
-                            </div>
-                        </div>
+                        {this.getItem()}
                     </div>
                 </div>
             </Fragment>
@@ -36,4 +35,6 @@ class Education extends Component {
     }
 }
 
-export default Education;
+export default  connect(
+    state => ({experienceState: state.experienceInfoReducer})
+)(Education);
