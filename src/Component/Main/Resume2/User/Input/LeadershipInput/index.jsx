@@ -11,7 +11,7 @@ import {
     updateExperienceSectionInfo
 } from "../../../../../../redux/actions/userSection_action";
 
-import {nanoid} from 'nanoid'
+import { v4 as uuidv4 } from 'uuid';
 
 
 class LeadershipInput extends Component {
@@ -94,7 +94,7 @@ class LeadershipInput extends Component {
     }
 
     addInputSection = () =>{
-        const infoId = nanoid();
+        const infoId = uuidv4();
         const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
         const data = {sectionId: targetSectionId, id: infoId + "", info: {infoId: infoId + "", project: "", role: "", location: "",
                 startDate:"", endDate: "", HTMLContent: "", RAWContent: {}

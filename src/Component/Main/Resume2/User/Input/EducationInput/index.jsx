@@ -3,7 +3,7 @@ import {Button, Col, Form, Input, Row} from "antd";
 import {LeftOutlined, MinusCircleOutlined, PlusOutlined} from '@ant-design/icons';
 import Editor from "../../Editor";
 import BraftEditor from 'braft-editor'
-import {nanoid} from "nanoid";
+import { v4 as uuidv4 } from 'uuid';
 import ExperienceAction from "../../ExpericenAction";
 import {connect} from "react-redux";
 import {
@@ -96,7 +96,7 @@ class EducationInput extends Component {
     }
 
     addInputSection = () =>{
-        const infoId = nanoid();
+        const infoId = uuidv4();
         const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
         const data = {sectionId: targetSectionId, id: infoId + "", info: {infoId: infoId + "", project: "", role: "",
                 location: "", startDate:"", endDate: "", HTMLContent: "", RAWContent: {}
