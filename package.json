@@ -181,5 +181,8 @@
     "presets": [
       "react-app"
     ]
+  },
+  "devDependencies": {
+    "history": "^5.0.0"
   }
 }

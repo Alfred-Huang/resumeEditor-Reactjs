@@ -17,6 +17,14 @@ import {
 
 
 
+const userState = {
+    user: {
+        name: "",
+        id: "",
+        image: ""
+    }
+}
+
 const initModuleState = {
     modules: [
         {id: "Jhka8as0IUHKJHASD89hj", module: "basicInfo"},
@@ -144,3 +152,8 @@ export function experienceInfoReducer(preState=initExperience, action){
     }
 
 }
+
+
+// export function userReducer(prestate = userState, action){
+//
+// }

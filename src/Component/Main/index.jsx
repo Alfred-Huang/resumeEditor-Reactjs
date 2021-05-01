@@ -1,15 +1,18 @@
 import React, {Component, Fragment} from 'react';
-import {Link, Route, Switch,Redirect} from 'react-router-dom';
+import {Link, Route, Switch,Redirect, withRouter} from 'react-router-dom';
 import {Content, Header} from "antd/es/layout/layout";
 import {Button, Col, Layout, Row} from "antd";
 import BuildResume from "./BuildResume";
-import Welcome from "./Welcome";
+import Home from "./Welcome";
 import Resume from "./Resume";
 import Resume2 from "./Resume2"
+import routes from './router'
 import "./index.css";
+import renderRoutes from "./utils/renderRouter";
 
 
-
+const authed = false;
+const authPath = '/'
 class Main extends Component {
     render() {
         return (
@@ -29,11 +32,7 @@ class Main extends Component {
                     </Header>
                     <Content>
                         <Switch>
-                            <Route path="/" component={Welcome} exact/>
-                            <Route path="/identity" component={BuildResume}/>
-                            <Route path="/resume" component={Resume}/>
-                            <Route path="/resume2" component={Resume2}/>
-                            <Redirect to="/"/>
+                            {renderRoutes(routes, authed, authPath)}
                         </Switch>
                     </Content>
                 </Layout>
