@@ -1,28 +1,21 @@
 import {
-    ADD_MODULE,
-    DELETE_MODULE,
-    GET_MODULE,
-    UPDATE_MODULE,
-    UPDATE_EXPERIENCE,
-    DELETE_EXPERIENCE,
-    ADD_EXPERIENCE,
-    UPDATE_EXPERIENCE_SECTION,
-    DELETE_EXPERIENCE_SECTION,
-    ADD_EXPERIENCE_SECTION,
-    UPDATE_EXPERIENCE_SECTION_INFO,
-    DELETE_EXPERIENCE_SECTION_INFO,
+    ADD_EXP_SECTION_INFO,
     ADD_EXPERIENCE_SECTION_INFO,
-    ADD_EXP_SECTION_INFO, UPDATE_MODULE_TITLE
+    ADD_MODULE,
+    ADD_RESUME,
+    DELETE_EXPERIENCE_SECTION_INFO,
+    DELETE_MODULE,
+    DELETE_RESUME,
+    GET_MODULE,
+    UPDATE_EXPERIENCE_SECTION_INFO,
+    UPDATE_MODULE,
+    UPDATE_MODULE_TITLE,
+    UPDATE_RESUME
 } from "../constant";
 
 
-
-const userState = {
-    user: {
-        name: "",
-        id: "",
-        image: ""
-    }
+const resumeState = {
+    resumeList: []
 }
 
 const initModuleState = {
@@ -80,6 +73,26 @@ const initExperience = {
     }
 }
 
+export function resumeReducer(preState = resumeState, action){
+    const {type, data} = action
+    switch (type){
+        case UPDATE_RESUME:
+            let newUpdateState = JSON.parse(JSON.stringify(preState))
+            newUpdateState.resumeList = data.resumeList
+            return newUpdateState
+        case ADD_RESUME:
+            let newAddState = JSON.parse(JSON.stringify(preState))
+            newAddState.resumeList.push(data)
+            return newAddState
+        case DELETE_RESUME:
+            let newDeleteState = JSON.parse(JSON.stringify(preState))
+            return newDeleteState.resumeList.filter(function (item) {
+                return item !== data
+            })
+        default:
+            return preState
+    }
+}
 
 export function moduleReducer(preState=initModuleState, action){
     const {type, data} = action

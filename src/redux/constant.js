@@ -1,3 +1,8 @@
+export const ADD_RESUME = 'addResume'
+export const DELETE_RESUME = 'deleteResume'
+export const UPDATE_RESUME = 'updateResume'
+
+
 export const ADD_MODULE = 'addModule'
 export const DELETE_MODULE = 'deleteModule'
 export const GET_MODULE = 'getModule'

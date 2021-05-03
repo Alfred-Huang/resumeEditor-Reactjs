@@ -11,7 +11,7 @@ import {
     getModuleAction,
     updateModuleAction
 } from "../../../../../redux/actions/userSection_action";
-import { nanoid } from 'nanoid'
+import { v4 as uuidv4 } from 'uuid';
 import "./index.css"
 
 
@@ -48,9 +48,9 @@ class Section extends Component {
     }
 
     handleAddModule = (section) =>{
-        let newModuleId = nanoid()
-        let sectionId = nanoid()
-        let informationId = nanoid()
+        let newModuleId = uuidv4()
+        let sectionId = uuidv4()
+        let informationId = uuidv4()
        switch (section){
            case "education":
                const educationDate = {

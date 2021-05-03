@@ -1,11 +1,8 @@
 import React, {Component, Fragment} from 'react';
-import {Link, Route, Switch,Redirect, withRouter} from 'react-router-dom';
+import {Link, Switch,} from 'react-router-dom';
 import {Content, Header} from "antd/es/layout/layout";
-import {Button, Col, Layout, Row} from "antd";
-import BuildResume from "./BuildResume";
-import Home from "./Welcome";
-import Resume from "./Resume";
-import Resume2 from "./Resume2"
+import {Button, Col, Layout, Row, Avatar} from "antd";
+import { UserOutlined } from '@ant-design/icons';
 import routes from './router'
 import "./index.css";
 import renderRoutes from "./utils/renderRouter";
@@ -24,9 +21,6 @@ class Main extends Component {
                                 <Link to="/">
                                     <Button className="label" type="link">ResumeSolver</Button>
                                 </Link>
-                            </Col>
-                            <Col span={2} offset={13}>
-                                <Button className="login" type="link">Login</Button>
                             </Col>
                         </Row>
                     </Header>

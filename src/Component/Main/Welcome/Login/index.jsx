@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import GoogleLogin from "react-google-login";
+import { withRouter } from 'react-router-dom';
 import axios from "axios";
 
 
@@ -12,6 +13,14 @@ class Login extends Component {
         image: ""
     }
 
+    componentDidMount() {
+        let a = [];
+        const b = ["1", "2", "3"];
+        a = b
+        console.log(a)
+    }
+
+
     login = (res) =>{
         const userInfo = {
             username: res.profileObj.name,
@@ -20,13 +29,14 @@ class Login extends Component {
             Image: res.profileObj.imageUrl,
         }
         let api = global.AppConfig. serverIP + "/login"
-        let resume
         axios.post(api, userInfo)
             .then((result)=>{
                 if(result.status === 200){
                     sessionStorage.setItem("user_token", res.profileObj.googleId)
-                    resume = result.data
-
+                    sessionStorage.setItem("resume_list",result.data)
+                    sessionStorage.setItem("image", res.profileObj.imageUrl)
+                    sessionStorage.setItem("name", res.profileObj.name)
+                    this.props.history.push('/main');
                 }else{
 
                 }
@@ -67,4 +77,4 @@ class Login extends Component {
     }
 }
 
-export default Login;
+export default withRouter(Login);
