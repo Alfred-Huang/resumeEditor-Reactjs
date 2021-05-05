@@ -15,7 +15,7 @@ import {
 
 
 const resumeState = {
-    resumeList: []
+    resumeList: [{}]
 }
 
 const initModuleState = {
@@ -78,7 +78,7 @@ export function resumeReducer(preState = resumeState, action){
     switch (type){
         case UPDATE_RESUME:
             let newUpdateState = JSON.parse(JSON.stringify(preState))
-            newUpdateState.resumeList = data.resumeList
+            newUpdateState.resumeList = data
             return newUpdateState
         case ADD_RESUME:
             let newAddState = JSON.parse(JSON.stringify(preState))
@@ -87,7 +87,7 @@ export function resumeReducer(preState = resumeState, action){
         case DELETE_RESUME:
             let newDeleteState = JSON.parse(JSON.stringify(preState))
             return newDeleteState.resumeList.filter(function (item) {
-                return item !== data
+                return item.resumeId !== data
             })
         default:
             return preState

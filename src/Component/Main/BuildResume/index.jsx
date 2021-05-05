@@ -17,7 +17,7 @@ class BuildResume extends Component {
     componentDidMount() {
         const userId = sessionStorage.getItem("user_token")
         let api = global.AppConfig.serverIP + "/main"
-        axios.post(api, userId).then((result)=>{
+        axios.post(api, {userId: userId}).then((result)=>{
             const resumeList = result.data
             this.props.updateResume(resumeList)
         })
@@ -25,7 +25,8 @@ class BuildResume extends Component {
 
 
     handleClick = (id)=>{
-        return <Link to="/resume2"/>
+        // console.log(id)
+        // return <Link to="/resume2"/>
     }
 
     handleOk = () =>{
@@ -34,7 +35,8 @@ class BuildResume extends Component {
         let api = global.AppConfig.serverIP + "/addresume"
         axios.post(api,  data).then((result)=>{
             if(result.status === 200){
-                this.props.addResume(newResumeId)
+                const newResume = {resumeId: newResumeId, userId: "", resumeTitle: this.state.title}
+                this.props.addResume(newResume)
             }
         })
         this.setState({isModalVisible: false})
@@ -53,16 +55,19 @@ class BuildResume extends Component {
     }
 
     resumeList = ()=>{
-        this.props.resumeState.resumeList.map((id)=>{
-            return <Col>
-                         <Button key={id}
-                                 onClick={this.handleClick(id)} type="dashed"
-                                 style={{width: 100, height: 130}}
-                                 icon={<PlusOutlined style={{fontSize: 30}}/>}
-                         />
-                    </Col>
+        if(this.props.resumeState.resumeList[0].resumeId === undefined){
+            return null
+        }
 
-        })
+       return this.props.resumeState.resumeList.map((resume,index) => {
+
+            return <Col key={resume.resumeId}>
+                   <Button  onClick={this.handleClick(resume.resumeId)}
+                            style={{width: 100, height: 130}}>Resume</Button>
+                 </Col>
+
+           })
+
     }
 
 
@@ -104,12 +109,19 @@ class BuildResume extends Component {
                 </Row>
                 <Row justify="center" style={{marginTop: 150}}>
                     <Card  bordered={false} style={{width: 500, height: 180, borderTop: "1px solid #DEDBDB", borderBottom: "1px solid #DEDBDB"}}>
-                        {this.resumeList()}
-                        {this.props.resumeState.resumeList.length === 3 ? null :
-                            <Col >
-                            <Button  type="dashed" onClick={this.changeModal} style={{width: 100, height: 130}} icon={<PlusOutlined style={{fontSize: 30}}/>}/>
-                            </Col>
-                        }
+                        <Row gutter={70}>
+                            {this.resumeList()}
+
+                            {/*<Button  type="dashed" onClick={this.changeModal} style={{width: 100, height: 130}} icon={<PlusOutlined style={{fontSize: 30}}/>}/>*/}
+                            {/*<Button  type="dashed" onClick={this.changeModal} style={{width: 100, height: 130}} icon={<PlusOutlined style={{fontSize: 30}}/>}/>*/}
+                            {/*<Button  type="dashed" onClick={this.changeModal} style={{width: 100, height: 130}} icon={<PlusOutlined style={{fontSize: 30}}/>}/>*/}
+
+                            {this.props.resumeState.resumeList.length === 3 ? null :
+                                <Col>
+                                    <Button  type="dashed" onClick={this.changeModal} style={{width: 100, height: 130}} icon={<PlusOutlined style={{fontSize: 30}}/>}/>
+                                </Col>
+                            }
+                        </Row>
                     </Card>
                      <Modal title="Title" visible={this.state.isModalVisible} onOk={this.handleOk} onCancel={this.handleCancel}>
                        <Input onChange={this.saveTitle}/>
