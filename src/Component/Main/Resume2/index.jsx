@@ -36,6 +36,8 @@ class Resume2 extends Component {
     //handle windows change
     componentDidMount() {
         window.addEventListener('resize', this.handleResize)
+        const resumeId = this.props.location.state.resumeId
+        console.log(resumeId)
     }
 
     componentWillUnmount() {

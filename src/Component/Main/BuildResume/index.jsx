@@ -1,7 +1,7 @@
-import React, {Component, Fragment} from 'react';
-import {Button, Card, Col, Row, Avatar, Input, Modal} from "antd";
+import React, {Component, Fragment, } from 'react';
+import {Button, Card, Col, Row, Avatar, Input, Modal, Popconfirm } from "antd";
 import {PlusOutlined, UserOutlined} from '@ant-design/icons';
-import {Link, Route, Switch} from "react-router-dom";
+import {Link, Route, Switch, withRouter} from "react-router-dom";
 import axios from "axios";
 import {connect} from "react-redux";
 import {addResume, deleteResume, updateResume} from "../../../redux/actions/userSection_action";
@@ -11,31 +11,29 @@ import { v4 as uuidv4 } from 'uuid';
 class BuildResume extends Component {
     state = {
         isModalVisible: false,
-        title: ""
+        title: "",
     }
 
     componentDidMount() {
         const userId = sessionStorage.getItem("user_token")
         let api = global.AppConfig.serverIP + "/main"
         axios.post(api, {userId: userId}).then((result)=>{
-            const resumeList = result.data
-            this.props.updateResume(resumeList)
+            this.props.updateResume(result.data)
         })
     }
 
 
     handleClick = (id)=>{
-        // console.log(id)
-        // return <Link to="/resume2"/>
+        this.props.history.push({pathname: "/resume2", state: {resumeId: id}})
     }
 
     handleOk = () =>{
         const newResumeId = uuidv4()
         const data = {resumeId: newResumeId, userId: sessionStorage.getItem("user_token"), resumeTitle: this.state.title}
-        let api = global.AppConfig.serverIP + "/addresume"
+        let api = global.AppConfig.serverIP + "/main/addResume"
         axios.post(api,  data).then((result)=>{
             if(result.status === 200){
-                const newResume = {resumeId: newResumeId, userId: "", resumeTitle: this.state.title}
+                const newResume = {resumeId: newResumeId, resume: {userId: "", resumeTitle: this.state.title}}
                 this.props.addResume(newResume)
             }
         })
@@ -46,6 +44,14 @@ class BuildResume extends Component {
         this.setState({isModalVisible: false})
     }
 
+    handleDelete = (id) =>{
+        console.log(id)
+        let api = global.AppConfig.serverIP + "/main/deleteResume"
+        axios.post(api, {resumeId: id}).then(
+            this.props.deleteResume(id)
+        )
+    }
+
     changeModal = () =>{
         this.setState({isModalVisible: true})
     }
@@ -54,19 +60,55 @@ class BuildResume extends Component {
         this.setState({title: event.target.value})
     }
 
+    confirm = (id) =>{
+        console.log(id)
+        let api = global.AppConfig.serverIP + "/main/deleteResume"
+        axios.post(api, {resumeId: id}).then(
+            this.props.deleteResume(id)
+        )
+    }
+
+    cancel = ()=>{
+        return null
+    }
+
     resumeList = ()=>{
-        if(this.props.resumeState.resumeList[0].resumeId === undefined){
+        if((Object.getOwnPropertyNames(this.props.resumeState.resumeList).length === 0)){
             return null
         }
 
-       return this.props.resumeState.resumeList.map((resume,index) => {
-
-            return <Col key={resume.resumeId}>
-                   <Button  onClick={this.handleClick(resume.resumeId)}
-                            style={{width: 100, height: 130}}>Resume</Button>
+         return Object.keys(this.props.resumeState.resumeList).map(id=> (
+                 <Col key={id} style={{textAlign: "center"}}>
+                     <Row>
+                        <Button  onClick={(e)=>this.handleClick(id)} style={{width: 100, height: 130}}>Resume</Button>
+                     </Row>
+                     <Row justify={"center"}>
+                         <p style={{textAlign:"center", wordBreak: "break-all", width: 100, lineHeight: 1}}>{this.props.resumeState.resumeList[id].resumeTitle}</p>
+                     </Row>
+                     <Row justify={"center"}>
+                         <Popconfirm
+                             title="Are you sure to delete this task?"
+                             onConfirm={(e) =>this.confirm(id)}
+                             onCancel={(e)=>this.cancel()}
+                             okText="Yes"
+                         >
+                             <Button  size={"small"}  danger>Delete</Button>
+                         </Popconfirm>
+                     </Row>
                  </Col>
 
-           })
+           ))
+
+    }
+
+    addResumeButton = ()=>{
+        if((Object.getOwnPropertyNames(this.props.resumeState.resumeList).length === 3)){
+            return null
+        }else {
+            return  <Col>
+                <Button  type="dashed" onClick={this.changeModal} style={{width: 100, height: 130}} icon={<PlusOutlined style={{fontSize: 30}}/>}/>
+            </Col>
+        }
 
     }
 
@@ -95,35 +137,15 @@ class BuildResume extends Component {
                             </Row>
                         </Card>
                     </Col>
-                    {/*<Col offset={1} >*/}
-                    {/*    <Card  style={{ width: 300 , marginTop: 100}}>*/}
-                    {/*        <Row justify="center">*/}
-                    {/*            <Col>*/}
-                    {/*                <Link to="/resume2">*/}
-                    {/*                    <Button onClick={()=>{this.handleClick("nonstudent")}}>Non-Student</Button>*/}
-                    {/*                </Link>*/}
-                    {/*            </Col>*/}
-                    {/*        </Row>*/}
-                    {/*    </Card>*/}
-                    {/*</Col>*/}
                 </Row>
                 <Row justify="center" style={{marginTop: 150}}>
-                    <Card  bordered={false} style={{width: 500, height: 180, borderTop: "1px solid #DEDBDB", borderBottom: "1px solid #DEDBDB"}}>
+                    <Card  bordered={false} style={{width: 500, height: 230, borderTop: "1px solid #DEDBDB", borderBottom: "1px solid #DEDBDB"}}>
                         <Row gutter={70}>
                             {this.resumeList()}
-
-                            {/*<Button  type="dashed" onClick={this.changeModal} style={{width: 100, height: 130}} icon={<PlusOutlined style={{fontSize: 30}}/>}/>*/}
-                            {/*<Button  type="dashed" onClick={this.changeModal} style={{width: 100, height: 130}} icon={<PlusOutlined style={{fontSize: 30}}/>}/>*/}
-                            {/*<Button  type="dashed" onClick={this.changeModal} style={{width: 100, height: 130}} icon={<PlusOutlined style={{fontSize: 30}}/>}/>*/}
-
-                            {this.props.resumeState.resumeList.length === 3 ? null :
-                                <Col>
-                                    <Button  type="dashed" onClick={this.changeModal} style={{width: 100, height: 130}} icon={<PlusOutlined style={{fontSize: 30}}/>}/>
-                                </Col>
-                            }
+                            {this.addResumeButton()}
                         </Row>
                     </Card>
-                     <Modal title="Title" visible={this.state.isModalVisible} onOk={this.handleOk} onCancel={this.handleCancel}>
+                     <Modal destroyOnClose title="Title" visible={this.state.isModalVisible} onOk={this.handleOk} onCancel={this.handleCancel}>
                        <Input onChange={this.saveTitle}/>
                     </Modal>
                 </Row>
@@ -135,4 +157,4 @@ class BuildResume extends Component {
 export default connect(
     state => ({resumeState: state.resumeReducer}),
     {deleteResume: deleteResume, addResume: addResume, updateResume: updateResume}
-    )(BuildResume);
+    )(withRouter(BuildResume));

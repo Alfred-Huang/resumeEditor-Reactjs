@@ -23,3 +23,123 @@
     height: 1123px;
     width: 794px;
 }
+
+.background{
+    background-color: black;
+    z-index: 0;
+}
+
+
+
+.resume-page{
+    /*794*/
+    width: 794px;
+    /*1123*/
+    height: 1123px;
+    background-color: #ffff;
+}
+
+.resume-board::-webkit-scrollbar{
+    display: none;
+}
+
+.resume-board{
+    /*width: 794px;*/
+    /*height: 896px;*/
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+
+.resume-main{
+    text-align: center;
+    /*695*/
+    width: 724px;
+    height: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+}
+
+.resume-name{
+    /*486*/
+    width: 400px;
+    height: 21px;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: 700;
+    font-size: 23px;
+    font-optical-sizing: auto;
+    line-height: 21px;
+}
+
+.resume-container{
+    padding: 35px 40px;
+}
+
+.resume-personal-info{
+    font-weight: 650;
+    margin-top: 10px;
+    width: 500px;
+    font-size: 13px;
+    height: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    word-wrap:break-word;
+    line-height: 0.85;
+}
+
+.resume-section{
+    font-family: Helvetica, sans-serif;
+    margin-top: 8px;
+    height: fit-content;
+}
+
+.resume-section-title{
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.resume-divider{
+    width: 714px;
+    margin: 0 40px 10px;
+    border: 1px solid #575555;
+}
+
+.resume-content-title{
+    width: 750px;
+}
+
+.resume-user-content{
+    font-size: 12px;
+}
+
+.resume-user-info{
+    height: fit-content;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    word-wrap: break-word;
+}
+
+.resume-section-content{
+}
+
+.resume-section-content-title{
+    font-weight: 650;
+    font-size: 13px;
+    width: 400px;
+    display: inline;
+}
+
+.resume-section-content-time{
+    font-weight: 650;
+    text-align: right;
+    font-style: oblique;
+    font-size: 13px;
+    width: 200px;
+    display: inline;
+}
+
