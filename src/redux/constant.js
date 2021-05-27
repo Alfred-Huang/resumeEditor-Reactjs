@@ -11,6 +11,8 @@ export const UPDATE_MODULE = 'updateModule'
 export const ADD_EXP_SECTION_INFO = 'addExpSectionInfo'
 export const UPDATE_MODULE_TITLE = 'updateModuleTitle'
 
+export const INITIAL_EXPERIENCE_STATE = 'initialExperienceState'
+
 export const ADD_EXPERIENCE = 'addExperience'
 export const DELETE_EXPERIENCE = 'deleteExperience'
 export const UPDATE_EXPERIENCE = 'updateExperience'

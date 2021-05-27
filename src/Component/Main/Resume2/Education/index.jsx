@@ -9,8 +9,8 @@ class Education extends Component {
     getItem = () =>{
         const id = this.props.moduleId
         const sectionId = this.props.experienceState.experiences[id].sectionId
-        const sectionList = this.props.experienceState.sections[sectionId].sectionList
-        return sectionList.map( itemId =>{
+        const infoIdList = this.props.experienceState.sections[sectionId].infoIdList
+        return infoIdList.map( itemId =>{
             const targetInfo = this.props.experienceState.information[itemId]
             return   <Item information={targetInfo} key={targetInfo.infoId}/>
         })

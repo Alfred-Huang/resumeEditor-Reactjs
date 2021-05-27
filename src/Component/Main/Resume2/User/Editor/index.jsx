@@ -4,16 +4,6 @@ import 'braft-editor/dist/index.css'
 import "./index.css"
 
 class Editor extends Component {
-    // state = {
-    //     // 创建一个空的editorState作为初始值
-    //     editorState: BraftEditor.createEditorState(null)
-    // }
-    //
-    // componentDidMount () {
-    //     this.setState({
-    //         editorState: BraftEditor.createEditorState("")
-    //     })
-    // }
 
     handleEditorChange = (editorState) => {
         this.props.handleContent(editorState)

@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import  {Button, Col, Form, Row, } from "antd";
+import {Alert, Button, Col, Form, Row,notification} from "antd";
 import {LeftOutlined,} from '@ant-design/icons';
 import Editor from "../../Editor";
 import BraftEditor from 'braft-editor'
@@ -7,6 +7,9 @@ import {connect} from "react-redux";
 import {
     updateExperienceSectionInfo
 } from "../../../../../../redux/actions/userSection_action";
+import axios from "axios";
+
+
 
 
 
@@ -21,7 +24,7 @@ class SummaryInput extends Component {
     }
     componentDidMount() {
         const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
-        const firstInfoId = this.props.experienceState.sections[targetSectionId].sectionList[0];
+        const firstInfoId = this.props.experienceState.sections[targetSectionId].infoIdList[0];
         const firstSectionInfo = this.props.experienceState.information[firstInfoId]
         //send the id and targetSection to input section to initialize the first section
         this.setState(
@@ -44,14 +47,24 @@ class SummaryInput extends Component {
             content: userContent
         })
         const HTMLContent = userContent.toHTML();
-        const RAWContent = userContent.toRAW();
         const h = {infoId: this.state.infoId, type: "HTMLContent", value: HTMLContent}
-        const r = {infoId: this.state.infoId, type: "RAWContent", value: RAWContent}
         this.props.updateExperienceSectionInfo(h)
-        this.props.updateExperienceSectionInfo(r)
     }
 
 
+    openNotificationWithIcon = type => {
+        notification[type]({
+            message: 'Successfully Save',
+        });
+    };
+
+    updateSummary = ()=>{
+        let api = global.AppConfig.serverIP + "/resume/updateSummary"
+        const data = {HTMLContent: this.props.experienceState.information[this.state.infoId].HTMLContent, infoId: this.state.infoId};
+        axios.post(api, data).then((result)=>{
+            this.openNotificationWithIcon('success')
+        })
+    }
 
     render() {
 
@@ -67,7 +80,7 @@ class SummaryInput extends Component {
                             wrapperCol={{span: 24}}
                         >
                             <Editor content={this.state.content} handleContent={this.handleContent}/>
-                            <Button type="primary" style={{marginBottom: 10, marginTop: 10}}>Save</Button>
+                            <Button type="primary" style={{marginBottom: 10, marginTop: 10}} onClick={(e)=>this.updateSummary()} >Save</Button>
                         </Form>
                     </Col>
                 </Row>

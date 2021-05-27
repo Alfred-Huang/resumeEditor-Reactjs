@@ -26,7 +26,7 @@ class Item extends Component {
                                 </div>
                             </div>
                             <p style={{marginBottom: 3, fontStyle: "italic", width: 524, fontSize: 13,display: "inline-block"}}>{information.role}</p>
-                            <p style={{textAlign:"right", fontStyle: "italic", width: 190,marginBottom: 3, display: "inline-block"}}>{information.location}</p>
+                            <p style={{textAlign:"right", fontStyle: "italic", width: 190,marginBottom: 3, display: "inline-block"}}>{information.personalLocation}</p>
                             <div style={{lineHeight: 0.7, marginRight: 40, marginLeft: 5,  whiteSpace: "pre-wrap", wordWrap: "break-word"}}>
                                 <div  dangerouslySetInnerHTML={{__html: HTMLContent}}>
                                 </div>

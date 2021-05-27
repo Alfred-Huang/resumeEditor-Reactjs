@@ -13,6 +13,7 @@ import {
 } from "../../../../../redux/actions/userSection_action";
 import { v4 as uuidv4 } from 'uuid';
 import "./index.css"
+import axios from "axios";
 
 
 const reorder = (list, startIndex, endIndex) => {
@@ -39,7 +40,9 @@ class Section extends Component {
             {id: 4, name: "education"},
             {id: 5, name: "custom"}
         ],
+
     }
+
 
     show = (section) =>{
         return ()=>{
@@ -47,56 +50,50 @@ class Section extends Component {
         }
     }
 
+
     handleAddModule = (section) =>{
+        if(this.props.modulesObj.modules.length === 8) {
+            return null;
+        }
         let newModuleId = uuidv4()
         let sectionId = uuidv4()
         let informationId = uuidv4()
-       switch (section){
-           case "education":
-               const educationDate = {
-                   sectionId: sectionId, informationId: informationId, experienceId: newModuleId,
-                   newExperience: {id: newModuleId, module: section, title: section, sectionId: sectionId},
-                   newSection: {id: sectionId, sectionList: [informationId]},
-                   newInformation: {infoId: informationId, school: "", major: "", degree: "", location: "",
-                       startDate:"", endDate: "",
-                       HTMLContent: "", RAWContent: {}
-                   }
-               }
-               this.props.addExpSectionInfo(educationDate)
-               break;
+        const newData = {
+            sectionId: sectionId, informationId: informationId, experienceId: newModuleId,
+            newExperience: {id: newModuleId, module: section, title: section, sectionId: sectionId, resumeId: this.props.resumeId},
+            newSection: {sectionId: sectionId, infoIdList: [informationId]},
+            newInformation: {infoId: informationId, project: "", role: "", location: "",
+                startDate:"", endDate: "",
+                HTMLContent: "",name: "", telephone: "", email:"", personalLocation: "", other: ""
 
-           case "summary":
-               const summaryData = {
-                   sectionId: sectionId, informationId: informationId, experienceId: newModuleId,
-                   newExperience: {id: newModuleId, module: section, title: section, sectionId: sectionId},
-                   newSection: {id: sectionId, sectionList: [informationId]},
-                   newInformation: {infoId: informationId,
-                       HTMLContent: "", RAWContent: {}
-                   }
-               }
-               this.props.addExpSectionInfo(summaryData)
-               break
+            }
+        }
+        let curMaxSortId = 0
+        this.props.modulesObj.modules.forEach((item)=>{
+            if(item.sortId > curMaxSortId){
+                curMaxSortId = item.sortId;
+            }
+        })
+        curMaxSortId += 1;
+        const newModule = {id: newModuleId + "", resumeId: this.props.resumeId, module: section, sortId: curMaxSortId};
+        let data = {newData, newModule}
 
-           default:
-               const data = {
-                   sectionId: sectionId, informationId: informationId, experienceId: newModuleId,
-                   newExperience: {id: newModuleId, module: section, title: section, sectionId: sectionId},
-                   newSection: {id: sectionId, sectionList: [informationId]},
-                   newInformation: {infoId: informationId, project: "", role: "", location: "",
-                       startDate:"", endDate: "",
-                       HTMLContent: "", RAWContent: {}
-                   }
-               }
-               this.props.addExpSectionInfo(data)
-               break
-       }
+        let api = global.AppConfig.serverIP + "/resume/addModule"
+        axios.post(api, data).then((result)=>{
+            this.props.addExpSectionInfo(newData)
+            this.props.addModules(newModule)
+        }).catch(function (error) {
+            window.alert("fail to add")
+        })
 
-        const module = {id: newModuleId + "",module: section};
-        this.props.addModules(module)
     }
 
     handleDeleteModule = (sectionId) =>{
-        this.props.deleteModules(sectionId)
+        let api = global.AppConfig.serverIP + "/resume/deleteModule"
+        const target = {id: sectionId}
+        axios.post(api, target).then((result)=>{
+            this.props.deleteModules(sectionId)
+        })
     }
 
     onDragEnd = (result) => {
@@ -114,7 +111,15 @@ class Section extends Component {
             result.destination.index
         );
 
-      this.props.updateModules(newModules)
+        let curId = 1
+        newModules.forEach((item)=>{
+            item.sortId = curId
+            curId++;
+        })
+        let api = global.AppConfig.serverIP + "/resume/updateModuleSortId"
+        axios.post(api, newModules).then((result)=>{
+            this.props.updateModules(newModules)
+        })
     }
 
 
@@ -124,51 +129,54 @@ class Section extends Component {
 
         return (
             <Fragment>
-                <DragDropContext onDragEnd={this.onDragEnd}>
-                    <Row className="section-board" style={{height: 740, overflow: "auto"}}>
-                        <Col span={24} >
+                <p style={{zIndex: 2, margin: 0,  marginLeft: 20 }}>{this.props.modulesObj.modules.length }/8</p>
+                <div style={{zIndex: 1}}>
+                    <DragDropContext onDragEnd={this.onDragEnd}>
+                        <Row className="section-board" style={{height: 740, overflow: "auto"}}>
+                            <Col span={24} >
 
-                    <Droppable droppableId="droppable">
-                        {(provided) => (
-                            <div
-                                ref={provided.innerRef}
-                                {...provided.droppableProps}
-                            >
-                                    {this.props.modulesObj.modules.map((moduleObj, index)=>(
-                                            <Draggable draggableId={moduleObj.id} key={moduleObj.id} index={index}>
-                                                {(provided, snapshot) => (
-                                                    <div   ref={provided.innerRef}
-                                                           {...provided.draggableProps}
-                                                           {...provided.dragHandleProps}
-                                                           style={getItemStyle(
-                                                               snapshot.isDragging,
-                                                               provided.draggableProps.style
-                                                           )}
-                                                    >
+                        <Droppable droppableId="droppable">
+                            {(provided) => (
+                                <div
+                                    ref={provided.innerRef}
+                                    {...provided.droppableProps}
+                                >
+                                        {this.props.modulesObj.modules.map((moduleObj, index)=>(
+                                                <Draggable draggableId={moduleObj.id} key={moduleObj.id} index={index}>
+                                                    {(provided, snapshot) => (
+                                                        <div   ref={provided.innerRef}
+                                                               {...provided.draggableProps}
+                                                               {...provided.dragHandleProps}
+                                                               style={getItemStyle(
+                                                                   snapshot.isDragging,
+                                                                   provided.draggableProps.style
+                                                               )}
+                                                        >
 
-                                                        <Item
-                                                            key={moduleObj.id}
-                                                            {...moduleObj}
-                                                            handleDeleteModule={this.handleDeleteModule}
-                                                            showInputChange={showInputChange}
-                                                        />
+                                                            <Item
+                                                                key={moduleObj.id}
+                                                                {...moduleObj}
+                                                                handleDeleteModule={this.handleDeleteModule}
+                                                                showInputChange={showInputChange}
+                                                            />
 
-                                                    </div>
-                                                )}
-                                            </Draggable>
-                                        ))
-                                    }
+                                                        </div>
+                                                    )}
+                                                </Draggable>
+                                            ))
+                                        }
 
-                                {provided.placeholder}
-                            </div>
-                    )}
-                    </Droppable>
-                        </Col>
-                    </Row>
-                </DragDropContext>
+                                    {provided.placeholder}
+                                </div>
+                        )}
+                        </Droppable>
+                            </Col>
+                        </Row>
+                    </DragDropContext>
+                </div>
 
 
-                <Row>
+                <Row style={{zIndex: 1}}>
                     <Col span={24} style={{backgroundColor: "white"}}>
                         <Card size="small" title={"Add Modules"} headStyle={{height: 10, paddingLeft: 10, fontSize: 12 }}>
                             <Row span={24} gutter={[16,16]}>

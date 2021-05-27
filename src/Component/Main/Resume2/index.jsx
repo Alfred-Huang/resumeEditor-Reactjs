@@ -19,7 +19,11 @@ import LeadershipInput from "./User/Input/LeadershipInput";
 import {connect} from "react-redux";
 import html2canvas from 'html2canvas';
 import jsPDF from "jspdf";
+import { v4 as uuidv4 } from 'uuid';
+import axios from "axios";
 import "./index.css";
+import {initialExperienceState, updateModuleAction} from "../../../redux/actions/userSection_action";
+
 
 
 const resumeScale = 794 / 1920;
@@ -32,12 +36,29 @@ class Resume2 extends Component {
         inputNum: 1,
         sectionType: "default",
         currentSectionId: "",
+        curResumeId: ""
     }
     //handle windows change
     componentDidMount() {
         window.addEventListener('resize', this.handleResize)
         const resumeId = this.props.location.state.resumeId
-        console.log(resumeId)
+        let api = global.AppConfig.serverIP + "/resume/getModule"
+
+        axios.post(api, {resumeId: resumeId}).then((result)=>{
+                const data = result.data
+                const newExperience = {experiences: {}, sections: {}, information: {}}
+                console.log(data);
+                newExperience.experiences = data.experience;
+                newExperience.sections = data.sections;
+                newExperience.information = data.information
+
+                this.props.initialExperienceState(newExperience)
+                // const newModule = {resumeId}
+
+                this.props.updateModuleAction(data.module.modules);
+        }
+        )
+        this.setState({curResumeId: resumeId})
     }
 
     componentWillUnmount() {
@@ -114,7 +135,7 @@ class Resume2 extends Component {
                 )
             default:
                 return (
-                        <Section showInputChange={this.showInputChange}/>
+                        <Section showInputChange={this.showInputChange} resumeId={this.state.curResumeId}/>
                 )
         }
 
@@ -220,4 +241,7 @@ class Resume2 extends Component {
     }
 }
 
-export default connect(state => ({modulesObj: state.moduleReducer}), null)(Resume2)
+export default connect(
+    state => ({modulesObj: state.moduleReducer, experienceState: state.experienceInfoReducer}),
+    {updateModuleAction: updateModuleAction, initialExperienceState: initialExperienceState}
+    )(Resume2)

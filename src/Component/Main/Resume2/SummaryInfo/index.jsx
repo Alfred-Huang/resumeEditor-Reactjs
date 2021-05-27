@@ -9,7 +9,7 @@ class SummaryInfo extends Component {
     getItem = () =>{
         const id = this.props.moduleId
         const sectionId = this.props.experienceState.experiences[id].sectionId
-        const infoId = this.props.experienceState.sections[sectionId].sectionList[0]
+        const infoId = this.props.experienceState.sections[sectionId].infoIdList[0]
         const htmlContent = this.props.experienceState.information[infoId].HTMLContent
         return <Item HTMLContent={htmlContent}/>
     }
@@ -20,7 +20,7 @@ class SummaryInfo extends Component {
             <Fragment>
                 <div>
                     <div className="resume-section">
-                        <div className="resume-section-title" style={{marginLeft: 30}}>
+                        <div className="resume-section-title" style={{marginLeft: 40}}>
                             {title}
                         </div>
                         <div >

@@ -8,9 +8,10 @@ let information = {}
 class BasicInfo extends Component {
 
     getName = ()=> {
-
+        console.log("-------------------------")
+         console.log(this.props.moduleId)
          sectionId = this.props.experienceState.experiences[this.props.moduleId].sectionId
-         infoId  = this.props.experienceState.sections[sectionId].sectionList[0]
+         infoId  = this.props.experienceState.sections[sectionId].infoIdList[0]
          information = this.props.experienceState.information[infoId]
         return information.name
     }
@@ -18,7 +19,7 @@ class BasicInfo extends Component {
     getInfo = () => {
         let email = information.email
         let telephone = information.telephone
-        let location = information.location
+        let location = information.personalLocation
         return email + " | " + telephone + " | " + location
     }
 

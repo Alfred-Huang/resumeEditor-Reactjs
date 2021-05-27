@@ -45,7 +45,6 @@ class BuildResume extends Component {
     }
 
     handleDelete = (id) =>{
-        console.log(id)
         let api = global.AppConfig.serverIP + "/main/deleteResume"
         axios.post(api, {resumeId: id}).then(
             this.props.deleteResume(id)
@@ -61,7 +60,6 @@ class BuildResume extends Component {
     }
 
     confirm = (id) =>{
-        console.log(id)
         let api = global.AppConfig.serverIP + "/main/deleteResume"
         axios.post(api, {resumeId: id}).then(
             this.props.deleteResume(id)

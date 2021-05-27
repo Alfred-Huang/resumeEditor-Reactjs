@@ -1,10 +1,11 @@
 import React, {Component, Fragment} from 'react';
-import  {Button, Col, Form, Input, Row } from "antd";
+import {Button, Col, Form, Input, Row, Alert, notification} from "antd";
 import {LeftOutlined,} from '@ant-design/icons';
 import {connect} from "react-redux";
 import {
     updateExperienceSectionInfo
 } from "../../../../../../redux/actions/userSection_action";
+import axios from "axios";
 
 
 
@@ -16,12 +17,13 @@ class BasicInfoInput extends Component {
         email: "",
         telephone:"",
         other: "",
+        personalLocation:"",
         curInfoId: "",
     }
 
     componentDidMount() {
         const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
-        const firstInfoId = this.props.experienceState.sections[targetSectionId].sectionList[0];
+        const firstInfoId = this.props.experienceState.sections[targetSectionId].infoIdList[0];
         const firstSectionInfo = this.props.experienceState.information[firstInfoId]
         //send the id and targetSection to input section to initialize the first section
         this.setState(
@@ -29,7 +31,7 @@ class BasicInfoInput extends Component {
                 name: firstSectionInfo.name,
                 email: firstSectionInfo.email,
                 telephone: firstSectionInfo.telephone,
-                location: firstSectionInfo.location,
+                personalLocation: firstSectionInfo.personalLocation,
                 other: firstSectionInfo.other,
                 curInfoId: firstInfoId,
             }
@@ -46,6 +48,20 @@ class BasicInfoInput extends Component {
         this.setState({[type]: e.target.value})
         const infoObj = {infoId: this.state.infoId, type: type, value: e.target.value}
         this.props.updateExperienceSectionInfo(infoObj)
+    }
+
+    openNotificationWithIcon = type => {
+        notification[type]({
+            message: 'Successfully Save',
+        });
+    };
+
+    updatePersonalInfo = ()=>{
+        let api = global.AppConfig.serverIP + "/resume/updatePersonalInfo"
+        const data = this.props.experienceState.information[this.state.infoId];
+        axios.post(api, data).then(()=>{
+           this.openNotificationWithIcon('success')
+        })
     }
 
     render() {
@@ -85,8 +101,8 @@ class BasicInfoInput extends Component {
                                 <Col span={24}>
                                     <Form.Item label="Location">
                                         <Input
-                                            onChange={(e)=>this.onInputChange("location", e)}
-                                            value={this.state.location}/>
+                                            onChange={(e)=>this.onInputChange("personalLocation", e)}
+                                            value={this.state.personalLocation}/>
                                     </Form.Item>
                                 </Col>
                                 <Col span={24}>
@@ -97,7 +113,7 @@ class BasicInfoInput extends Component {
                                     </Form.Item>
                                 </Col>
                             </Row>
-                            <Button type="primary" style={{marginBottom: 10}}>Save</Button>
+                            <Button type="primary" style={{marginBottom: 10}} onClick={(e)=>this.updatePersonalInfo()} >Save</Button>
                         </Form>
                     </Col>
                 </Row>

@@ -22,7 +22,7 @@ class ExperienceAction extends Component {
 
     findTheTargetSection (){
         const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
-        const targetInfoIdList = this.props.experienceState.sections[targetSectionId].sectionList;
+        const targetInfoIdList = this.props.experienceState.sections[targetSectionId].infoIdList;
        return  targetInfoIdList.map((infoId)=>{
                 return<Radio onChange={(e)=>this.changeRadio(infoId)} value={infoId} key={infoId} />
              })

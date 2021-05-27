@@ -16,7 +16,8 @@ import {
     UPDATE_MODULE_TITLE,
     UPDATE_RESUME,
     DELETE_RESUME,
-    ADD_RESUME
+    ADD_RESUME,
+    INITIAL_EXPERIENCE_STATE
 } from "../constant"
 
 
@@ -29,6 +30,8 @@ export const updateModuleAction = modules => ({type: UPDATE_MODULE, data: module
 
 
 //experience
+export const initialExperienceState = state => ({type: INITIAL_EXPERIENCE_STATE, data: state})
+
 export const addExperience = experience =>({type: ADD_EXPERIENCE, data: experience})
 export const deleteExperience = experience =>({type: DELETE_EXPERIENCE, data: experience})
 export const updateExperience = experience =>({type: UPDATE_EXPERIENCE, data: experience})

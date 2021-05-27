@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import  {Button, Col, Form, Input, Row, DatePicker } from "antd";
+import {Button, Col, Form, Input, Row, DatePicker, notification} from "antd";
 import {LeftOutlined,} from '@ant-design/icons';
 import Editor from "../../Editor";
 import BraftEditor from 'braft-editor'
@@ -11,6 +11,7 @@ import {
     updateExperienceSectionInfo
 } from "../../../../../../redux/actions/userSection_action";
 import { v4 as uuidv4 } from 'uuid';
+import axios from "axios";
 
 
 
@@ -25,15 +26,15 @@ class CustomInput extends Component {
         location:"",
         stateDate: "",
         endDate: "",
-        sectionListLength: 0,
+        infoIdListLength: 0,
         curInfoId: "",
         content:  BraftEditor.createEditorState(null),
     }
 
     componentDidMount() {
         const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
-        const sectionList = this.props.experienceState.sections[targetSectionId].sectionList;
-        const firstInfoId = this.props.experienceState.sections[targetSectionId].sectionList[0];
+        const infoIdList = this.props.experienceState.sections[targetSectionId].infoIdList;
+        const firstInfoId = this.props.experienceState.sections[targetSectionId].infoIdList[0];
         const firstSectionInfo = this.props.experienceState.information[firstInfoId]
         //send the id and targetSection to input section to initialize the first section
         this.setState(
@@ -43,7 +44,7 @@ class CustomInput extends Component {
                 location: firstSectionInfo.location,
                 startDate: firstSectionInfo.startDate,
                 endDate: firstSectionInfo.endDate,
-                sectionListLength: sectionList.length,
+                infoIdListLength: infoIdList.length,
                 curInfoId: firstInfoId,
                 content:  BraftEditor.createEditorState(firstSectionInfo.HTMLContent)
             }
@@ -56,21 +57,18 @@ class CustomInput extends Component {
         }
     }
 
-    handleContent = (userContent) =>{
+    handleContent = (userContent) => {
         this.setState({
             content: userContent
         })
         const HTMLContent = userContent.toHTML();
-        const RAWContent = userContent.toRAW();
         const h = {infoId: this.state.infoId, type: "HTMLContent", value: HTMLContent}
-        const r = {infoId: this.state.infoId, type: "RAWContent", value: RAWContent}
         this.props.updateExperienceSectionInfo(h)
-        this.props.updateExperienceSectionInfo(r)
     }
 
     handleInformation = (curInfoId, targetInfo) =>{
         const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
-        const sectionList = this.props.experienceState.sections[targetSectionId].sectionList;
+        const infoIdList = this.props.experienceState.sections[targetSectionId].infoIdList;
         this.setState(
             { infoId: targetInfo.infoId,
                 project: targetInfo.project,
@@ -78,7 +76,7 @@ class CustomInput extends Component {
                 location: targetInfo.location,
                 startDate: targetInfo.startDate,
                 endDate: targetInfo.endDate,
-                sectionListLength: sectionList.length,
+                infoIdListLength: infoIdList.length,
                 curInfoId: curInfoId,
                 content:  BraftEditor.createEditorState(targetInfo.HTMLContent)
             }
@@ -87,21 +85,30 @@ class CustomInput extends Component {
 
     deleteInputSection = ()=>{
         const targetInfoObj = {experienceId: this.props.currentId, infoId: this.state.infoId}
-        this.props.deleteExperienceSectionInfo(targetInfoObj).then(()=> {
-            const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
-            const firstElementAfterDeleted = this.props.experienceState.sections[targetSectionId].sectionList[0];
-            const targetSectionInfo = this.props.experienceState.information[firstElementAfterDeleted]
-            this.handleInformation(firstElementAfterDeleted, targetSectionInfo)
+        let api = global.AppConfig.serverIP + "/resume/deleteInfo"
+        const data = {infoId: this.state.infoId}
+        axios.post(api,data).then((result)=>{
+            this.props.deleteExperienceSectionInfo(targetInfoObj).then(()=> {
+                const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
+                const firstElementAfterDeleted = this.props.experienceState.sections[targetSectionId].infoIdList[0];
+                const targetSectionInfo = this.props.experienceState.information[firstElementAfterDeleted]
+                this.handleInformation(firstElementAfterDeleted, targetSectionInfo)
+            })
         })
+
     }
 
     addInputSection = () =>{
         const infoId = uuidv4();
         const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
-        const data = {sectionId: targetSectionId, id: infoId + "", info: {infoId: infoId + "", project: "", role: "", location: "",
-                startDate:"", endDate: "", HTMLContent: "", RAWContent: {}
+        const data = {sectionId: targetSectionId, id: infoId + "", information: {infoId: infoId + "", project: "", role: "", location: "",
+                startDate:"", endDate: "", HTMLContent: "", name: "", telephone: "", email:"", personalLocation: "", other: ""
             }}
-        this.props.addExperienceSectionInfo(data)
+        let api = global.AppConfig.serverIP + "/resume/addSectionInfo"
+
+        axios.post(api, data).then(()=>{
+            this.props.addExperienceSectionInfo(data)
+        })
     }
 
     onInputChange = (type, e) =>{
@@ -110,7 +117,20 @@ class CustomInput extends Component {
         this.props.updateExperienceSectionInfo(infoObj)
     }
 
+    openNotificationWithIcon = type => {
+        notification[type]({
+            message: 'Successfully Save',
+        });
+    };
 
+    updateGeneralInfo = ()=>{
+        let api = global.AppConfig.serverIP + "/resume/updateGeneralInfo"
+        const data = this.props.experienceState.information[this.state.infoId];
+        console.log(data)
+        axios.post(api, data).then((result)=>{
+            this.openNotificationWithIcon('success')
+        })
+    }
 
     render() {
 
@@ -181,12 +201,12 @@ class CustomInput extends Component {
                             <Editor  content={this.state.content} handleContent={this.handleContent}/>
                             <Row span={24}>
                                 <Col span={12}>
-                                    <Button type="primary" style={{marginBottom: 10, marginTop: 10}}>Save</Button>
+                                    <Button type="primary" style={{marginBottom: 10, marginTop: 10}} onClick={(e)=>this.updateGeneralInfo()}>Save</Button>
                                 </Col>
 
                                 <Col span={12} style={{textAlign: "right"}}>
                                     <Button type="danger"
-                                            disabled={this.state.sectionListLength === 1}
+                                            disabled={this.state.infoIdListLength === 1}
                                             onClick={(e)=>this.deleteInputSection()}
                                             style={{marginBottom: 10, marginTop: 10}}>Delete</Button>
                                 </Col>
