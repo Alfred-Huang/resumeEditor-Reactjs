@@ -5,6 +5,9 @@ class Item extends Component {
     getTime = () =>{
         let startDate = this.props.information.startDate
         let endDate = this.props.information.endDate
+        if(startDate === "" && endDate === ""){
+            return null
+        }
         return startDate + " - " + endDate
     }
 

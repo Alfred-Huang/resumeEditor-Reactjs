@@ -17,7 +17,11 @@ import {
     UPDATE_RESUME,
     DELETE_RESUME,
     ADD_RESUME,
-    INITIAL_EXPERIENCE_STATE
+    INITIAL_EXPERIENCE_STATE,
+    DELETE_ALL_MODULES,
+    DELETE_ALL_EXPERIENCE,
+    DELETE_ALL_EXPERIENCE_SECTION,
+    DELETE_ALL_EXPERIENCE_SECTION_INFO
 } from "../constant"
 
 
@@ -27,7 +31,7 @@ export const addModuleAction = modules => ({type: ADD_MODULE, data: modules})
 export const deleteModuleAction = modules => ({type: DELETE_MODULE, data: modules})
 export const getModuleAction = modules => ({type: GET_MODULE, data: modules})
 export const updateModuleAction = modules => ({type: UPDATE_MODULE, data: modules})
-
+export const deleteAllModuleAction = modules =>({type: DELETE_ALL_MODULES, data: modules})
 
 //experience
 export const initialExperienceState = state => ({type: INITIAL_EXPERIENCE_STATE, data: state})
@@ -35,6 +39,7 @@ export const initialExperienceState = state => ({type: INITIAL_EXPERIENCE_STATE,
 export const addExperience = experience =>({type: ADD_EXPERIENCE, data: experience})
 export const deleteExperience = experience =>({type: DELETE_EXPERIENCE, data: experience})
 export const updateExperience = experience =>({type: UPDATE_EXPERIENCE, data: experience})
+export const deleteAllExperience = experience =>({type: DELETE_ALL_EXPERIENCE, data: experience})
 
 export const addResume = resume =>({type: ADD_RESUME, data: resume})
 export const deleteResume = resume =>({type: DELETE_RESUME, data: resume})
@@ -53,6 +58,7 @@ export const updateResume = resume =>({type: UPDATE_RESUME, data: resume})
 export const addExperienceSection = section =>({type: ADD_EXPERIENCE_SECTION, data: section})
 export const deleteExperienceSection = section =>({type: DELETE_EXPERIENCE_SECTION, data: section})
 export const updateExperienceSection = section =>({type: UPDATE_EXPERIENCE_SECTION, data: section})
+
 
 
 export const updateExperienceSectionInfo = infoObj =>({type: UPDATE_EXPERIENCE_SECTION_INFO, data: infoObj})

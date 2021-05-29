@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import {Button, Col, Form, Input, Row, DatePicker, notification} from "antd";
+import {Button, Col, Form, Input, Row, DatePicker, notification, Modal, message} from "antd";
 import {LeftOutlined,} from '@ant-design/icons';
 import Editor from "../../Editor";
 import BraftEditor from 'braft-editor'
@@ -27,6 +27,8 @@ class LeadershipInput extends Component {
         infoIdListLength: 0,
         curInfoId: "",
         content:  BraftEditor.createEditorState(null),
+        save: true,
+        isModalVisible: false
     }
 
     componentDidMount() {
@@ -50,14 +52,19 @@ class LeadershipInput extends Component {
     }
 
     goBack = (section) =>{
-        return ()=>{
-            this.props.showInputChange(section)
+        return () => {
+            if(this.state.save) {
+                this.props.showInputChange(section)
+            }else{
+                this.setState({isModalVisible: true})
+            }
         }
     }
 
     handleContent = (userContent) =>{
         this.setState({
-            content: userContent
+            content: userContent,
+            save: false
         })
         const HTMLContent = userContent.toHTML();
         const h = {infoId: this.state.infoId, type: "HTMLContent", value: HTMLContent}
@@ -81,7 +88,21 @@ class LeadershipInput extends Component {
         )
     }
 
+    handleOk = () =>{
+        this.updateGeneralInfo()
+        this.setState({save: true, isModalVisible: false}, ()=>{
+            this.goBack("default")
+        })
+    }
+
+    handleCancel = ()=>{
+        this.setState({save: true, isModalVisible: false }, ()=>{
+            this.goBack("default")
+        })
+    }
+
     deleteInputSection = ()=>{
+        this.setState({save: true})
         const targetInfoObj = {experienceId: this.props.currentId, infoId: this.state.infoId}
         let api = global.AppConfig.serverIP + "/resume/deleteInfo"
         const data = {infoId: this.state.infoId}
@@ -102,7 +123,6 @@ class LeadershipInput extends Component {
                 startDate:"", endDate: "", HTMLContent: "", name: "", telephone: "", email:"", personalLocation: "", other: ""
             }}
         let api = global.AppConfig.serverIP + "/resume/addSectionInfo"
-
         axios.post(api, data).then(()=>{
             this.props.addExperienceSectionInfo(data)
         })
@@ -114,20 +134,25 @@ class LeadershipInput extends Component {
         const infoObj = {infoId: this.state.infoId, type: type, value: e.target.value}
         this.props.updateExperienceSectionInfo(infoObj)
     }
+    success = () => {
+        message.success('Success');
+    }
 
-
-    openNotificationWithIcon = type => {
-        notification[type]({
-            message: 'Successfully Save',
-        });
+    error = () => {
+        message.error('Fail');
     };
+
 
     updateGeneralInfo = ()=>{
         let api = global.AppConfig.serverIP + "/resume/updateGeneralInfo"
         const data = this.props.experienceState.information[this.state.infoId];
-        console.log(data)
+
         axios.post(api, data).then((result)=>{
-            this.openNotificationWithIcon('success')
+            this.success()
+            this.setState({save: true})
+        }).catch(()=>{
+            this.error()
+            this.setState({save: true})
         })
     }
 
@@ -219,6 +244,9 @@ class LeadershipInput extends Component {
                         </Form>
                     </Col>
                 </Row>
+                <Modal destroyOnClose visible={this.state.isModalVisible} onOk={this.handleOk} onCancel={this.handleCancel}>
+                    <p>save the content before you leave</p>
+                </Modal>
             </Fragment>
         );
     }

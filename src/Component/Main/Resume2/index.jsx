@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import {Button, Col, Row} from "antd";
+import {Button, Col, message, Row, Spin} from "antd";
 import {
     CloudDownloadOutlined,
     ControlOutlined,
@@ -36,30 +36,36 @@ class Resume2 extends Component {
         inputNum: 1,
         sectionType: "default",
         currentSectionId: "",
-        curResumeId: ""
+        curResumeId: "",
+        title: "",
+        load: false
     }
     //handle windows change
     componentDidMount() {
         window.addEventListener('resize', this.handleResize)
         const resumeId = this.props.location.state.resumeId
+        const title = this.props.location.state.title
         let api = global.AppConfig.serverIP + "/resume/getModule"
-
-        axios.post(api, {resumeId: resumeId}).then((result)=>{
-                const data = result.data
-                const newExperience = {experiences: {}, sections: {}, information: {}}
-                console.log(data);
-                newExperience.experiences = data.experience;
-                newExperience.sections = data.sections;
-                newExperience.information = data.information
-
-                this.props.initialExperienceState(newExperience)
-                // const newModule = {resumeId}
-
-                this.props.updateModuleAction(data.module.modules);
-        }
-        )
-        this.setState({curResumeId: resumeId})
+        this.setState({load: true}, ()=>{
+            axios.post(api, {resumeId: resumeId}).then((result)=>{
+                    const data = result.data
+                    const newExperience = {experiences: {}, sections: {}, information: {}}
+                    newExperience.experiences = data.experience;
+                    newExperience.sections = data.sections;
+                    newExperience.information = data.information
+                    this.props.initialExperienceState(newExperience)
+                    this.props.updateModuleAction(data.module.modules);
+                this.setState({curResumeId: resumeId, title: title, load: false})
+                }
+            ).catch(()=>{
+                this.error()
+            })
+        })
     }
+
+    error = () => {
+        message.error('Fail! Please Try Later');
+    };
 
     componentWillUnmount() {
         window.removeEventListener('resize', this.handleResize);
@@ -142,7 +148,8 @@ class Resume2 extends Component {
     }
 
 
-    printDocument() {
+    printDocument = () =>{
+        // let title = this.props.resumeState.resumeList[this.state.curResumeId].resumeTitle
         html2canvas(document.getElementById('resume'), {
             allowTaint: true,
             taintTest: false,
@@ -171,7 +178,7 @@ class Resume2 extends Component {
                     }
                 }
             }
-            PDF.save( "download.pdf")
+            PDF.save("resume")
         })
     }
 
@@ -181,67 +188,65 @@ class Resume2 extends Component {
     render() {
         return (
             <Fragment>
-                <div style={{backgroundColor: "#E7E6E6", zIndex: 0}}>
-                <Row >
-                    <Col span={24}>
-                        {/*left part*/}
-                        <Row span={24} style={{marginTop: 30}}>
-                            <Col span={3}>
-                                <Button type="primary" onClick={this.printDocument}>print</Button>
-                            </Col>
-                            <Col span={9}>
-                               <Row>
-                                   <Col span={3}>
-                                       <Row style={{marginBottom: 20}}>
-                                         <Button type="primary" shape="circle" size="large" icon={<EditOutlined />}/>
-                                       </Row>
-                                       <Row style={{marginBottom: 20}}>
-                                           <Button type="primary" shape="circle" size="large" icon={<ControlOutlined />}/>
-                                       </Row>
-                                       <Row style={{marginBottom: 20}}>
-                                           <Button type="primary" shape="circle" size="large" icon={<CloudDownloadOutlined />}/>
-                                       </Row>
-                                   </Col>
-                                   <Col span={21}>
-                                       <Row>
-                                           <Col span={22} style={{backgroundColor: "white"}}>
-                                               {this.handleSection()}
-                                           </Col>
-                                       </Row>
-                                   </Col>
-                               </Row>
-                            </Col>
-                            {/*resume*/}
-                            <div className="resume-board" style={{
-                                height: window.innerHeight - 73,
-                                width: this.state.firstTime === false ? this.state.width : (window.innerWidth / 2)}}
-                            >
-                                    <div style={{height:window.innerHeight - 73}}>
+                {this.state.load === true ? <Row style={{marginTop: 400}} justify={"center"}><Spin/></Row> :
+                    <div style={{backgroundColor: "#E7E6E6", zIndex: 0}} className="resume-page-scrollbar" >
+                        <Row>
+                            <Col span={24}>
+                                {/*left part*/}
+                                <Row span={24} style={{marginTop: 30}}>
+                                    <Col span={3}>
+                                    </Col>
+                                    <Col span={9}>
+                                        <Row>
+                                            <Col span={3}>
 
-                                        <div className="dd"  id="resume"
-                                             style={{
-                                                 backgroundColor: "white",transformOrigin: "top left",
-                                                 transform: [`scale(${this.state.firstTime === false ? this.state.scale : resumeScale / (794 / window.innerWidth)})`]}}
-                                        >
-                                            <div className="resume-spacing">
-                                                {this.props.modulesObj.modules.map((moduleObj)=>{
-                                                    return this.handleResumeSection(moduleObj.module, moduleObj.id)
-                                                })}
+                                                <Row style={{marginBottom: 20}}>
+                                                    <Button type="primary" shape="circle" size="large"
+                                                            icon={<CloudDownloadOutlined/>}
+                                                            onClick={(e) => this.printDocument()}/>
+                                                </Row>
+                                            </Col>
+                                            <Col span={21}>
+                                                <Row>
+                                                    <Col span={22} style={{backgroundColor: "white"}}>
+                                                        {this.handleSection()}
+                                                    </Col>
+                                                </Row>
+                                            </Col>
+                                        </Row>
+                                    </Col>
+                                    {/*resume*/}
+                                    <div className="resume-board" style={{
+                                        height: window.innerHeight - 73,
+                                        width: this.state.firstTime === false ? this.state.width : (window.innerWidth / 2) - 15
+                                    }}
+                                    >
+                                        <div style={{height: window.innerHeight - 73}}>
+                                            <div className="dd" id="resume"
+                                                 style={{
+                                                     backgroundColor: "white", transformOrigin: "top left",
+                                                     transform: [`scale(${this.state.firstTime === false ? this.state.scale : resumeScale / (794 / window.innerWidth)})`]
+                                                 }}
+                                            >
+                                                <div className="resume-spacing">
+                                                    {this.props.modulesObj.modules.map((moduleObj) => {
+                                                        return this.handleResumeSection(moduleObj.module, moduleObj.id)
+                                                    })}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                            </div>
+                                </Row>
+                            </Col>
                         </Row>
-                    </Col>
-                </Row>
-                </div>
-
+                    </div>
+                }
             </Fragment>
         );
     }
 }
 
 export default connect(
-    state => ({modulesObj: state.moduleReducer, experienceState: state.experienceInfoReducer}),
+    state => ({modulesObj: state.moduleReducer, experienceState: state.experienceInfoReducer, resumeState: state.resumeReducer,}),
     {updateModuleAction: updateModuleAction, initialExperienceState: initialExperienceState}
     )(Resume2)

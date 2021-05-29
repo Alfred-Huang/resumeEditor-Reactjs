@@ -6,7 +6,6 @@ import Item from "./Item"
 class GeneralInfo extends Component {
 
     getItem = () =>{
-
         const id = this.props.moduleId
         const sectionId = this.props.experienceState.experiences[id].sectionId
         const infoIdList = this.props.experienceState.sections[sectionId].infoIdList

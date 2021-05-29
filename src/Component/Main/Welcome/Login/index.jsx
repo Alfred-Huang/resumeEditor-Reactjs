@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import GoogleLogin from "react-google-login";
 import { withRouter } from 'react-router-dom';
+import {notification } from 'antd';
 import axios from "axios";
 
 
@@ -14,12 +15,19 @@ class Login extends Component {
     }
 
     componentDidMount() {
-        let a = [];
-        const b = ["1", "2", "3"];
-        a = b
-        console.log(a)
+        console.log("---------------------")
+        if(sessionStorage.getItem("user_token") !== null){
+            this.props.history.push('/main');
+        }
     }
 
+    openNotificationWithIcon = type => {
+        notification[type]({
+            message: 'Fail to login',
+            description:
+                'Please try later',
+        });
+    };
 
     login = (res) =>{
         const userInfo = {
@@ -31,23 +39,21 @@ class Login extends Component {
         let api = global.AppConfig. serverIP + "/login"
         axios.post(api, userInfo)
             .then((result)=>{
-                if(result.status === 200){
                     sessionStorage.setItem("user_token", res.profileObj.googleId)
                     sessionStorage.setItem("resume_list",result.data)
                     sessionStorage.setItem("image", res.profileObj.imageUrl)
                     sessionStorage.setItem("name", res.profileObj.name)
                     this.props.history.push('/main');
-                }else{
-
-                }
-            })
+            }).catch(()=>{
+            this.openNotificationWithIcon("error")
+        })
 
 
 
     }
 
     failLogin = (res) =>{
-        return null
+        window.alert("Google API ERROR")
     }
 
 
@@ -63,7 +69,7 @@ class Login extends Component {
 
         return (
             <Fragment>
-
+                <div style={{marginTop: 500}}>
                     <GoogleLogin
                         clientId="912081708712-purr3f1tip73t4t0ag0eudriurn68ed2.apps.googleusercontent.com"
                         buttonText="Login"
@@ -71,7 +77,7 @@ class Login extends Component {
                         onFailure={fail}
                         cookiePolicy={'single_host_origin'}
                     />
-
+                </div>
             </Fragment>
         );
     }

@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import {Button, Col, Form, Input, Row, DatePicker, notification} from "antd";
+import {Button, Col, Form, Input, Row, notification, Modal, message} from "antd";
 import {LeftOutlined,} from '@ant-design/icons';
 import Editor from "../../Editor";
 import BraftEditor from 'braft-editor'
@@ -28,6 +28,8 @@ class ProjectInput extends Component {
         infoIdListLength: 0,
         curInfoId: "",
         content:  BraftEditor.createEditorState(null),
+        save: true,
+        isModalVisible: false
     }
 
     componentDidMount() {
@@ -52,18 +54,36 @@ class ProjectInput extends Component {
 
 
     goBack = (section) =>{
-        return ()=>{
-            this.props.showInputChange(section)
+        return () => {
+            if(this.state.save) {
+                this.props.showInputChange(section)
+            }else{
+                this.setState({isModalVisible: true})
+            }
         }
     }
 
     handleContent = (userContent) =>{
         this.setState({
-                content: userContent
+                content: userContent,
+                save: false
         })
         const HTMLContent = userContent.toHTML();
         const h = {infoId: this.state.infoId, type: "HTMLContent", value: HTMLContent}
         this.props.updateExperienceSectionInfo(h)
+    }
+
+    handleOk = () =>{
+        this.updateGeneralInfo()
+        this.setState({save: true, isModalVisible: false}, ()=>{
+            this.goBack("default")
+        })
+    }
+
+    handleCancel = ()=>{
+        this.setState({save: true, isModalVisible: false }, ()=>{
+            this.goBack("default")
+        })
     }
 
     //to get target info from the radio change
@@ -85,6 +105,7 @@ class ProjectInput extends Component {
     }
 
     deleteInputSection = ()=>{
+        this.setState({save: true})
         const targetInfoObj = {experienceId: this.props.currentId, infoId: this.state.infoId}
         let api = global.AppConfig.serverIP + "/resume/deleteInfo"
         const data = {infoId: this.state.infoId}
@@ -99,38 +120,42 @@ class ProjectInput extends Component {
     }
 
     addInputSection = () =>{
+        this.updateGeneralInfo()
         const infoId = uuidv4();
         const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
         const data = {sectionId: targetSectionId, id: infoId + "", information: {infoId: infoId + "", project: "", role: "", location: "",
                 startDate:"", endDate: "", HTMLContent: "", name: "", telephone: "", email:"", personalLocation: "", other: ""
             }}
         let api = global.AppConfig.serverIP + "/resume/addSectionInfo"
-
         axios.post(api, data).then(()=>{
             this.props.addExperienceSectionInfo(data)
         })
     }
 
+    success = () => {
+        message.success('Success');
+    }
+
+    error = () => {
+        message.error('Fail');
+    };
+
     // changing the information while user's typing
     onInputChange = (type, e) =>{
-        this.setState({[type]: e.target.value})
+        this.setState({[type]: e.target.value, save: false})
         const infoObj = {infoId: this.state.infoId, type: type, value: e.target.value}
         this.props.updateExperienceSectionInfo(infoObj)
     }
 
-
-    openNotificationWithIcon = type => {
-        notification[type]({
-            message: 'Successfully Save',
-        });
-    };
-
     updateGeneralInfo = ()=>{
         let api = global.AppConfig.serverIP + "/resume/updateGeneralInfo"
         const data = this.props.experienceState.information[this.state.infoId];
-        console.log(data)
         axios.post(api, data).then((result)=>{
-            this.openNotificationWithIcon('success')
+            this.success()
+            this.setState({save: true})
+        }).catch(()=>{
+            this.error()
+            this.setState({save: true})
         })
     }
 
@@ -222,6 +247,9 @@ class ProjectInput extends Component {
                         </Form>
                     </Col>
                 </Row>
+                <Modal destroyOnClose visible={this.state.isModalVisible} onOk={this.handleOk} onCancel={this.handleCancel}>
+                    <p>save the content before you leave</p>
+                </Modal>
             </Fragment>
         );
     }

@@ -13,7 +13,16 @@
     -ms-overflow-style: none;
 }
 
-
+/*.resume-page-scrollbar{*/
+/*    height: 900px;*/
+/*    overflow-y: hidden;*/
+/*    overflow-x: hidden;*/
+/*    scrollbar-width: none;*/
+/*    -ms-overflow-style: none;*/
+/*}*/
+/*.resume-page-scrollbar::-webkit-scrollbar{*/
+/*    display: none;*/
+/*}*/
 .resume-spacing{
     /*margin: 30px;*/
 }
@@ -142,4 +151,6 @@
     width: 200px;
     display: inline;
 }
+
+
 

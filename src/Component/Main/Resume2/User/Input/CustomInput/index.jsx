@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import {Button, Col, Form, Input, Row, DatePicker, notification} from "antd";
+import {Button, Col, Form, Input, Row, DatePicker, notification, message, Modal} from "antd";
 import {LeftOutlined,} from '@ant-design/icons';
 import Editor from "../../Editor";
 import BraftEditor from 'braft-editor'
@@ -29,6 +29,8 @@ class CustomInput extends Component {
         infoIdListLength: 0,
         curInfoId: "",
         content:  BraftEditor.createEditorState(null),
+        save: true,
+        isModalVisible: false
     }
 
     componentDidMount() {
@@ -51,19 +53,38 @@ class CustomInput extends Component {
         )
     }
 
+
     goBack = (section) =>{
-        return ()=>{
-            this.props.showInputChange(section)
+        return () => {
+            if(this.state.save) {
+                this.props.showInputChange(section)
+            }else{
+                this.setState({isModalVisible: true})
+            }
         }
     }
 
     handleContent = (userContent) => {
         this.setState({
-            content: userContent
+            content: userContent,
+            save: false
         })
         const HTMLContent = userContent.toHTML();
         const h = {infoId: this.state.infoId, type: "HTMLContent", value: HTMLContent}
         this.props.updateExperienceSectionInfo(h)
+    }
+
+    handleOk = () =>{
+        this.updateGeneralInfo()
+        this.setState({save: true, isModalVisible: false}, ()=>{
+            this.goBack("default")
+        })
+    }
+
+    handleCancel = ()=>{
+        this.setState({save: true, isModalVisible: false }, ()=>{
+            this.goBack("default")
+        })
     }
 
     handleInformation = (curInfoId, targetInfo) =>{
@@ -84,6 +105,7 @@ class CustomInput extends Component {
     }
 
     deleteInputSection = ()=>{
+        this.setState({save: true})
         const targetInfoObj = {experienceId: this.props.currentId, infoId: this.state.infoId}
         let api = global.AppConfig.serverIP + "/resume/deleteInfo"
         const data = {infoId: this.state.infoId}
@@ -97,6 +119,14 @@ class CustomInput extends Component {
         })
 
     }
+
+    success = () => {
+        message.success('Success');
+    }
+
+    error = () => {
+        message.error('Fail');
+    };
 
     addInputSection = () =>{
         const infoId = uuidv4();
@@ -112,28 +142,25 @@ class CustomInput extends Component {
     }
 
     onInputChange = (type, e) =>{
-        this.setState({[type]: e.target.value})
+        this.setState({[type]: e.target.value, save: false})
         const infoObj = {infoId: this.state.infoId, type: type, value: e.target.value}
         this.props.updateExperienceSectionInfo(infoObj)
     }
 
-    openNotificationWithIcon = type => {
-        notification[type]({
-            message: 'Successfully Save',
-        });
-    };
 
     updateGeneralInfo = ()=>{
         let api = global.AppConfig.serverIP + "/resume/updateGeneralInfo"
         const data = this.props.experienceState.information[this.state.infoId];
-        console.log(data)
         axios.post(api, data).then((result)=>{
-            this.openNotificationWithIcon('success')
+            this.success()
+            this.setState({save: true})
+        }).catch(()=>{
+            this.error()
+            this.setState({save: true})
         })
     }
 
     render() {
-
         return (
             <Fragment >
                 <Row style={{display: "line block"}} span={24}>
@@ -214,6 +241,9 @@ class CustomInput extends Component {
                         </Form>
                     </Col>
                 </Row>
+                <Modal destroyOnClose visible={this.state.isModalVisible} onOk={this.handleOk} onCancel={this.handleCancel}>
+                    <p>save the content before you leave</p>
+                </Modal>
             </Fragment>
         );
     }

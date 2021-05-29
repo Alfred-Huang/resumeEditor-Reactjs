@@ -1,24 +1,35 @@
 import React, {Component, Fragment, } from 'react';
-import {Button, Card, Col, Row, Avatar, Input, Modal, Popconfirm } from "antd";
+import {Button, Card, Col, Row, Avatar, Input, Modal, Popconfirm, Spin } from "antd";
 import {PlusOutlined, UserOutlined} from '@ant-design/icons';
 import {Link, Route, Switch, withRouter} from "react-router-dom";
 import axios from "axios";
 import {connect} from "react-redux";
-import {addResume, deleteResume, updateResume} from "../../../redux/actions/userSection_action";
+import {
+    addResume,
+    deleteAllExperience,
+    deleteAllModuleAction,
+    deleteResume,
+    updateResume
+} from "../../../redux/actions/userSection_action";
 import { v4 as uuidv4 } from 'uuid';
+import {moduleReducer} from "../../../redux/reduers/userSection_reducer";
 
 
 class BuildResume extends Component {
     state = {
         isModalVisible: false,
         title: "",
+        load: false
     }
 
     componentDidMount() {
         const userId = sessionStorage.getItem("user_token")
         let api = global.AppConfig.serverIP + "/main"
-        axios.post(api, {userId: userId}).then((result)=>{
-            this.props.updateResume(result.data)
+        this.setState({load: true}, ()=>{
+            axios.post(api, {userId: userId}).then((result)=>{
+                this.props.updateResume(result.data)
+                this.setState({load: false})
+            })
         })
     }
 
@@ -49,6 +60,7 @@ class BuildResume extends Component {
         axios.post(api, {resumeId: id}).then(
             this.props.deleteResume(id)
         )
+
     }
 
     changeModal = () =>{
@@ -64,6 +76,8 @@ class BuildResume extends Component {
         axios.post(api, {resumeId: id}).then(
             this.props.deleteResume(id)
         )
+        this.props.deleteAllModule()
+        this.props.deleteAllExperience()
     }
 
     cancel = ()=>{
@@ -99,8 +113,16 @@ class BuildResume extends Component {
 
     }
 
+    signOut = ()=>{
+        sessionStorage.removeItem("user_token")
+        sessionStorage.removeItem("resume_list")
+        sessionStorage.removeItem("image")
+        sessionStorage.removeItem("name")
+        this.props.history.push('/');
+    }
+
     addResumeButton = ()=>{
-        if((Object.getOwnPropertyNames(this.props.resumeState.resumeList).length === 3)){
+        if((Object.getOwnPropertyNames(this.props.resumeState.resumeList).length === 1)){
             return null
         }else {
             return  <Col>
@@ -130,29 +152,34 @@ class BuildResume extends Component {
                             </Row>
                             <Row>
                                 <Col style={{marginLeft: "auto", marginRight: "auto", marginTop: 10}}>
-                                    <Button size={"small"}>Sign out</Button>
+                                    <Button size={"small"} onClick={(e)=>this.signOut()}>Sign out</Button>
                                 </Col>
                             </Row>
                         </Card>
                     </Col>
                 </Row>
+
                 <Row justify="center" style={{marginTop: 150}}>
                     <Card  bordered={false} style={{width: 500, height: 230, borderTop: "1px solid #DEDBDB", borderBottom: "1px solid #DEDBDB"}}>
-                        <Row gutter={70}>
-                            {this.resumeList()}
-                            {this.addResumeButton()}
-                        </Row>
+                        {this.state.load === true ? <Row justify={"center"}> <Spin/></Row> :
+                            <Row justify={"center"} gutter={70}>
+                                {this.resumeList()}
+                                {this.addResumeButton()}
+                            </Row>
+                        }
                     </Card>
                      <Modal destroyOnClose title="Title" visible={this.state.isModalVisible} onOk={this.handleOk} onCancel={this.handleCancel}>
                        <Input onChange={this.saveTitle}/>
                     </Modal>
                 </Row>
+
+
             </Fragment>
         );
     }
 }
 
 export default connect(
-    state => ({resumeState: state.resumeReducer}),
-    {deleteResume: deleteResume, addResume: addResume, updateResume: updateResume}
+    state => ({resumeState: state.resumeReducer, modulesObj: state.moduleReducer}),
+    {deleteResume: deleteResume, addResume: addResume, updateResume: updateResume, deleteAllModule: deleteAllModuleAction, deleteAllExperience: deleteAllExperience}
     )(withRouter(BuildResume));

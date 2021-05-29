@@ -8,8 +8,6 @@ let information = {}
 class BasicInfo extends Component {
 
     getName = ()=> {
-        console.log("-------------------------")
-         console.log(this.props.moduleId)
          sectionId = this.props.experienceState.experiences[this.props.moduleId].sectionId
          infoId  = this.props.experienceState.sections[sectionId].infoIdList[0]
          information = this.props.experienceState.information[infoId]

@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import {Button, Col, Form, Input, Row, Alert, notification} from "antd";
+import {Button, Col, Form, Input, Row, Alert, notification, message, Modal} from "antd";
 import {LeftOutlined,} from '@ant-design/icons';
 import {connect} from "react-redux";
 import {
@@ -19,6 +19,8 @@ class BasicInfoInput extends Component {
         other: "",
         personalLocation:"",
         curInfoId: "",
+        save: true,
+        isModalVisible: false
     }
 
     componentDidMount() {
@@ -38,29 +40,53 @@ class BasicInfoInput extends Component {
         )
     }
 
+
+    handleOk = () =>{
+        this.updatePersonalInfo()
+        this.setState({save: true, isModalVisible: false}, ()=>{
+            this.goBack("default")
+        })
+    }
+
+    handleCancel = ()=>{
+        this.setState({save: true, isModalVisible: false }, ()=>{
+            this.goBack("default")
+        })
+    }
+
     goBack = (section) =>{
-        return ()=>{
-            this.props.showInputChange(section)
+        return () => {
+            if(this.state.save) {
+                this.props.showInputChange(section)
+            }else{
+                this.setState({isModalVisible: true})
+            }
         }
     }
 
     onInputChange = (type, e) =>{
-        this.setState({[type]: e.target.value})
+        this.setState({[type]: e.target.value, save: false})
         const infoObj = {infoId: this.state.infoId, type: type, value: e.target.value}
         this.props.updateExperienceSectionInfo(infoObj)
     }
 
-    openNotificationWithIcon = type => {
-        notification[type]({
-            message: 'Successfully Save',
-        });
+    success = () => {
+        message.success('Success');
+    }
+
+    error = () => {
+        message.error('Fail');
     };
 
     updatePersonalInfo = ()=>{
         let api = global.AppConfig.serverIP + "/resume/updatePersonalInfo"
         const data = this.props.experienceState.information[this.state.infoId];
         axios.post(api, data).then(()=>{
-           this.openNotificationWithIcon('success')
+           this.success()
+            this.setState({save: true})
+        }).catch(()=>{
+            this.error()
+            this.setState({save: true})
         })
     }
 
@@ -117,6 +143,9 @@ class BasicInfoInput extends Component {
                         </Form>
                     </Col>
                 </Row>
+                <Modal destroyOnClose visible={this.state.isModalVisible} onOk={this.handleOk} onCancel={this.handleCancel}>
+                    <p>save the content before you leave</p>
+                </Modal>
             </Fragment>
         );
     }

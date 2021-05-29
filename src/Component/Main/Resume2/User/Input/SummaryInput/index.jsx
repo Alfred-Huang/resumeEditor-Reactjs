@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import {Alert, Button, Col, Form, Row,notification} from "antd";
+import {Button, Col, Form, Row, notification, Modal, Spin, message} from "antd";
 import {LeftOutlined,} from '@ant-design/icons';
 import Editor from "../../Editor";
 import BraftEditor from 'braft-editor'
@@ -21,6 +21,8 @@ class SummaryInput extends Component {
         infoId: "",
         curInfoId: "",
         content:  BraftEditor.createEditorState(null),
+        save: true,
+        isModalVisible: false
     }
     componentDidMount() {
         const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
@@ -36,33 +38,57 @@ class SummaryInput extends Component {
         )
     }
 
-    goBack = (section) =>{
-        return ()=>{
-            this.props.showInputChange(section)
+    handleOk = () =>{
+        this.updateSummary()
+        this.setState({save: true, isModalVisible: false}, ()=>{
+            this.goBack("default")
+        })
+    }
+
+    handleCancel = ()=>{
+        this.setState({save: true, isModalVisible: false }, ()=>{
+            this.goBack("default")
+        })
+    }
+
+    goBack = (section) => {
+        return () => {
+            if(this.state.save) {
+                this.props.showInputChange(section)
+            }else{
+                this.setState({isModalVisible: true})
+            }
         }
     }
 
     handleContent = (userContent) =>{
         this.setState({
-            content: userContent
+            content: userContent,
+            save: false,
         })
         const HTMLContent = userContent.toHTML();
         const h = {infoId: this.state.infoId, type: "HTMLContent", value: HTMLContent}
         this.props.updateExperienceSectionInfo(h)
     }
 
+    success = () => {
+        message.success('Success');
+    }
 
-    openNotificationWithIcon = type => {
-        notification[type]({
-            message: 'Successfully Save',
-        });
+    error = () => {
+        message.error('Fail');
     };
+
 
     updateSummary = ()=>{
         let api = global.AppConfig.serverIP + "/resume/updateSummary"
         const data = {HTMLContent: this.props.experienceState.information[this.state.infoId].HTMLContent, infoId: this.state.infoId};
         axios.post(api, data).then((result)=>{
-            this.openNotificationWithIcon('success')
+            this.success()
+            this.setState({save: true})
+        }).catch(()=>{
+            this.error()
+            this.setState({save: true})
         })
     }
 
@@ -84,6 +110,9 @@ class SummaryInput extends Component {
                         </Form>
                     </Col>
                 </Row>
+                <Modal destroyOnClose visible={this.state.isModalVisible} onOk={this.handleOk} onCancel={this.handleCancel}>
+                            <p>save the content before you leave</p>
+                </Modal>
             </Fragment>
         );
     }

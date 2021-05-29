@@ -10,7 +10,9 @@ import {
     UPDATE_EXPERIENCE_SECTION_INFO,
     UPDATE_MODULE,
     UPDATE_MODULE_TITLE,
-    UPDATE_RESUME
+    UPDATE_RESUME,
+    DELETE_ALL_MODULES,
+    DELETE_ALL_EXPERIENCE
 } from "../constant";
 
 
@@ -19,7 +21,7 @@ const resumeState = {
 }
 
 const initModuleState = {
-    resumeId:{modules: []}
+    modules: []
 };
 
 const initExperience = {
@@ -61,6 +63,12 @@ export function moduleReducer(preState=initModuleState, action){
                 return item.id !== data
             })
             return {modules: deletedState}
+
+        case DELETE_ALL_MODULES:
+            let newDeleteAllModule = JSON.parse(JSON.stringify(preState));
+            newDeleteAllModule.modules = []
+            return newDeleteAllModule
+
         case GET_MODULE:
             return preState
         case UPDATE_MODULE:
@@ -91,7 +99,6 @@ export function experienceInfoReducer(preState=initExperience, action){
             let newDeleteState = JSON.parse(JSON.stringify(preState))
             //get the targetSectionId
             const targetSectionIdForDelete = newDeleteState.experiences[data.experienceId].sectionId
-
             const newInfoIdListAfterFilter = newDeleteState.sections[targetSectionIdForDelete].infoIdList.filter(function (id){
                 return id !== data.infoId
             })
@@ -120,6 +127,13 @@ export function experienceInfoReducer(preState=initExperience, action){
             let newTitleState = JSON.parse(JSON.stringify(preState))
             newTitleState.experiences[data.experienceId].title = data.title
             return newTitleState
+
+        case DELETE_ALL_EXPERIENCE:
+            let newAllDeletedState = JSON.parse(JSON.stringify(preState))
+            newAllDeletedState.experience = {}
+            newAllDeletedState.sections = {}
+            newAllDeletedState.information = {}
+            return newAllDeletedState
         default:
             return preState
     }

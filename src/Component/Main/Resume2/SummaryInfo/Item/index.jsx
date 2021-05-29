@@ -8,7 +8,7 @@ class Item extends Component {
 
         return (
             <Fragment>
-               <div style={{marginBottom: 3 ,marginLeft: 30,marginRight: 30,lineHeight: 0.7, whiteSpace: "pre-wrap",wordWrap: "break-word"}} dangerouslySetInnerHTML={{__html: HTMLContent}}>
+               <div style={{marginBottom: 3 ,marginLeft: 40,marginRight: 40,lineHeight: 0.7, whiteSpace: "pre-wrap",wordWrap: "break-word"}} dangerouslySetInnerHTML={{__html: HTMLContent}}>
 
                </div>
             </Fragment>
