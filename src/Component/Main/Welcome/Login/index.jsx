@@ -36,6 +36,7 @@ class Login extends Component {
             id: res.googleId,
             Image: res.profileObj.imageUrl,
         }
+
         let api = global.AppConfig. serverIP + "/login"
         axios.post(api, userInfo)
             .then((result)=>{

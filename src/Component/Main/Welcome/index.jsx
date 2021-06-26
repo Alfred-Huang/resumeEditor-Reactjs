@@ -14,7 +14,7 @@ class Welcome extends Component {
         return (
             <Fragment>
                 <Row justify="center">
-                    <Col>
+                    <Col >
                         <Login/>
                     </Col>
                 </Row>

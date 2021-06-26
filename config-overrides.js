@@ -12,7 +12,6 @@ module.exports = override(
              'layout-header-height': '2',
              'layout-header-padding': '0',
              'layout-body-background': '#ffffff',
-
          },
      }),
  );
