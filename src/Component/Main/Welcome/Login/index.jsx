@@ -15,7 +15,6 @@ class Login extends Component {
     }
 
     componentDidMount() {
-        console.log("---------------------")
         if(sessionStorage.getItem("user_token") !== null){
             this.props.history.push('/main');
         }

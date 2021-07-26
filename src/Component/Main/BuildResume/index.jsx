@@ -35,7 +35,7 @@ class BuildResume extends Component {
 
 
     handleClick = (id)=>{
-        this.props.history.push({pathname: "/resume2", state: {resumeId: id}})
+        this.props.history.push({pathname: "/resume", state: {resumeId: id}})
     }
 
     handleOk = () =>{

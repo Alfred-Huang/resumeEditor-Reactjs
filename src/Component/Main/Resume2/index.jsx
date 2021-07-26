@@ -2,10 +2,7 @@ import React, {Component, Fragment} from 'react';
 import {Button, Col, message, Row, Spin} from "antd";
 import {
     CloudDownloadOutlined,
-    ControlOutlined,
-    EditOutlined,
 } from '@ant-design/icons';
-import Education from "./Education"
 import GeneralInfo from "./GeneralInfo"
 import BasicInfo from "./BasicInfo";
 import SummaryInfo from "./SummaryInfo";
@@ -19,7 +16,6 @@ import LeadershipInput from "./User/Input/LeadershipInput";
 import {connect} from "react-redux";
 import html2canvas from 'html2canvas';
 import jsPDF from "jspdf";
-import { v4 as uuidv4 } from 'uuid';
 import axios from "axios";
 import "./index.css";
 import {initialExperienceState, updateModuleAction} from "../../../redux/actions/userSection_action";

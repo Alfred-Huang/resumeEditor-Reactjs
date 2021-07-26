@@ -15,7 +15,7 @@ const routes = [
         requiresAuth: true,
     },
     {
-        path: '/resume2',
+        path: '/resume',
         exact: true,
         component: Resume2,
         requiresAuth: true,

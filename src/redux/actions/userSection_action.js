@@ -44,15 +44,6 @@ export const deleteAllExperience = experience =>({type: DELETE_ALL_EXPERIENCE, d
 export const addResume = resume =>({type: ADD_RESUME, data: resume})
 export const deleteResume = resume =>({type: DELETE_RESUME, data: resume})
 export const updateResume = resume =>({type: UPDATE_RESUME, data: resume})
-// export const updateResume = (data) =>{
-//     return (dispatch =>{
-//         dispatch({
-//             type: UPDATE_RESUME,
-//             data: data
-//         })
-//         return Promise.resolve()
-//     })
-// }
 
 
 export const addExperienceSection = section =>({type: ADD_EXPERIENCE_SECTION, data: section})

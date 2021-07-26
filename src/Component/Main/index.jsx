@@ -19,7 +19,7 @@ class Main extends Component {
                         <Row className="menu">
                             <Col span={3} offset={3}>
                                 <Link to="/">
-                                    <Button className="label" type="link">ResumeSolver</Button>
+                                    <Button className="label" type="link">ResumeEditor</Button>
                                 </Link>
                             </Col>
                         </Row>
