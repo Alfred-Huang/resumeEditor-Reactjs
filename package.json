@@ -1,9 +1,11 @@
 {
+  "homepage": "./",
   "proxy": "http://localhost:8080",
   "name": "untitled",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "deploy": "gh-pages -d build",
     "@ant-design/icons": "^4.5.0",
     "@babel/core": "7.12.3",
     "@pmmmwh/react-refresh-webpack-plugin": "0.4.3",
@@ -183,6 +185,7 @@
     ]
   },
   "devDependencies": {
+    "gh-pages": "^3.2.3",
     "history": "^5.0.0"
   }
 }
