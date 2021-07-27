@@ -6,4 +6,4 @@ import {composeWithDevTools} from 'redux-devtools-extension'
 const allReducer = combineReducers({moduleReducer: moduleReducer, experienceInfoReducer: experienceInfoReducer, resumeReducer: resumeReducer})
 
 
-export default createStore(allReducer, composeWithDevTools(applyMiddleware(thunk)))
+export default createStore(allReducer, applyMiddleware(thunk))
