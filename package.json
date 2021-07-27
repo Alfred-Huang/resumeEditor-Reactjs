@@ -186,7 +186,6 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^3.2.3",
     "history": "^5.0.0"
   }
 }
