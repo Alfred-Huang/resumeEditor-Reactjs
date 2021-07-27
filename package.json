@@ -1,5 +1,4 @@
 {
-  "homepage": "https://alfred-huang.github.io/resumeeditor.github.io",
   "proxy": "http://resumeapplication-env.eba-vszhkueb.us-east-1.elasticbeanstalk.com",
   "name": "untitled",
   "version": "0.1.0",
@@ -184,7 +183,6 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^3.2.3",
     "history": "^5.0.0"
   }
 }
