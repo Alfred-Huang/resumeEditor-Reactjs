@@ -107,7 +107,7 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "CI=false npm run build",
+    "build": "CI='' npm run build",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject"
   },
