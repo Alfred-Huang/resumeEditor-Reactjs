@@ -1,4 +1,5 @@
 {
+  "homepage": "./",
   "name": "resume",
   "version": "0.1.0",
   "private": true,
@@ -106,7 +107,9 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
-    "eject": "react-app-rewired eject"
+    "eject": "react-app-rewired eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -182,6 +185,7 @@
     ]
   },
   "devDependencies": {
+    "gh-pages": "^3.2.3",
     "history": "^5.0.0"
   }
 }
