@@ -78,22 +78,24 @@ class Section extends Component {
         const newModule = {id: newModuleId + "", resumeId: this.props.resumeId, module: section, sortId: curMaxSortId};
         let data = {newData, newModule}
 
-        let api = global.AppConfig.serverIP + "/resume/addModule"
-        axios.post(api, data).then((result)=>{
-            this.props.addExpSectionInfo(newData)
-            this.props.addModules(newModule)
-        }).catch(function (error) {
-            window.alert("fail to add")
-        })
-
+        // let api = global.AppConfig.serverIP + "/resume/addModule"
+        // axios.post(api, data).then((result)=>{
+        //     this.props.addExpSectionInfo(newData)
+        //     this.props.addModules(newModule)
+        // }).catch(function (error) {
+        //     window.alert("fail to add")
+        // })
+        this.props.addExpSectionInfo(newData)
+        this.props.addModules(newModule)
     }
 
     handleDeleteModule = (sectionId) =>{
-        let api = global.AppConfig.serverIP + "/resume/deleteModule"
-        const target = {id: sectionId}
-        axios.post(api, target).then((result)=>{
-            this.props.deleteModules(sectionId)
-        })
+        // let api = global.AppConfig.serverIP + "/resume/deleteModule"
+        // const target = {id: sectionId}
+        // axios.post(api, target).then((result)=>{
+        //     this.props.deleteModules(sectionId)
+        // })
+        this.props.deleteModules(sectionId)
     }
 
     onDragEnd = (result) => {
@@ -116,10 +118,11 @@ class Section extends Component {
             item.sortId = curId
             curId++;
         })
-        let api = global.AppConfig.serverIP + "/resume/updateModuleSortId"
-        axios.post(api, newModules).then((result)=>{
-            this.props.updateModules(newModules)
-        })
+        // let api = global.AppConfig.serverIP + "/resume/updateModuleSortId"
+        // axios.post(api, newModules).then((result)=>{
+        //     this.props.updateModules(newModules)
+        // })
+        this.props.updateModules(newModules)
     }
 
 

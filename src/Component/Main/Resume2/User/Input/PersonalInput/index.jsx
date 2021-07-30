@@ -79,15 +79,17 @@ class BasicInfoInput extends Component {
     };
 
     updatePersonalInfo = ()=>{
-        let api = global.AppConfig.serverIP + "/resume/updatePersonalInfo"
-        const data = this.props.experienceState.information[this.state.infoId];
-        axios.post(api, data).then(()=>{
-           this.success()
-            this.setState({save: true})
-        }).catch(()=>{
-            this.error()
-            this.setState({save: true})
-        })
+        // let api = global.AppConfig.serverIP + "/resume/updatePersonalInfo"
+        // const data = this.props.experienceState.information[this.state.infoId];
+        // axios.post(api, data).then(()=>{
+        //    this.success()
+        //     this.setState({save: true})
+        // }).catch(()=>{
+        //     this.error()
+        //     this.setState({save: true})
+        // })
+        this.success()
+        this.setState({save: true})
     }
 
     render() {

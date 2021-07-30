@@ -23,14 +23,14 @@ class BuildResume extends Component {
     }
 
     componentDidMount() {
-        const userId = sessionStorage.getItem("user_token")
-        let api = global.AppConfig.serverIP + "/main"
-        this.setState({load: true}, ()=>{
-            axios.post(api, {userId: userId}).then((result)=>{
-                this.props.updateResume(result.data)
-                this.setState({load: false})
-            })
-        })
+        // const userId = sessionStorage.getItem("user_token")
+        // let api = global.AppConfig.serverIP + "/main"
+        // this.setState({load: true}, ()=>{
+        //     axios.post(api, {userId: userId}).then((result)=>{
+        //         this.props.updateResume(result.data)
+        //         this.setState({load: false})
+        //     })
+        // })
     }
 
 
@@ -39,29 +39,25 @@ class BuildResume extends Component {
     }
 
     handleOk = () =>{
-        const newResumeId = uuidv4()
-        const data = {resumeId: newResumeId, userId: sessionStorage.getItem("user_token"), resumeTitle: this.state.title}
-        let api = global.AppConfig.serverIP + "/main/addResume"
-        axios.post(api,  data).then((result)=>{
-            if(result.status === 200){
-                const newResume = {resumeId: newResumeId, resume: {userId: "", resumeTitle: this.state.title}}
-                this.props.addResume(newResume)
-            }
-        })
+        // const data = {resumeId: newResumeId, userId: sessionStorage.getItem("user_token"), resumeTitle: this.state.title}
+        // let api = global.AppConfig.serverIP + "/main/addResume"
+        // axios.post(api,  data).then((result)=>{
+        //     if(result.status === 200){
+        //         const newResume = {resumeId: newResumeId, resume: {userId: "", resumeTitle: this.state.title}}
+        //         this.props.addResume(newResume)
+        //     }
+        // })
+        const newResume = {resumeId: "123", resume: {userId: "user", resumeTitle: this.state.title}}
+        this.props.addResume(newResume)
         this.setState({isModalVisible: false})
+
     }
 
     handleCancel = () =>{
         this.setState({isModalVisible: false})
     }
 
-    handleDelete = (id) =>{
-        let api = global.AppConfig.serverIP + "/main/deleteResume"
-        axios.post(api, {resumeId: id}).then(
-            this.props.deleteResume(id)
-        )
 
-    }
 
     changeModal = () =>{
         this.setState({isModalVisible: true})
@@ -72,10 +68,11 @@ class BuildResume extends Component {
     }
 
     confirm = (id) =>{
-        let api = global.AppConfig.serverIP + "/main/deleteResume"
-        axios.post(api, {resumeId: id}).then(
-            this.props.deleteResume(id)
-        )
+        // let api = global.AppConfig.serverIP + "/main/deleteResume"
+        // axios.post(api, {resumeId: id}).then(
+        //     this.props.deleteResume(id)
+        // )
+        this.props.deleteResume(id)
         this.props.deleteAllModule()
         this.props.deleteAllExperience()
     }

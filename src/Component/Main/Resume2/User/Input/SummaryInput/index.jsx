@@ -81,15 +81,18 @@ class SummaryInput extends Component {
 
 
     updateSummary = ()=>{
-        let api = global.AppConfig.serverIP + "/resume/updateSummary"
-        const data = {HTMLContent: this.props.experienceState.information[this.state.infoId].HTMLContent, infoId: this.state.infoId};
-        axios.post(api, data).then((result)=>{
-            this.success()
-            this.setState({save: true})
-        }).catch(()=>{
-            this.error()
-            this.setState({save: true})
-        })
+        // let api = global.AppConfig.serverIP + "/resume/updateSummary"
+        // const data = {HTMLContent: this.props.experienceState.information[this.state.infoId].HTMLContent, infoId: this.state.infoId};
+        // axios.post(api, data).then((result)=>{
+        //     this.success()
+        //     this.setState({save: true})
+        // }).catch(()=>{
+        //     this.error()
+        //     this.setState({save: true})
+        // })
+
+        this.success()
+        this.setState({save: true})
     }
 
     render() {

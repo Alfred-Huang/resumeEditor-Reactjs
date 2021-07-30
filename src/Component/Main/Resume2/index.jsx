@@ -17,6 +17,7 @@ import {connect} from "react-redux";
 import html2canvas from 'html2canvas';
 import jsPDF from "jspdf";
 import axios from "axios";
+import initdata from "../data/initdata"
 import "./index.css";
 import {initialExperienceState, updateModuleAction} from "../../../redux/actions/userSection_action";
 
@@ -36,27 +37,39 @@ class Resume2 extends Component {
         title: "",
         load: false
     }
-    //handle windows change
+    //handle windows change and init data
     componentDidMount() {
         window.addEventListener('resize', this.handleResize)
         const resumeId = this.props.location.state.resumeId
         const title = this.props.location.state.title
-        let api = global.AppConfig.serverIP + "/resume/getModule"
-        this.setState({load: true}, ()=>{
-            axios.post(api, {resumeId: resumeId}).then((result)=>{
-                    const data = result.data
-                    const newExperience = {experiences: {}, sections: {}, information: {}}
-                    newExperience.experiences = data.experience;
-                    newExperience.sections = data.sections;
-                    newExperience.information = data.information
-                    this.props.initialExperienceState(newExperience)
-                    this.props.updateModuleAction(data.module.modules);
-                this.setState({curResumeId: resumeId, title: title, load: false})
-                }
-            ).catch(()=>{
-                this.error()
-            })
-        })
+        // let api = global.AppConfig.serverIP + "/resume/getModule"
+        // this.setState({load: true}, ()=>{
+        //     axios.post(api, {resumeId: resumeId}).then((result)=>{
+        //             const data = result.data
+        //             const newExperience = {experiences: {}, sections: {}, information: {}}
+        //             newExperience.experiences = data.experience;
+        //             newExperience.sections = data.sections;
+        //             newExperience.information = data.information
+        //             this.props.initialExperienceState(newExperience)
+        //             this.props.updateModuleAction(data.module.modules);
+        //         this.setState({curResumeId: resumeId, title: title, load: false})
+        //         }
+        //     ).catch(()=>{
+        //         this.error()
+        //     })
+        // })
+        const newExperience = {experiences: {}, sections: {}, information: {}}
+        newExperience.experiences = initdata.experiences;
+        newExperience.sections = initdata.sections;
+        newExperience.information = initdata.information
+        let checkExperienceObject = this.props.experienceState.experiences
+        if(Object.keys(checkExperienceObject).length === 0){
+            this.props.initialExperienceState(newExperience)
+        }
+        if( this.props.modulesObj.modules.length === 0){
+            this.props.updateModuleAction(initdata.modules);
+        }
+        this.setState({curResumeId: resumeId, title: title, load: false})
     }
 
     error = () => {

@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import {Button, Col, Form, Input, Row, DatePicker, notification, Modal, message} from "antd";
+import {Button, Col, Form, Input, Row, Modal, message} from "antd";
 import {LeftOutlined,} from '@ant-design/icons';
 import Editor from "../../Editor";
 import BraftEditor from 'braft-editor'
@@ -104,15 +104,23 @@ class LeadershipInput extends Component {
     deleteInputSection = ()=>{
         this.setState({save: true})
         const targetInfoObj = {experienceId: this.props.currentId, infoId: this.state.infoId}
-        let api = global.AppConfig.serverIP + "/resume/deleteInfo"
-        const data = {infoId: this.state.infoId}
-        axios.post(api,data).then((result)=>{
-            this.props.deleteExperienceSectionInfo(targetInfoObj).then(()=> {
-                const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
-                const firstElementAfterDeleted = this.props.experienceState.sections[targetSectionId].infoIdList[0];
-                const targetSectionInfo = this.props.experienceState.information[firstElementAfterDeleted]
-                this.handleInformation(firstElementAfterDeleted, targetSectionInfo)
-            })
+        // let api = global.AppConfig.serverIP + "/resume/deleteInfo"
+        // const data = {infoId: this.state.infoId}
+        // axios.post(api,data).then((result)=>{
+        //     this.props.deleteExperienceSectionInfo(targetInfoObj).then(()=> {
+        //         const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
+        //         const firstElementAfterDeleted = this.props.experienceState.sections[targetSectionId].infoIdList[0];
+        //         const targetSectionInfo = this.props.experienceState.information[firstElementAfterDeleted]
+        //         this.handleInformation(firstElementAfterDeleted, targetSectionInfo)
+        //     })
+        // })
+
+
+        this.props.deleteExperienceSectionInfo(targetInfoObj).then(()=> {
+            const targetSectionId = this.props.experienceState.experiences[this.props.currentId].sectionId
+            const firstElementAfterDeleted = this.props.experienceState.sections[targetSectionId].infoIdList[0];
+            const targetSectionInfo = this.props.experienceState.information[firstElementAfterDeleted]
+            this.handleInformation(firstElementAfterDeleted, targetSectionInfo)
         })
     }
 
@@ -122,10 +130,12 @@ class LeadershipInput extends Component {
         const data = {sectionId: targetSectionId, id: infoId + "", information: {infoId: infoId + "", project: "", role: "", location: "",
                 startDate:"", endDate: "", HTMLContent: "", name: "", telephone: "", email:"", personalLocation: "", other: ""
             }}
-        let api = global.AppConfig.serverIP + "/resume/addSectionInfo"
-        axios.post(api, data).then(()=>{
-            this.props.addExperienceSectionInfo(data)
-        })
+        // let api = global.AppConfig.serverIP + "/resume/addSectionInfo"
+        // axios.post(api, data).then(()=>{
+        //     this.props.addExperienceSectionInfo(data)
+        // })
+
+        this.props.addExperienceSectionInfo(data)
     }
 
     // changing the information while user's typing
@@ -144,16 +154,19 @@ class LeadershipInput extends Component {
 
 
     updateGeneralInfo = ()=>{
-        let api = global.AppConfig.serverIP + "/resume/updateGeneralInfo"
-        const data = this.props.experienceState.information[this.state.infoId];
+        // let api = global.AppConfig.serverIP + "/resume/updateGeneralInfo"
+        // const data = this.props.experienceState.information[this.state.infoId];
+        //
+        // axios.post(api, data).then((result)=>{
+        //     this.success()
+        //     this.setState({save: true})
+        // }).catch(()=>{
+        //     this.error()
+        //     this.setState({save: true})
+        // })
 
-        axios.post(api, data).then((result)=>{
-            this.success()
-            this.setState({save: true})
-        }).catch(()=>{
-            this.error()
-            this.setState({save: true})
-        })
+        this.success()
+        this.setState({save: true})
     }
 
     render() {
