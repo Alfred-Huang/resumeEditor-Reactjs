@@ -1,5 +1,5 @@
 {
-  "proxy": "http://resumeapplication-env.eba-vszhkueb.us-east-1.elasticbeanstalk.com",
+  "proxy": "http://localhost:8080",
   "name": "untitled",
   "version": "0.1.0",
   "private": true,
